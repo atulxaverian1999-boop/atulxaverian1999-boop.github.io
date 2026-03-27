@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Registration — A Bagla Financial Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --neon:#ff6b00;--neon2:#ff8c00;--gold:#ffd700;
+  --dark:#050401;--dark2:#0a0900;--dark3:#101008;--dark4:#181610;
+  --text:#f0ede0;--muted:#7a7560;--border:rgba(255,107,0,0.18);--green:#00ff88;
+  --radius:12px;--glow:0 0 20px rgba(255,107,0,0.3);
+  --font-h:'Orbitron',monospace;--font-b:'Rajdhani',sans-serif;--font-m:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--dark);color:var(--text);min-height:100vh}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.navbar{background:rgba(5,4,1,.95);border-bottom:1px solid var(--border);padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(16px)}
+.logo{font-family:var(--font-h);font-size:.82rem;font-weight:700;color:var(--neon);text-decoration:none;letter-spacing:.04em}
+.logo span{color:var(--gold)}
+.nav-back{font-family:var(--font-m);font-size:.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:7px 14px;border-radius:5px;transition:all .2s}
+.nav-back:hover{border-color:var(--neon);color:var(--neon)}
+.page{position:relative;z-index:1;padding:60px 24px 80px;display:flex;flex-direction:column;align-items:center}
+.hero-badge{font-family:var(--font-m);font-size:.7rem;color:var(--neon);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:18px}
+.bdot{width:7px;height:7px;background:var(--neon);border-radius:50%;animation:bd 1.2s steps(1) infinite;box-shadow:0 0 8px var(--neon)}
+@keyframes bd{0%,100%{opacity:1}50%{opacity:0}}
+.page-title{font-family:var(--font-h);font-size:clamp(1.6rem,4vw,2.8rem);font-weight:900;color:var(--text);text-align:center;margin-bottom:10px}
+.page-title em{font-style:italic;color:var(--neon);text-shadow:0 0 30px rgba(255,107,0,.4)}
+.page-sub{color:var(--muted);text-align:center;max-width:520px;margin-bottom:52px;font-size:.97rem;line-height:1.7}
+.reg-wrap{display:grid;grid-template-columns:1fr 2fr;gap:40px;width:100%;max-width:1100px;align-items:start}
+.reg-left{display:flex;flex-direction:column;gap:16px}
+.info-card{background:var(--dark3);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .2s}
+.info-card:hover{border-color:rgba(255,107,0,.35)}
+.ic-ico{font-size:1.6rem;margin-bottom:10px}
+.ic-title{font-family:var(--font-h);font-size:.72rem;color:var(--neon);letter-spacing:.06em;margin-bottom:6px}
+.ic-body{font-size:.82rem;color:var(--muted);line-height:1.6}
+.ic-body strong{color:var(--text)}
+.step-list{background:var(--dark3);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.step-list h4{font-family:var(--font-h);font-size:.72rem;color:var(--gold);letter-spacing:.06em;margin-bottom:16px}
+.step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.step-num{width:24px;height:24px;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:.68rem;color:var(--neon);flex-shrink:0;margin-top:1px}
+.step-txt{font-size:.82rem;color:var(--muted);line-height:1.5}
+.step-txt strong{color:var(--text)}
+.form-card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius);padding:36px}
+.fc-title{font-family:var(--font-h);font-size:.85rem;color:var(--neon);letter-spacing:.06em;margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.fc-title::before{content:'';display:block;width:3px;height:18px;background:var(--neon);border-radius:2px;box-shadow:0 0 8px var(--neon)}
+.slbl{font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--neon);margin:20px 0 12px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fg label{font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-m)}
+.fg label .req{color:var(--neon);margin-left:2px}
+.fg input,.fg select,.fg textarea{background:var(--dark3);border:1px solid rgba(255,107,0,.15);border-radius:7px;padding:11px 14px;font-family:var(--font-b);font-size:.92rem;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--neon);box-shadow:0 0 0 2px rgba(255,107,0,.08)}
+.fg select option{background:var(--dark3)}
+.fg textarea{resize:vertical;min-height:70px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.svc-check{display:flex;align-items:center;gap:10px;background:var(--dark3);border:1px solid rgba(255,107,0,.12);border-radius:7px;padding:10px 14px;cursor:pointer;transition:all .2s}
+.svc-check:hover{border-color:rgba(255,107,0,.3)}
+.svc-check input[type=checkbox]{accent-color:var(--neon);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.svc-check label{font-size:.82rem;color:var(--muted);cursor:pointer;font-weight:500}
+.svc-check:has(input:checked){background:rgba(255,107,0,.08);border-color:var(--neon)}
+.svc-check:has(input:checked) label{color:var(--neon)}
+.consent-box{background:rgba(255,107,0,.04);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-top:8px}
+.consent-box input[type=checkbox]{accent-color:var(--neon);width:15px;height:15px;flex-shrink:0;margin-top:3px;cursor:pointer}
+.consent-box p{font-size:.78rem;color:var(--muted);line-height:1.6}
+.consent-box p a{color:var(--neon)}
+.submit-btn{width:100%;background:var(--neon);color:var(--dark);font-family:var(--font-h);font-size:.8rem;font-weight:700;padding:16px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.08em;transition:all .2s;box-shadow:var(--glow);text-transform:uppercase;margin-top:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn:hover{background:var(--neon2);box-shadow:0 0 40px rgba(255,107,0,.5);transform:translateY(-2px)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.err{font-size:.72rem;color:#ff5555;margin-top:3px;display:none;font-family:var(--font-m)}
+.err.show{display:block}
+.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(8px)}
+.success-overlay.show{opacity:1;pointer-events:all}
+.success-box{background:var(--dark3);border:1px solid rgba(255,107,0,.4);border-radius:var(--radius);padding:48px 40px;text-align:center;max-width:480px;width:90%;box-shadow:var(--glow)}
+.success-icon{font-size:3rem;margin-bottom:16px}
+.success-box h3{font-family:var(--font-h);font-size:1.1rem;color:var(--neon);letter-spacing:.06em;margin-bottom:12px}
+.success-box p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:24px}
+.success-box strong{color:var(--text)}
+.ticket{font-family:var(--font-m);font-size:1rem;color:var(--gold);background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);padding:10px 20px;border-radius:6px;display:inline-block;margin-bottom:24px;letter-spacing:.1em}
+.clients-panel{width:100%;max-width:1100px;margin-top:60px}
+.cp-title{font-family:var(--font-h);font-size:.82rem;color:var(--gold);letter-spacing:.06em;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.cp-count{font-family:var(--font-m);font-size:.72rem;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);color:var(--gold);padding:4px 12px;border-radius:4px}
+.client-table{width:100%;border-collapse:collapse;background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.client-table thead tr{background:rgba(255,107,0,.15);border-bottom:1px solid var(--border)}
+.client-table thead th{font-family:var(--font-m);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:12px 14px;color:var(--neon);text-align:left;font-weight:500}
+.client-table tbody tr{border-bottom:1px solid rgba(255,107,0,.08);transition:background .15s}
+.client-table tbody tr:hover{background:rgba(255,107,0,.04)}
+.client-table tbody td{padding:11px 14px;font-size:.82rem;color:var(--muted)}
+.client-table tbody td:first-child{color:var(--text);font-weight:600}
+.svc-tag{font-size:.6rem;font-family:var(--font-m);background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);color:var(--neon);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px}
+.status-badge{font-size:.6rem;font-family:var(--font-m);padding:3px 9px;border-radius:3px;font-weight:600}
+.status-new{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);color:var(--green)}
+.status-contacted{background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.25);color:var(--neon)}
+.status-client{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);color:var(--gold)}
+.clear-btn{font-family:var(--font-m);font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 12px;border-radius:4px;cursor:pointer;transition:all .2s}
+.clear-btn:hover{border-color:#ff5555;color:#ff5555}
+.empty-state{text-align:center;padding:40px;color:var(--muted);font-size:.85rem}
+.empty-state span{display:block;font-size:2rem;margin-bottom:10px}
+.search-bar{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-family:var(--font-b);font-size:.88rem;color:var(--text);outline:none;margin-bottom:16px;transition:border-color .2s}
+.search-bar:focus{border-color:var(--neon)}
+@media(max-width:900px){.reg-wrap{grid-template-columns:1fr}}
+@media(max-width:600px){.r2,.services-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<nav class="navbar">
+  <a href="index.html" class="logo">[<span>AB</span>AGLA FINANCIAL]</a>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="invoice.html" style="font-family:var(--font-m);font-size:.72rem;color:var(--neon);border:1px solid rgba(255,107,0,.3);padding:7px 14px;border-radius:5px;text-decoration:none">Invoice Generator →</a>
+    <a href="index.html" class="nav-back">← Home</a>
+  </div>
+</nav>
+<div class="page">
+  <div class="hero-badge"><span class="bdot"></span> New Client Registration Portal</div>
+  <h1 class="page-title">Join <em>A Bagla</em> Financial</h1>
+  <p class="page-sub">Register your details and tell us what services you need. Our team will contact you within 24 hours to get started.</p>
+
+  <div class="reg-wrap">
+    <div class="reg-left">
+      <div class="info-card">
+        <div class="ic-ico">⚡</div>
+        <div class="ic-title">Why Register?</div>
+        <div class="ic-body">Get a dedicated account manager, priority support, personalised financial plans, and exclusive client-only insights and updates.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-ico">🔒</div>
+        <div class="ic-title">Your Data is Safe</div>
+        <div class="ic-body">All data is stored securely in your browser. <strong>We do not collect or share your information</strong> with any third parties.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-ico">📞</div>
+        <div class="ic-title">Fast Response</div>
+        <div class="ic-body">We respond to all registrations within <strong>24 business hours</strong>. Call-backs available Mon–Sat, 9 AM–7 PM IST.</div>
+      </div>
+      <div class="step-list">
+        <h4>How It Works</h4>
+        <div class="step"><div class="step-num">1</div><div class="step-txt"><strong>Fill the form</strong> — your name, contact and services needed</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-txt"><strong>Submit</strong> — you get a unique Client ID instantly</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-txt"><strong>We call you back</strong> within 24 hours to discuss</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-txt"><strong>Onboarding</strong> — we set up your account and get started</div></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="fc-title">Client Registration Form</div>
+
+      <div class="slbl">Personal / Business Details</div>
+      <div class="r2">
+        <div class="fg">
+          <label>Full Name <span class="req">*</span></label>
+          <input id="r-name" type="text" placeholder="Raj Sharma" oninput="clearErr('e-name')"/>
+          <span class="err" id="e-name">Please enter your full name</span>
+        </div>
+        <div class="fg">
+          <label>Phone Number <span class="req">*</span></label>
+          <input id="r-phone" type="tel" placeholder="+91 98765 43210" oninput="clearErr('e-phone')"/>
+          <span class="err" id="e-phone">Please enter a valid phone number</span>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Email Address <span class="req">*</span></label>
+        <input id="r-email" type="email" placeholder="raj@example.com" oninput="clearErr('e-email')"/>
+        <span class="err" id="e-email">Please enter a valid email address</span>
+      </div>
+      <div class="r2">
+        <div class="fg">
+          <label>Business / Company Name</label>
+          <input id="r-biz" type="text" placeholder="XYZ Pvt Ltd (if applicable)"/>
+        </div>
+        <div class="fg">
+          <label>City / Location</label>
+          <input id="r-city" type="text" placeholder="Mumbai, Maharashtra"/>
+        </div>
+      </div>
+      <div class="r2">
+        <div class="fg">
+          <label>PAN Number (optional)</label>
+          <input id="r-pan" type="text" placeholder="AABCA1234Z" maxlength="10" style="text-transform:uppercase"/>
+        </div>
+        <div class="fg">
+          <label>GSTIN (optional)</label>
+          <input id="r-gst" type="text" placeholder="27AABCA1234Z1Z5" maxlength="15" style="text-transform:uppercase"/>
+        </div>
+      </div>
+
+      <div class="slbl">Client Type</div>
+      <div class="fg">
+        <select id="r-type">
+          <option value="">Select client type...</option>
+          <option>Individual / Salaried</option>
+          <option>Self-Employed / Freelancer</option>
+          <option>Partnership Firm</option>
+          <option>Private Limited Company</option>
+          <option>LLP</option>
+          <option>Sole Proprietorship</option>
+          <option>HUF</option>
+          <option>Trust / NGO</option>
+        </select>
+      </div>
+
+      <div class="slbl">Services Interested In <span style="color:var(--neon)">*</span></div>
+      <div class="services-grid" id="svc-grid">
+        <label class="svc-check"><input type="checkbox" value="GST"/><label>📋 GST Compliance</label></label>
+        <label class="svc-check"><input type="checkbox" value="TDS"/><label>✂️ TDS Filing</label></label>
+        <label class="svc-check"><input type="checkbox" value="Income Tax"/><label>🏛️ Income Tax / ITR</label></label>
+        <label class="svc-check"><input type="checkbox" value="Bookkeeping"/><label>📒 Bookkeeping &amp; Accounting</label></label>
+        <label class="svc-check"><input type="checkbox" value="Inventory"/><label>📦 Inventory Management</label></label>
+        <label class="svc-check"><input type="checkbox" value="Vendor Mgmt"/><label>🤝 Vendor Management</label></label>
+        <label class="svc-check"><input type="checkbox" value="E-Invoice"/><label>⚡ E-Invoice &amp; E-Way Bill</label></label>
+        <label class="svc-check"><input type="checkbox" value="ITC Mgmt"/><label>🔄 ITC Management</label></label>
+        <label class="svc-check"><input type="checkbox" value="Finance Advisory"/><label>💼 Finance Advisory</label></label>
+        <label class="svc-check"><input type="checkbox" value="Mutual Fund"/><label>📈 Mutual Fund</label></label>
+      </div>
+      <span class="err" id="e-svc">Please select at least one service</span>
+
+      <div class="slbl">How Did You Hear About Us?</div>
+      <div class="fg">
+        <select id="r-source">
+          <option value="">Select source...</option>
+          <option>Google / Search</option>
+          <option>Friend / Family Referral</option>
+          <option>LinkedIn</option>
+          <option>Social Media</option>
+          <option>Existing Client Referral</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="slbl">Additional Notes</div>
+      <div class="fg">
+        <textarea id="r-notes" placeholder="Tell us about your specific requirements, financial goals, or any questions you have..."></textarea>
+      </div>
+
+      <div class="slbl">Preferred Contact Time</div>
+      <div class="r2">
+        <div class="fg">
+          <select id="r-ctime">
+            <option value="">Any time</option>
+            <option>Morning (9 AM – 12 PM)</option>
+            <option>Afternoon (12 PM – 3 PM)</option>
+            <option>Evening (3 PM – 7 PM)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <select id="r-cmode">
+            <option value="">Any mode</option>
+            <option>Phone Call</option>
+            <option>WhatsApp</option>
+            <option>Video Call</option>
+            <option>In-Person Meeting</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="consent-box">
+        <input type="checkbox" id="r-consent"/>
+        <p>I consent to A Bagla Financial Services contacting me regarding my enquiry. I understand my data is stored locally and not shared with third parties. <a href="#">Privacy Policy</a></p>
+      </div>
+      <span class="err" id="e-consent">Please accept the terms to proceed</span>
+
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">
+        <span>🚀 Register as Client</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CLIENTS PANEL (admin view) -->
+  <div class="clients-panel" id="clientsPanel">
+    <div class="cp-title">
+      <span>Registered Clients <span class="cp-count" id="clientCount">0</span></span>
+      <div style="display:flex;gap:8px">
+        <button class="clear-btn" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="clear-btn" onclick="clearClients()" style="border-color:rgba(255,80,80,.3)">🗑 Clear All</button>
+      </div>
+    </div>
+    <input class="search-bar" placeholder="🔍  Search by name, email or service..." id="searchBar" oninput="renderTable()"/>
+    <div id="clientTableWrap"></div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🎉</div>
+    <h3>Registration Successful!</h3>
+    <p>Welcome to <strong>A Bagla Financial Services</strong>. Your enquiry has been recorded. We'll contact you within <strong>24 business hours</strong>.</p>
+    <div class="ticket" id="ticketId">ABFS-CLIENT-0001</div>
+    <p style="margin-bottom:20px;font-size:.82rem">Save this Client ID for future reference.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button onclick="closeSuccess()" style="background:var(--neon);color:var(--dark);font-family:var(--font-h);font-size:.68rem;font-weight:700;padding:12px 24px;border-radius:6px;border:none;cursor:pointer;letter-spacing:.06em;text-transform:uppercase">✓ Done</button>
+      <a href="index.html" style="display:inline-block;background:transparent;color:var(--muted);font-family:var(--font-b);font-size:.9rem;font-weight:600;padding:11px 20px;border-radius:6px;border:1px solid rgba(255,107,0,.2);cursor:pointer;text-decoration:none">← Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Particle bg
+(function(){
+  const c=document.getElementById('bg');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  window.addEventListener('resize',()=>{c.width=window.innerWidth;c.height=window.innerHeight;});
+  const pts=Array.from({length:50},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.8}));
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(255,107,0,.3)';ctx.fill();
+    });
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(255,107,0,${.1*(1-d/110)})`;ctx.stroke();}
+    }));
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+let clients=JSON.parse(localStorage.getItem('abfs-clients')||'[]');
+let cCount=parseInt(localStorage.getItem('abfs-ccount')||'0');
+
+function g(id){return document.getElementById(id)}
+function clearErr(id){g(id).classList.remove('show')}
+function showErr(id){g(id).classList.add('show')}
+
+function getSelectedServices(){
+  return [...document.querySelectorAll('#svc-grid input[type=checkbox]:checked')].map(c=>c.value);
+}
+
+function validateForm(){
+  let ok=true;
+  if(!g('r-name').value.trim()){showErr('e-name');ok=false;}
+  if(!g('r-phone').value.trim()||g('r-phone').value.trim().length<8){showErr('e-phone');ok=false;}
+  if(!g('r-email').value.includes('@')){showErr('e-email');ok=false;}
+  if(getSelectedServices().length===0){showErr('e-svc');ok=false;}
+  if(!g('r-consent').checked){showErr('e-consent');ok=false;}
+  return ok;
+}
+
+function submitForm(){
+  if(!validateForm())return;
+  cCount++;localStorage.setItem('abfs-ccount',cCount);
+  const ticketId='ABFS-'+String(cCount).padStart(4,'0');
+  const client={
+    id:ticketId,
+    date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
+    name:g('r-name').value.trim(),
+    phone:g('r-phone').value.trim(),
+    email:g('r-email').value.trim(),
+    biz:g('r-biz').value.trim(),
+    city:g('r-city').value.trim(),
+    pan:g('r-pan').value.trim().toUpperCase(),
+    gst:g('r-gst').value.trim().toUpperCase(),
+    type:g('r-type').value,
+    services:getSelectedServices(),
+    source:g('r-source').value,
+    notes:g('r-notes').value.trim(),
+    ctime:g('r-ctime').value,
+    cmode:g('r-cmode').value,
+    status:'new'
+  };
+  clients.unshift(client);
+  localStorage.setItem('abfs-clients',JSON.stringify(clients));
+  g('ticketId').textContent=ticketId;
+  g('successOverlay').classList.add('show');
+  resetForm();renderTable();
+}
+
+function closeSuccess(){g('successOverlay').classList.remove('show');}
+
+function resetForm(){
+  ['r-name','r-phone','r-email','r-biz','r-city','r-pan','r-gst','r-notes'].forEach(id=>g(id).value='');
+  ['r-type','r-source','r-ctime','r-cmode'].forEach(id=>g(id).value='');
+  document.querySelectorAll('#svc-grid input[type=checkbox]').forEach(c=>c.checked=false);
+  g('r-consent').checked=false;
+}
+
+function renderTable(){
+  const q=g('searchBar').value.toLowerCase();
+  const filtered=clients.filter(c=>
+    c.name.toLowerCase().includes(q)||
+    c.email.toLowerCase().includes(q)||
+    c.services.join(' ').toLowerCase().includes(q)||
+    c.phone.includes(q)||c.id.toLowerCase().includes(q)
+  );
+  g('clientCount').textContent=filtered.length+'/'+clients.length;
+  if(clients.length===0){
+    g('clientTableWrap').innerHTML='<div class="empty-state"><span>👥</span>No registrations yet. Client entries will appear here once submitted.</div>';
+    return;
+  }
+  if(filtered.length===0){g('clientTableWrap').innerHTML='<div class="empty-state"><span>🔍</span>No clients match your search.</div>';return;}
+  g('clientTableWrap').innerHTML=`<table class="client-table">
+    <thead><tr><th>Client ID</th><th>Name</th><th>Contact</th><th>Type</th><th>Services</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>${filtered.map(c=>`<tr>
+      <td><span style="font-family:var(--font-m);font-size:.72rem;color:var(--gold)">${c.id}</span></td>
+      <td>${c.name}${c.biz?'<br/><span style="font-size:.72rem;color:var(--muted)">'+c.biz+'</span>':''}</td>
+      <td><span style="font-size:.76rem">${c.phone}<br/><a href="mailto:${c.email}" style="color:var(--neon);font-size:.72rem">${c.email}</a></span></td>
+      <td style="font-size:.76rem">${c.type||'—'}</td>
+      <td>${c.services.map(s=>`<span class="svc-tag">${s}</span>`).join('')}</td>
+      <td style="font-size:.76rem;white-space:nowrap">${c.date}</td>
+      <td><select class="status-badge status-${c.status}" onchange="updateStatus('${c.id}',this.value)" style="background:transparent;border:none;cursor:pointer;font-family:var(--font-m);font-size:.6rem;padding:2px 4px">
+        <option value="new" ${c.status==='new'?'selected':''}>NEW</option>
+        <option value="contacted" ${c.status==='contacted'?'selected':''}>CONTACTED</option>
+        <option value="client" ${c.status==='client'?'selected':''}>CLIENT</option>
+      </select></td>
+      <td><button onclick="deleteClient('${c.id}')" style="background:none;border:none;color:rgba(255,80,80,.5);cursor:pointer;font-size:.8rem;padding:4px 6px;border-radius:4px" title="Delete">✕</button></td>
+    </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function updateStatus(id,status){
+  const c=clients.find(x=>x.id===id);if(c){c.status=status;localStorage.setItem('abfs-clients',JSON.stringify(clients));renderTable();}
+}
+function deleteClient(id){
+  if(!confirm('Remove client '+id+'?'))return;
+  clients=clients.filter(c=>c.id!==id);localStorage.setItem('abfs-clients',JSON.stringify(clients));renderTable();
+}
+function clearClients(){
+  if(!confirm('Clear ALL client registrations? This cannot be undone.'))return;
+  clients=[];localStorage.setItem('abfs-clients',JSON.stringify(clients));renderTable();
+}
+function exportCSV(){
+  if(!clients.length){alert('No clients to export.');return;}
+  const hdr=['ID','Date','Name','Phone','Email','Business','City','PAN','GSTIN','Type','Services','Source','Notes','Contact Time','Mode','Status'];
+  const rows=clients.map(c=>[c.id,c.date,c.name,c.phone,c.email,c.biz,c.city,c.pan,c.gst,c.type,c.services.join('|'),c.source,c.notes.replace(/,/g,';'),c.ctime,c.cmode,c.status].map(v=>`"${v||''}"`).join(','));
+  const csv=[hdr.join(','),...rows].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='ABFS-Clients-'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+}
+
+// Init
+renderTable();
+</script>
+</body>
+</html>
