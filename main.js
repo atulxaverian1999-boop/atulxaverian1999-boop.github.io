@@ -354,6 +354,7 @@ function showGame(id, btn){
 
 /* ── GRAVITY BALL GAME ── */
 let gravityRAF=null, gravityScore=0, gravityBest=0;
+const _gravityColors=['#e2ff00','#00ffcc','#ff4fcf','#4fd1ff','#ffd700','#ff6b35','#a78bfa'];
 function startGravity(){
   const canvas=document.getElementById('gravity-canvas');
   if(!canvas) return;
@@ -361,61 +362,62 @@ function startGravity(){
   const W=canvas.width, H=canvas.height;
   if(gravityRAF) cancelAnimationFrame(gravityRAF);
   gravityScore=0; document.getElementById('gravity-score').textContent='0';
-  const ball={x:W/2,y:H-60,r:12,vx:0,vy:0,ay:0.35};
-  const keys={}, coins=[], walls=[];
-  let frame=0, speed=2.5;
-  function spawnWall(){ const gap=180,gapY=Math.random()*(H-gap-80)+40; walls.push({x:W,gapY,gap,w:22}); }
-  function spawnCoin(){ coins.push({x:W,y:Math.random()*(H-80)+40,r:9,collected:false}); }
-  const kd=e=>{keys[e.key]=true;}, ku=e=>{keys[e.key]=false;};
-  document.addEventListener('keydown',kd); document.addEventListener('keyup',ku);
+  const balls=[];
+  const GY=0.42, BOUNCE=0.60, FRICTION=0.991, MAX_BALLS=30;
+
+  function spawnBall(x,y){
+    if(balls.length>=MAX_BALLS) balls.shift();
+    const r=9+Math.random()*10;
+    balls.push({x,y,r,vx:(Math.random()-0.5)*4,vy:-1,color:_gravityColors[Math.floor(Math.random()*_gravityColors.length)]});
+    gravityScore=balls.length;
+    document.getElementById('gravity-score').textContent=gravityScore;
+  }
+
+  // Remove any old listener, add exactly ONE new click listener
+  if(canvas._gravClick) canvas.removeEventListener('click',canvas._gravClick);
+  canvas._gravClick=function(e){
+    const rect=canvas.getBoundingClientRect();
+    spawnBall((e.clientX-rect.left)*(W/rect.width),(e.clientY-rect.top)*(H/rect.height));
+  };
+  canvas.addEventListener('click',canvas._gravClick);
+
   function loop(){
-    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
-    if(keys['ArrowLeft']||keys['a']) ball.vx=Math.max(ball.vx-0.5,-5);
-    else if(keys['ArrowRight']||keys['d']) ball.vx=Math.min(ball.vx+0.5,5);
-    else ball.vx*=0.85;
-    ball.vy+=ball.ay; ball.x+=ball.vx; ball.y+=ball.vy;
-    if(ball.y+ball.r>H){ball.y=H-ball.r;ball.vy*=-0.55;}
-    if(ball.y-ball.r<0){ball.y=ball.r;ball.vy*=-0.4;}
-    if(ball.x-ball.r<0){ball.x=ball.r;ball.vx*=-0.5;}
-    if(ball.x+ball.r>W){ball.x=W-ball.r;ball.vx*=-0.5;}
-    frame++; speed=2.5+Math.floor(gravityScore/5)*0.35;
-    if(frame%70===0) spawnWall();
-    if(frame%90===0) spawnCoin();
-    for(let i=walls.length-1;i>=0;i--){
-      const w=walls[i]; w.x-=speed;
-      ctx.fillStyle='#e2ff00';
-      ctx.fillRect(w.x,0,w.w,w.gapY);
-      ctx.fillRect(w.x,w.gapY+w.gap,w.w,H-w.gapY-w.gap);
-      if(ball.x+ball.r>w.x&&ball.x-ball.r<w.x+w.w){
-        if(ball.y-ball.r<w.gapY||ball.y+ball.r>w.gapY+w.gap){
-          document.removeEventListener('keydown',kd); document.removeEventListener('keyup',ku);
-          cancelAnimationFrame(gravityRAF);
-          if(gravityScore>gravityBest){gravityBest=gravityScore;document.getElementById('gravity-best').textContent=gravityBest;}
-          ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle='#e2ff00'; ctx.font='bold 28px Orbitron'; ctx.textAlign='center';
-          ctx.fillText('GAME OVER',W/2,H/2-20);
-          ctx.fillStyle='#fff'; ctx.font='18px DM Sans';
-          ctx.fillText('Score: '+gravityScore+' | Best: '+gravityBest,W/2,H/2+18);
-          ctx.fillText('Click ▶ Start / Restart to play again',W/2,H/2+48);
-          ctx.textAlign='left'; return;
+    ctx.fillStyle='rgba(10,10,10,0.2)'; ctx.fillRect(0,0,W,H);
+    for(let i=0;i<balls.length;i++){
+      const b=balls[i];
+      b.vy+=GY; b.vx*=FRICTION; b.vy*=FRICTION;
+      b.x+=b.vx; b.y+=b.vy;
+      if(b.y+b.r>H){b.y=H-b.r; b.vy*=-BOUNCE; b.vx*=0.9;}
+      if(b.y-b.r<0){b.y=b.r; b.vy*=-BOUNCE;}
+      if(b.x-b.r<0){b.x=b.r; b.vx*=-BOUNCE;}
+      if(b.x+b.r>W){b.x=W-b.r; b.vx*=-BOUNCE;}
+      for(let j=i+1;j<balls.length;j++){
+        const o=balls[j];
+        const dx=o.x-b.x,dy=o.y-b.y,dist=Math.sqrt(dx*dx+dy*dy),minD=b.r+o.r;
+        if(dist<minD&&dist>0.1){
+          const nx=dx/dist,ny=dy/dist,ov=(minD-dist)/2;
+          b.x-=nx*ov; b.y-=ny*ov; o.x+=nx*ov; o.y+=ny*ov;
+          const rv=(b.vx-o.vx)*nx+(b.vy-o.vy)*ny;
+          if(rv>0){b.vx-=rv*nx*0.55; b.vy-=rv*ny*0.55; o.vx+=rv*nx*0.55; o.vy+=rv*ny*0.55;}
         }
       }
-      if(w.x+w.w<0){walls.splice(i,1);gravityScore++;document.getElementById('gravity-score').textContent=gravityScore;}
+      const g=ctx.createRadialGradient(b.x-b.r*.28,b.y-b.r*.28,b.r*.08,b.x,b.y,b.r);
+      g.addColorStop(0,'rgba(255,255,255,0.9)'); g.addColorStop(0.35,b.color); g.addColorStop(1,'rgba(0,0,0,0.45)');
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+      ctx.strokeStyle=b.color; ctx.lineWidth=1.2; ctx.globalAlpha=0.6; ctx.stroke(); ctx.globalAlpha=1;
     }
-    for(let i=coins.length-1;i>=0;i--){
-      const c=coins[i]; c.x-=speed;
-      if(!c.collected){
-        ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fillStyle='#ffd700';ctx.fill();
-        const dx=ball.x-c.x,dy=ball.y-c.y;
-        if(Math.sqrt(dx*dx+dy*dy)<ball.r+c.r){c.collected=true;gravityScore+=2;document.getElementById('gravity-score').textContent=gravityScore;}
-      }
-      if(c.x<-20) coins.splice(i,1);
+    ctx.fillStyle='rgba(255,255,255,0.32)'; ctx.font='13px DM Sans';
+    ctx.fillText('🖱 Click anywhere to drop a ball — max 30',10,18);
+    if(balls.length===0){
+      ctx.fillStyle='rgba(226,255,0,0.55)'; ctx.font='bold 19px Orbitron'; ctx.textAlign='center';
+      ctx.fillText('Click on the canvas to drop balls!',W/2,H/2); ctx.textAlign='left';
     }
-    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fillStyle='#e2ff00';ctx.fill();
-    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='13px DM Sans';ctx.fillText('← → or A D to move',8,18);
     gravityRAF=requestAnimationFrame(loop);
   }
+  ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(226,255,0,0.5)'; ctx.font='bold 19px Orbitron'; ctx.textAlign='center';
+  ctx.fillText('Click ▶ Start / Restart, then click to drop!',W/2,H/2); ctx.textAlign='left';
   loop();
 }
 
