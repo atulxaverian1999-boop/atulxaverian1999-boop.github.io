@@ -7,3 +7,61 @@
 <link rel="stylesheet" href="style.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
 </head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo"><span class="logo-a">AB</span><span class="logo-rest">FS</span><span class="logo-tag">A Bagla Financial Services</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#calculators">Calculators</a></li>
+      <li><a href="#news">Live News</a></li>
+      <li><a href="#playground" class="nav-play">🎮 Playground</a></li>
+      <li><a href="invoice.html" class="nav-invoice">🧾 Invoice</a></li>
+      <li><a href="register.html" class="nav-register">👤 Client Portal</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  
+  
+  
+   <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMobile()">Home</a>
+    <a href="#services" onclick="closeMobile()">Services</a>
+    <a href="#calculators" onclick="closeMobile()">Calculators</a>
+    <a href="#news" onclick="closeMobile()">Live Nes</a>
+    <a href="#playground" onclick="closeMobile()">Playground</a>
+    <a href="invoice.html" onclick="closeMobile()">🧾 Invoice Generator</a>
+    <a href="register.html" onclick="closeMobile()">👤 Client Portal</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
+    <h1 class="hero-h1">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
+    <p class="hero-tagline">Bold Moves. <em>Smarter Money.</em> Brighter Future.</p>
+    <p class="hero-sub">Expert Tax, Investment & Business Advisory from Powai, Mumbai — empowering individuals and businesses to grow, thrive and prosper.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-neon">Explore Services</a>
+      <a href="#calculators" class="btn-ghost">Try Calculators ↓</a>
+    </div>
+    <div class="hero-ca-block">
+      <p class="hero-ca-headline">Powered by India's Finest <span class="neon-text">Chartered Accountants</span></p>
+      <p class="hero-ca-sub">Every financial problem has a root. We don't patch surfaces — we <em>eliminate the source</em>. Precision compliance, zero tax leakage, and world-class advisory — all under one roof.</p>
+      <div class="hero-pills">
+        <span class="hpill">🏆 CA-Led Excellence</span>
+        <span class="hpill">🔍 Root-Cause Resolution</span>
+        <span class="hpill">📋 Zero-Error Compliance</span>
+        <span class="hpill">🌍 World-Class Advisory</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker-bar">
+    <div class="ticker">📈 NIFTY 50: 22,450 (+1.2%) &nbsp;·&nbsp; 💰 SENSEX: 74,119 (+0.9%) &nbsp;·&nbsp; 🏦 GOLD: ₹72,400/10g &nbsp;·&nbsp; 📊 USD/INR: 83.42 &nbsp;·&nbsp; 💎 SILVER: ₹86,500/kg &nbsp;·&nbsp; 🏢 NIFTY BANK: 48,200 (+0.6%) &nbsp;·&nbsp; 📈 NIFTY 50: 22,450 (+1.2%) &nbsp;·&nbsp; 💰 SENSEX: 74,119 (+0.9%) &nbsp;·&nbsp; 🏦
