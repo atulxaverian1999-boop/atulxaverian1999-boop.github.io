@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Invoice Generator — A Bagla Financial Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --neon:#ff6b00;--neon2:#ff8c00;--gold:#ffd700;
+  --dark:#050401;--dark2:#0a0900;--dark3:#101008;--dark4:#181610;
+  --text:#f0ede0;--muted:#7a7560;--border:rgba(255,107,0,0.18);--green:#00ff88;
+  --radius:12px;--glow:0 0 20px rgba(255,107,0,0.3);
+  --font-h:'Orbitron',monospace;--font-b:'Rajdhani',sans-serif;--font-m:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--dark);color:var(--text);min-height:100vh;font-size:15px}
+.navbar{background:rgba(5,4,1,.95);border-bottom:1px solid var(--border);padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(16px)}
+.logo{font-family:var(--font-h);font-size:.82rem;font-weight:700;color:var(--neon);text-decoration:none;letter-spacing:.04em}
+.logo span{color:var(--gold)}
+.nav-back{font-family:var(--font-m);font-size:.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:7px 14px;border-radius:5px;transition:all .2s}
+.nav-back:hover{border-color:var(--neon);color:var(--neon)}
+.nav-reg{font-family:var(--font-m);font-size:.72rem;color:var(--gold);border:1px solid rgba(255,215,0,.3);padding:7px 14px;border-radius:5px;text-decoration:none;transition:all .2s}
+.nav-reg:hover{background:rgba(255,215,0,.08);border-color:var(--gold)}
+.page{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
+.form-panel{background:var(--dark2);border-right:1px solid var(--border);padding:28px 22px;overflow-y:auto;max-height:calc(100vh - 64px)}
+.fp-title{font-family:var(--font-h);font-size:.82rem;color:var(--neon);letter-spacing:.06em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.fp-title::before{content:'';display:block;width:3px;height:18px;background:var(--neon);border-radius:2px;box-shadow:0 0 8px var(--neon)}
+.slbl{font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--neon);margin:18px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.fg label{font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-m)}
+.fg input,.fg select,.fg textarea{background:var(--dark3);border:1px solid rgba(255,107,0,.14);border-radius:6px;padding:8px 11px;font-family:var(--font-b);font-size:.88rem;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--neon);box-shadow:0 0 0 2px rgba(255,107,0,.08)}
+.fg select option{background:var(--dark3)}
+.fg textarea{resize:vertical;min-height:55px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.lih{display:grid;grid-template-columns:2.4fr .75fr 1.05fr .65fr 26px;gap:5px;font-size:.58rem;font-family:var(--font-m);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;padding-bottom:5px;border-bottom:1px solid var(--border);margin-bottom:5px}
+.lir{display:grid;grid-template-columns:2.4fr .75fr 1.05fr .65fr 26px;gap:5px;margin-bottom:5px;align-items:center}
+.lir input,.lir select{background:var(--dark3);border:1px solid rgba(255,107,0,.12);border-radius:4px;padding:6px 7px;font-family:var(--font-b);font-size:.8rem;color:var(--text);outline:none;width:100%}
+.lir input:focus{border-color:var(--neon)}
+.delbtn{background:none;border:none;color:rgba(255,80,80,.55);cursor:pointer;font-size:.85rem;width:24px;height:24px;border-radius:3px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.delbtn:hover{background:rgba(255,51,51,.1);color:#ff5555}
+.addline{background:rgba(255,107,0,.06);border:1px dashed rgba(255,107,0,.28);color:var(--neon);font-family:var(--font-b);font-size:.78rem;font-weight:600;padding:8px;border-radius:5px;cursor:pointer;width:100%;margin-top:2px;transition:all .2s}
+.addline:hover{background:rgba(255,107,0,.12);border-color:var(--neon)}
+.totbox{background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:13px;margin-top:12px}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:.8rem}
+.tr span{color:var(--muted)}
+.tr strong{font-family:var(--font-m);color:var(--text);font-size:.78rem}
+.tdiv{height:1px;background:var(--border);margin:4px 0}
+.tr.fin span{font-family:var(--font-h);font-size:.72rem;letter-spacing:.04em;color:var(--text)}
+.tr.fin strong{font-family:var(--font-m);font-size:.96rem;color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.4)}
+.discwrap{display:flex;align-items:center;gap:7px}
+.discwrap input{width:52px;background:var(--dark4);border:1px solid var(--border);color:var(--text);padding:3px 7px;border-radius:4px;font-size:.78rem;text-align:center;outline:none;font-family:var(--font-m)}
+.actbar{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+.btn-neon{display:inline-flex;align-items:center;gap:6px;background:var(--neon);color:var(--dark);font-family:var(--font-h);font-size:.65rem;font-weight:700;padding:11px 20px;border-radius:6px;border:none;cursor:pointer;letter-spacing:.06em;transition:all .2s;box-shadow:var(--glow);text-transform:uppercase}
+.btn-neon:hover{background:var(--neon2);box-shadow:0 0 30px rgba(255,107,0,.5);transform:translateY(-1px)}
+.btn-gold{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--dark);font-family:var(--font-h);font-size:.65rem;font-weight:700;padding:11px 20px;border-radius:6px;border:none;cursor:pointer;letter-spacing:.06em;transition:all .2s;text-transform:uppercase}
+.btn-gold:hover{background:#ffe033;transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--muted);font-family:var(--font-b);font-size:.82rem;font-weight:600;padding:10px 16px;border-radius:6px;border:1px solid rgba(255,107,0,.2);cursor:pointer;transition:all .2s}
+.btn-ghost:hover{border-color:var(--neon);color:var(--neon)}
+.prev-panel{background:var(--dark3);padding:28px 22px;overflow-y:auto;max-height:calc(100vh - 64px)}
+.prev-title{font-family:var(--font-h);font-size:.8rem;color:var(--gold);letter-spacing:.06em;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.live-dot{font-family:var(--font-m);font-size:.58rem;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:var(--green);padding:3px 8px;border-radius:3px;animation:pl 2s infinite}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.5}}
+#invDoc{background:#fff;color:#111;border-radius:7px;padding:32px 28px;font-family:'Rajdhani',sans-serif;box-shadow:0 4px 40px rgba(0,0,0,.55);position:relative;overflow:hidden}
+#invDoc::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#ff6b00,#ffd700,#ff6b00)}
+.ih{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid #f0ede0}
+.ibn{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:#ff6b00;letter-spacing:.04em;margin-bottom:3px}
+.ibt{font-size:.64rem;color:#bbb;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.iba{font-size:.74rem;color:#555;line-height:1.55}
+.ir{text-align:right}
+.iti{font-family:'Orbitron',monospace;font-size:1.35rem;font-weight:900;color:#111;letter-spacing:.08em;margin-bottom:5px}
+.inn{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#ff6b00;font-weight:600}
+.idt{font-size:.7rem;color:#777;margin-top:4px;line-height:1.7}
+.ibill{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.ibx{background:#f9f7f0;border-radius:5px;padding:11px}
+.ibx2{background:#fff5e6}
+.iblbl{font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:#bbb;font-family:'JetBrains Mono',monospace;margin-bottom:5px}
+.ibxn{font-size:.86rem;font-weight:700;color:#111;margin-bottom:2px}
+.ibxd{font-size:.72rem;color:#555;line-height:1.55}
+.itbl{width:100%;border-collapse:collapse;margin-bottom:14px}
+.itbl thead tr{background:#ff6b00}
+.itbl thead th{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 8px;color:#fff;text-align:left;font-weight:500}
+.itbl thead th:not(:first-child){text-align:right}
+.itbl tbody tr{border-bottom:1px solid #f0ede0}
+.itbl tbody tr:nth-child(even){background:#fafaf7}
+.itbl tbody td{padding:7px 8px;font-size:.76rem;color:#333}
+.itbl tbody td:not(:first-child){text-align:right;font-family:'JetBrains Mono',monospace;font-size:.7rem}
+.ittot{display:flex;justify-content:flex-end;margin-bottom:12px}
+.ittb{min-width:200px}
+.itr{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f0ede0;font-size:.76rem}
+.itr span{color:#777}
+.itr strong{font-family:'JetBrains Mono',monospace;color:#333}
+.itf{display:flex;justify-content:space-between;background:#ff6b00;padding:9px 11px;border-radius:5px;margin-top:5px}
+.itf span{color:#fff;font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;letter-spacing:.06em}
+.itf strong{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.92rem}
+.iwords{background:#fff9ef;border-left:3px solid #ff6b00;padding:7px 11px;border-radius:0 5px 5px 0;margin-bottom:14px;font-size:.72rem;color:#555}
+.iwords strong{color:#333}
+.ibank{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.ibkb{background:#f9f7f0;border-radius:5px;padding:11px}
+.ibklbl{font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:#bbb;font-family:'JetBrains Mono',monospace;margin-bottom:5px}
+.ibkr{display:flex;justify-content:space-between;font-size:.7rem;color:#666;padding:2px 0;border-bottom:1px solid #ebe8de}
+.ibkr:last-child{border:none}
+.ibkr strong{color:#333;font-family:'JetBrains Mono',monospace;font-size:.68rem}
+.ifoot{display:flex;justify-content:space-between;align-items:flex-end;padding-top:14px;border-top:2px solid #f0ede0}
+.ifl{font-size:.64rem;color:#bbb;line-height:1.6}
+.isg{text-align:center}
+.isg-stamp{width:52px;height:52px;border:2px solid #ff6b00;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;opacity:.5}
+.isg-stamp p{font-family:'Orbitron',monospace;font-size:.34rem;color:#ff6b00;text-align:center;font-weight:700;line-height:1.3;letter-spacing:.04em}
+.isg-line{width:110px;border-top:1px solid #ccc;margin:0 auto 3px}
+.isg-lbl{font-size:.6rem;color:#bbb;font-family:'JetBrains Mono',monospace;letter-spacing:.08em}
+.iwm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-family:'Orbitron',monospace;font-size:3.8rem;font-weight:900;color:rgba(255,107,0,.035);pointer-events:none;white-space:nowrap;letter-spacing:.2em}
+#invDoc>*:not(.iwm){position:relative;z-index:1}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--dark3);border:1px solid var(--neon);color:var(--text);font-family:var(--font-m);font-size:.76rem;padding:10px 16px;border-radius:7px;box-shadow:var(--glow);transform:translateY(60px);opacity:0;transition:all .3s;z-index:999}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:960px){.page{grid-template-columns:1fr}.prev-panel{max-height:none}}
+@media(max-width:600px){.r2,.r3{grid-template-columns:1fr}.ibill,.ibank{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="logo">[<span>AB</span>AGLA FINANCIAL]</a>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="register.html" class="nav-reg">Client Register →</a>
+    <a href="index.html" class="nav-back">← Home</a>
+  </div>
+</nav>
+<div class="page">
+<div class="form-panel">
+  <div class="fp-title">⚡ Invoice Generator</div>
+  <div class="slbl">Invoice Details</div>
+  <div class="r3">
+    <div class="fg"><label>Invoice No.</label><input id="fn" value="INV-2025-001" oninput="upd()"/></div>
+    <div class="fg"><label>Date</label><input type="date" id="fd" oninput="upd()"/></div>
+    <div class="fg"><label>Due Date</label><input type="date" id="fdd" oninput="upd()"/></div>
+  </div>
+  <div class="slbl">Your Details</div>
+  <div class="fg"><label>Business Name</label><input id="fbn" value="A Bagla Financial Services" oninput="upd()"/></div>
+  <div class="r2">
+    <div class="fg"><label>Address</label><input id="fba" value="Powai, Mumbai 400076, Maharashtra" oninput="upd()"/></div>
+    <div class="fg"><label>Email</label><input id="fbe" value="atulxaverian1999@gmail.com" oninput="upd()"/></div>
+  </div>
+  <div class="fg"><label>Phone</label><input id="fbp" placeholder="+91 98765 43210" oninput="upd()"/></div>
+  <div class="slbl">Client Details</div>
+  <div class="fg"><label>Client Name / Company</label><input id="fcn" placeholder="Raj Sharma / XYZ Pvt Ltd" oninput="upd()"/></div>
+  <div class="r2">
+    <div class="fg"><label>Address</label><input id="fca" placeholder="Mumbai, Maharashtra" oninput="upd()"/></div>
+    <div class="fg"><label>Email</label><input id="fce" placeholder="client@email.com" oninput="upd()"/></div>
+  </div>
+  <div class="r2">
+    <div class="fg"><label>Phone</label><input id="fcp" placeholder="+91 98765 43210" oninput="upd()"/></div>
+    <div class="fg"><label>GSTIN / PAN</label><input id="fcg" placeholder="AABCA1234Z" oninput="upd()"/></div>
+  </div>
+  <div class="slbl">Line Items</div>
+  <div class="lih"><span>Description</span><span>Qty</span><span>Rate (₹)</span><span>GST%</span><span></span></div>
+  <div id="lw"></div>
+  <button class="addline" onclick="addLine()">＋ Add Line Item</button>
+  <div class="totbox">
+    <div class="tr"><span>Subtotal</span><strong id="ts">₹0.00</strong></div>
+    <div class="tr"><span>GST / Tax</span><strong id="tt">₹0.00</strong></div>
+    <div class="tr"><span>Discount</span><div class="discwrap"><input type="number" id="fd2" value="0" min="0" max="100" oninput="recalc()"/><span style="color:var(--muted);font-size:.78rem">%</span></div></div>
+    <div class="tdiv"></div>
+    <div class="tr fin"><span>TOTAL PAYABLE</span><strong id="ttot">₹0.00</strong></div>
+  </div>
+  <div class="slbl">Bank Details</div>
+  <div class="r2">
+    <div class="fg"><label>Bank Name</label><input id="fbk" placeholder="HDFC Bank" oninput="upd()"/></div>
+    <div class="fg"><label>Account Name</label><input id="fbkan" placeholder="A Bagla Financial Services" oninput="upd()"/></div>
+  </div>
+  <div class="r2">
+    <div class="fg"><label>Account Number</label><input id="fbkac" placeholder="XXXX XXXX XXXX" oninput="upd()"/></div>
+    <div class="fg"><label>IFSC Code</label><input id="fbkif" placeholder="HDFC0001234" oninput="upd()"/></div>
+  </div>
+  <div class="fg"><label>UPI ID</label><input id="fupi" placeholder="baglafinancial@upi" oninput="upd()"/></div>
+  <div class="slbl">Notes / Terms</div>
+  <div class="fg"><textarea id="fnotes" oninput="upd()">Payment due within 15 days of invoice date. Thank you for choosing A Bagla Financial Services!</textarea></div>
+  <div class="actbar">
+    <button class="btn-neon" onclick="dlPDF()">⬇ Download PDF</button>
+    <button class="btn-gold" onclick="window.print()">🖨 Print</button>
+    <button class="btn-ghost" onclick="clearF()">↺ New Invoice</button>
+  </div>
+</div>
+<div class="prev-panel">
+  <div class="prev-title">Live Preview <span class="live-dot">● LIVE</span></div>
+  <div id="invDoc">
+    <div class="iwm">BAGLA</div>
+    <div class="ih">
+      <div>
+        <div class="ibn" id="p-bn">A Bagla Financial Services</div>
+        <div class="ibt">Financial Consultancy</div>
+        <div class="iba" id="p-ba">Powai, Mumbai 400076<br/>atulxaverian1999@gmail.com</div>
+      </div>
+      <div class="ir">
+        <div class="iti">INVOICE</div>
+        <div class="inn" id="p-num">#INV-2025-001</div>
+        <div class="idt" id="p-dates">Date: —<br/>Due: —</div>
+      </div>
+    </div>
+    <div class="ibill">
+      <div class="ibx"><div class="iblbl">Bill To</div><div class="ibxn" id="p-cn">—</div><div class="ibxd" id="p-cd">—</div></div>
+      <div class="ibx ibx2"><div class="iblbl">From</div><div class="ibxn" id="p-fn">A Bagla Financial Services</div><div class="ibxd" id="p-fd">Powai, Mumbai 400076<br/>atulxaverian1999@gmail.com</div></div>
+    </div>
+    <table class="itbl">
+      <thead><tr><th>Description</th><th>Qty</th><th>Rate (₹)</th><th>GST%</th><th>GST Amt</th><th>Total (₹)</th></tr></thead>
+      <tbody id="p-tbody"><tr><td colspan="6" style="text-align:center;color:#bbb;padding:16px;font-size:.78rem">Add line items on the left →</td></tr></tbody>
+    </table>
+    <div class="ittot"><div class="ittb">
+      <div class="itr"><span>Subtotal</span><strong id="p-sub">₹0.00</strong></div>
+      <div class="itr"><span>GST / Tax</span><strong id="p-gst">₹0.00</strong></div>
+      <div class="itr" id="p-dr" style="display:none"><span>Discount</span><strong id="p-disc" style="color:#c33">—</strong></div>
+      <div class="itf"><span>TOTAL PAYABLE</span><strong id="p-tot">₹0.00</strong></div>
+    </div></div>
+    <div class="iwords"><strong>Amount in Words: </strong><span id="p-words">Zero Rupees Only</span></div>
+    <div class="ibank">
+      <div class="ibkb"><div class="ibklbl">Bank Details</div>
+        <div class="ibkr"><span>Bank</span><strong id="p-bk">—</strong></div>
+        <div class="ibkr"><span>A/C Name</span><strong id="p-bkan">—</strong></div>
+        <div class="ibkr"><span>A/C No.</span><strong id="p-bkac">—</strong></div>
+        <div class="ibkr"><span>IFSC</span><strong id="p-bkif">—</strong></div>
+        <div class="ibkr"><span>UPI</span><strong id="p-upi">—</strong></div>
+      </div>
+      <div class="ibkb"><div class="ibklbl">Notes &amp; Terms</div><div id="p-notes" style="font-size:.72rem;color:#555;line-height:1.6">Payment due within 15 days. Thank you!</div></div>
+    </div>
+    <div class="ifoot">
+      <div class="ifl"><p>Computer-generated invoice.</p><p>A Bagla Financial Services · Powai, Mumbai 400076</p></div>
+      <div class="isg">
+        <div class="isg-stamp"><p>A BAGLA<br/>FINANCIAL<br/>SERVICES</p></div>
+        <div class="isg-line"></div>
+        <div class="isg-lbl">Authorised Signatory</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+let lines=[];
+let invN=parseInt(localStorage.getItem('abfs-n')||'1');
+function g(id){return document.getElementById(id)}
+window.onload=()=>{
+  const today=new Date().toISOString().split('T')[0];
+  const due=new Date();due.setDate(due.getDate()+15);
+  g('fd').value=today;g('fdd').value=due.toISOString().split('T')[0];
+  g('fn').value='INV-2025-'+String(invN).padStart(3,'0');
+  addLine();addLine();upd();
+};
+function addLine(){lines.push({id:Date.now()+Math.random(),desc:'',qty:1,rate:0,gst:18});renderLines();}
+function removeLine(id){lines=lines.filter(l=>l.id!==id);renderLines();}
+function updLine(id,f,v){const l=lines.find(x=>x.id===id);if(!l)return;l[f]=['qty','rate','gst'].includes(f)?parseFloat(v)||0:v;recalc();}
+function renderLines(){
+  g('lw').innerHTML=lines.map(l=>`<div class="lir">
+    <input type="text" placeholder="Service / item..." value="${l.desc.replace(/"/g,'&quot;')}" oninput="updLine(${l.id},'desc',this.value)"/>
+    <input type="number" value="${l.qty}" min="0.5" step="0.5" oninput="updLine(${l.id},'qty',this.value)"/>
+    <input type="number" value="${l.rate}" min="0" placeholder="0.00" oninput="updLine(${l.id},'rate',this.value)"/>
+    <select onchange="updLine(${l.id},'gst',this.value)">
+      <option value="0" ${l.gst==0?'selected':''}>0%</option>
+      <option value="5" ${l.gst==5?'selected':''}>5%</option>
+      <option value="12" ${l.gst==12?'selected':''}>12%</option>
+      <option value="18" ${l.gst==18?'selected':''}>18%</option>
+      <option value="28" ${l.gst==28?'selected':''}>28%</option>
+    </select>
+    <button class="delbtn" onclick="removeLine(${l.id})">✕</button>
+  </div>`).join('');
+  recalc();
+}
+function recalc(){
+  let sub=0,taxT=0;
+  const rows=lines.map(l=>{
+    const base=l.qty*l.rate,ga=base*(l.gst/100),tot=base+ga;
+    sub+=base;taxT+=ga;
+    return(l.desc||l.rate>0)?`<tr><td>${l.desc||'—'}</td><td>${l.qty}</td><td>&#8377;${l.rate.toFixed(2)}</td><td>${l.gst}%</td><td>&#8377;${ga.toFixed(2)}</td><td>&#8377;${tot.toFixed(2)}</td></tr>`:''
+  }).join('');
+  const disc=parseFloat(g('fd2').value)||0;
+  const da=(sub+taxT)*(disc/100),total=sub+taxT-da;
+  g('ts').textContent='₹'+sub.toFixed(2);g('tt').textContent='₹'+taxT.toFixed(2);g('ttot').textContent='₹'+total.toFixed(2);
+  g('p-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#bbb;padding:14px;font-size:.76rem">No items yet</td></tr>';
+  g('p-sub').textContent='₹'+sub.toFixed(2);g('p-gst').textContent='₹'+taxT.toFixed(2);g('p-tot').textContent='₹'+total.toFixed(2);
+  const dr=g('p-dr');if(disc>0){dr.style.display='flex';g('p-disc').textContent='− ₹'+da.toFixed(2);}else dr.style.display='none';
+  g('p-words').textContent=n2w(Math.round(total))+' Rupees Only';
+  upd();
+}
+function upd(){
+  const fd=g('fd').value,dd=g('fdd').value;
+  g('p-bn').textContent=g('fbn').value;g('p-fn').textContent=g('fbn').value;
+  g('p-ba').innerHTML=g('fba').value+'<br/>'+g('fbe').value+(g('fbp').value?'<br/>'+g('fbp').value:'');
+  g('p-fd').innerHTML=g('fba').value+'<br/>'+g('fbe').value;
+  g('p-num').textContent='#'+g('fn').value;
+  g('p-dates').innerHTML='Date: '+(fd?fmt(fd):'—')+'<br/>Due: '+(dd?fmt(dd):'—');
+  g('p-cn').textContent=g('fcn').value||'—';
+  const cd=[g('fca').value,g('fce').value,g('fcp').value,g('fcg').value].filter(Boolean);
+  g('p-cd').innerHTML=cd.join('<br/>')||'—';
+  g('p-bk').textContent=g('fbk').value||'—';g('p-bkan').textContent=g('fbkan').value||'—';
+  g('p-bkac').textContent=g('fbkac').value||'—';g('p-bkif').textContent=g('fbkif').value||'—';
+  g('p-upi').textContent=g('fupi').value||'—';g('p-notes').textContent=g('fnotes').value;
+}
+function fmt(s){return new Date(s).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
+function n2w(n){
+  if(n===0)return'Zero';
+  const o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  const b100=n=>n<20?o[n]:t[Math.floor(n/10)]+(n%10?' '+o[n%10]:'');
+  const b1k=n=>n>=100?o[Math.floor(n/100)]+' Hundred'+(n%100?' '+b100(n%100):''):b100(n);
+  if(n>=10000000)return b1k(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+n2w(n%10000000):'');
+  if(n>=100000)return b1k(Math.floor(n/100000))+' Lakh'+(n%100000?' '+n2w(n%100000):'');
+  if(n>=1000)return b1k(Math.floor(n/1000))+' Thousand'+(n%1000?' '+n2w(n%1000):'');
+  return b1k(n);
+}
+async function dlPDF(){
+  toast('⏳ Generating PDF...');
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4'});
+  const W=210,M=14;let y=14;
+  pdf.setFillColor(255,107,0);pdf.rect(0,0,W,6,'F');
+  pdf.setFont('helvetica','bold');pdf.setFontSize(14);pdf.setTextColor(255,107,0);
+  pdf.text(g('fbn').value,M,y+8);
+  pdf.setFontSize(6);pdf.setTextColor(150,150,150);pdf.setFont('helvetica','normal');
+  pdf.text('FINANCIAL CONSULTANCY',M,y+13);
+  pdf.setFontSize(7);pdf.setTextColor(80,80,80);
+  const ba=[g('fba').value,g('fbe').value,g('fbp').value].filter(Boolean).join(' | ');
+  pdf.text(ba,M,y+18);
+  pdf.setFontSize(19);pdf.setFont('helvetica','bold');pdf.setTextColor(30,30,30);
+  pdf.text('INVOICE',W-M,y+8,{align:'right'});
+  pdf.setFontSize(8);pdf.setTextColor(255,107,0);
+  pdf.text('#'+g('fn').value,W-M,y+14,{align:'right'});
+  pdf.setFontSize(7);pdf.setTextColor(100,100,100);
+  pdf.text('Date: '+(g('fd').value?fmt(g('fd').value):'—'),W-M,y+19,{align:'right'});
+  pdf.text('Due:  '+(g('fdd').value?fmt(g('fdd').value):'—'),W-M,y+24,{align:'right'});
+  y+=30;pdf.setDrawColor(220);pdf.setLineWidth(.4);pdf.line(M,y,W-M,y);y+=4;
+  pdf.setFillColor(249,247,240);pdf.roundedRect(M,y,82,24,2,2,'F');
+  pdf.setFillColor(255,245,230);pdf.roundedRect(M+86,y,82,24,2,2,'F');
+  pdf.setFontSize(5.5);pdf.setTextColor(160,160,160);
+  pdf.text('BILL TO',M+3,y+5);pdf.text('FROM',M+89,y+5);
+  pdf.setFontSize(8);pdf.setTextColor(30,30,30);pdf.setFont('helvetica','bold');
+  pdf.text(g('fcn').value||'—',M+3,y+10);pdf.text(g('fbn').value,M+89,y+10);
+  pdf.setFontSize(6.5);pdf.setTextColor(80,80,80);pdf.setFont('helvetica','normal');
+  [g('fca').value,g('fce').value,g('fcp').value,g('fcg').value].filter(Boolean).forEach((l,i)=>pdf.text(l,M+3,y+15+i*4));
+  pdf.text(g('fba').value,M+89,y+15);pdf.text(g('fbe').value,M+89,y+19);
+  y+=30;
+  pdf.setFillColor(255,107,0);pdf.rect(M,y,W-2*M,7,'F');
+  pdf.setFontSize(6);pdf.setTextColor(255,255,255);pdf.setFont('helvetica','bold');
+  const cx=[M+2,M+70,M+90,M+108,M+120,M+138];
+  ['Description','Qty','Rate','GST%','GST Amt','Total'].forEach((h,i)=>pdf.text(h,cx[i],y+5));
+  y+=9;pdf.setFont('helvetica','normal');
+  lines.filter(l=>l.desc||l.rate>0).forEach((l,idx)=>{
+    const base=l.qty*l.rate,ga=base*(l.gst/100),tot=base+ga;
+    if(idx%2===0){pdf.setFillColor(250,250,247);pdf.rect(M,y-.5,W-2*M,8,'F');}
+    pdf.setFontSize(7);pdf.setTextColor(40,40,40);
+    pdf.text(String(l.desc||'—').substring(0,38),cx[0],y+4.5,{maxWidth:64});
+    pdf.text(String(l.qty),cx[1],y+4.5);
+    pdf.text('Rs.'+l.rate.toFixed(2),cx[2],y+4.5);
+    pdf.text(l.gst+'%',cx[3],y+4.5);
+    pdf.text('Rs.'+ga.toFixed(2),cx[4],y+4.5);
+    pdf.text('Rs.'+tot.toFixed(2),cx[5],y+4.5);
+    y+=9;
+  });
+  y+=3;pdf.setDrawColor(210);pdf.line(M,y,W-M,y);y+=5;
+  const sub=lines.reduce((a,l)=>a+l.qty*l.rate,0);
+  const taxT=lines.reduce((a,l)=>a+l.qty*l.rate*(l.gst/100),0);
+  const disc=parseFloat(g('fd2').value)||0;
+  const da=(sub+taxT)*(disc/100),total=sub+taxT-da;
+  const tx=W-M-56;
+  const row=(lb,val,bold=false)=>{pdf.setFontSize(7.5);pdf.setFont('helvetica',bold?'bold':'normal');pdf.setTextColor(bold?30:85);pdf.text(lb,tx,y);pdf.text(val,W-M,y,{align:'right'});y+=5.5;};
+  row('Subtotal','Rs.'+sub.toFixed(2));row('GST / Tax','Rs.'+taxT.toFixed(2));
+  if(disc>0)row('Discount ('+disc+'%)','- Rs.'+da.toFixed(2));
+  pdf.setFillColor(255,107,0);pdf.roundedRect(tx-3,y-2.5,W-M-tx+7,9,2,2,'F');
+  pdf.setFontSize(8);pdf.setFont('helvetica','bold');pdf.setTextColor(255,255,255);
+  pdf.text('TOTAL PAYABLE',tx,y+4);pdf.text('Rs.'+total.toFixed(2),W-M,y+4,{align:'right'});y+=13;
+  pdf.setFillColor(255,249,239);pdf.roundedRect(M,y,W-2*M,7,2,2,'F');
+  pdf.setFontSize(6.5);pdf.setFont('helvetica','normal');pdf.setTextColor(80,80,80);
+  pdf.text('Amount in Words: '+n2w(Math.round(total))+' Rupees Only',M+2,y+4.5);y+=11;
+  if(g('fbk').value){
+    pdf.setFillColor(249,247,240);pdf.roundedRect(M,y,84,20,2,2,'F');
+    pdf.setFontSize(5.5);pdf.setTextColor(160,160,160);pdf.text('BANK DETAILS',M+3,y+4);
+    pdf.setFontSize(7);pdf.setTextColor(60,60,60);
+    pdf.text('Bank: '+g('fbk').value,M+3,y+9);pdf.text('A/C: '+g('fbkac').value,M+3,y+14);
+    pdf.text('IFSC: '+g('fbkif').value,M+45,y+9);
+    if(g('fupi').value)pdf.text('UPI: '+g('fupi').value,M+45,y+14);
+    y+=24;
+  }
+  const notes=g('fnotes').value;
+  if(notes){pdf.setFontSize(6.5);pdf.setTextColor(110,110,110);pdf.setFont('helvetica','italic');pdf.text('Note: '+notes,M,y,{maxWidth:W-2*M});y+=10;}
+  pdf.setFillColor(255,107,0);pdf.rect(0,284,W,13,'F');
+  pdf.setFontSize(6.5);pdf.setTextColor(255,255,255);pdf.setFont('helvetica','normal');
+  pdf.text('A Bagla Financial Services | Powai, Mumbai 400076 | atulxaverian1999@gmail.com',W/2,290,{align:'center'});
+  pdf.setFontSize(5.5);pdf.setTextColor(255,220,180);pdf.text('Computer-generated invoice.',W/2,295,{align:'center'});
+  const fname='ABFS-'+g('fn').value+(g('fcn').value?'-'+g('fcn').value.replace(/\s+/g,'_'):'')+'.pdf';
+  pdf.save(fname);
+  invN++;localStorage.setItem('abfs-n',invN);
+  toast('✅ Invoice PDF downloaded!');
+}
+function clearF(){
+  ['fcn','fca','fce','fcp','fcg','fbk','fbkan','fbkac','fbkif','fupi'].forEach(id=>g(id).value='');
+  g('fd2').value='0';invN++;localStorage.setItem('abfs-n',invN);
+  g('fn').value='INV-2025-'+String(invN).padStart(3,'0');
+  lines=[];addLine();addLine();upd();recalc();toast('↺ Ready for new invoice');
+}
+function toast(msg){const t=g('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+</script>
+</body>
+</html>
