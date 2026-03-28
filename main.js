@@ -628,31 +628,46 @@ function loadQuiz(topic, btn){
 function showQuestion(){
   const data=quizData[quizTopic];
   if(!data||quizQ>=data.length){
-    document.getElementById('q-box').innerHTML='<div style="text-align:center;padding:2rem"><div style="font-size:3rem">🎉</div><div style="font-size:1.3rem;color:#c8ff00;margin:.5rem 0">Quiz Complete!</div><div style="color:#aaa">Score: <strong style="color:#ffe000">'+quizScore+'<\/strong> \/ '+data.length+'<\/div><button onclick="loadQuiz(quizTopic)" style="margin-top:1rem;padding:.5rem 1.5rem;background:#c8ff00;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer">&#128260; Retry<\/button><\/div>';
+    const sc=quizScore,tot=data?data.length:0;
+    document.getElementById("q-box").innerHTML=
+      "<div style=\"text-align:center;padding:2rem\">"
+      +"<div style=\"font-size:3rem\">&#x1F389;</div>"
+      +"<div style=\"font-size:1.3rem;color:#c8ff00;margin:.5rem 0\">Quiz Complete!</div>"
+      +"<div style=\"color:#aaa\">Score: <strong style=\"color:#ffe000\">"+sc+"</strong> / "+tot+"</div>"
+      +"<button onclick=\"loadQuiz(quizTopic)\" style=\"margin-top:1rem;padding:.5rem 1.5rem;background:#c8ff00;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer\">&#x1F504; Retry</button>"
+      +"</div>";
     return;
   }
   const q=data[quizQ];
-  const L=['A','B','C','D'];
-  const C=['#4D96FF','#6BCB77','#FF9F1C','#C77DFF'];
-  let h='<div style="font-size:.98rem;font-weight:600;color:#fff;margin-bottom:1.1rem;line-height:1.55">Q'+(quizQ+1)+'. '+q.q+'<\/div>';
+  const L=["A","B","C","D"];
+  const C=["#4D96FF","#6BCB77","#FF9F1C","#C77DFF"];
+  // Inject quiz button styles once
+  if(!document.getElementById("qbtn-style")){
+    const st=document.createElement("style");
+    st.id="qbtn-style";
+    st.textContent=".qbtn{display:flex;align-items:center;gap:.7rem;width:100%;margin:.4rem 0;padding:.62rem .95rem;border-radius:10px;color:#fff;font-size:.87rem;cursor:pointer;text-align:left;transition:opacity .15s,background .15s;border-width:1.5px;border-style:solid;background:rgba(255,255,255,0.04)}.qbtn:hover{opacity:.85;filter:brightness(1.15)}";
+    document.head.appendChild(st);
+  }
+  let h="<div style=\"font-size:.98rem;font-weight:600;color:#fff;margin-bottom:1.1rem;line-height:1.55\">Q"+(quizQ+1)+". "+q.q+"</div>";
   q.opts.forEach(function(o,i){
-    h+='<button onclick="answerQ('+i+')" style="display:flex;align-items:center;gap:.7rem;width:100%;margin:.38rem 0;padding:.6rem .95rem;background:rgba(255,255,255,0.04);border:1.5px solid '+C[i]+';border-radius:10px;color:#fff;font-size:.87rem;cursor:pointer;transition:background .18s" onmouseover="this.style.background=''+C[i]+'44'" onmouseout="this.style.background='rgba(255,255,255,0.04)'"><span style="min-width:26px;height:26px;border-radius:50%;background:'+C[i]+';color:#fff;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">'+L[i]+'<\/span>'+o+'<\/button>';
+    const badge="<span style=\"min-width:26px;height:26px;border-radius:50%;background:"+C[i]+";color:#fff;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0\">"+L[i]+"</span>";
+    h+="<button class=\"qbtn\" onclick=\"answerQ("+i+")\" style=\"border-color:"+C[i]+";\">"+badge+o+"</button>";
   });
-  h+='<div style="text-align:right;margin-top:.6rem;font-size:.78rem;color:#666">Q'+(quizQ+1)+' of '+data.length+' &nbsp;&bull;&nbsp; Score: <span style="color:#ffe000">'+quizScore+'<\/span><\/div>';
-  document.getElementById('q-box').innerHTML=h;
+  h+="<div style=\"text-align:right;margin-top:.6rem;font-size:.78rem;color:#666\">Q"+(quizQ+1)+" of "+data.length+" &nbsp;&bull;&nbsp; Score: <span style=\"color:#ffe000\">"+quizScore+"</span></div>";
+  document.getElementById("q-box").innerHTML=h;
 }
 function answerQ(i){
   const data=quizData[quizTopic];if(!data)return;
   const q=data[quizQ];
-  const C=['#4D96FF','#6BCB77','#FF9F1C','#C77DFF'];
-  const btns=[...document.getElementById('q-box').querySelectorAll('button[onclick]')];
+  const C=["#4D96FF","#6BCB77","#FF9F1C","#C77DFF"];
+  const btns=[...document.getElementById("q-box").querySelectorAll(".qbtn")];
   btns.forEach(function(b,bi){
-    b.style.pointerEvents='none';
-    if(bi===q.ans){b.style.background=C[bi]+'88';b.style.borderColor=C[bi];}
-    else if(bi===i){b.style.background='rgba(255,60,60,0.25)';b.style.borderColor='#ff5555';}
+    b.style.pointerEvents="none";
+    if(bi===q.ans){b.style.background=C[bi]+"88";b.style.borderColor=C[bi];b.style.fontWeight="700";}
+    else if(bi===i){b.style.background="rgba(255,60,60,0.25)";b.style.borderColor="#ff5555";}
   });
   if(i===q.ans)quizScore++;
-  document.getElementById('q-score').textContent=quizScore;
+  document.getElementById("q-score").textContent=quizScore;
   setTimeout(function(){quizQ++;showQuestion();},1100);
 }
 function handleSubmit(e){
