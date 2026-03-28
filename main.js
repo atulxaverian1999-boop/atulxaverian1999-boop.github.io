@@ -721,30 +721,21 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 /* ââ LOGO FLOAT EFFECT ââ */
 function initLogoFloat(){
-  const lt=document.querySelector('.logo-tag');
-  if(!lt) return;
-  const text=lt.textContent;
-  lt.innerHTML=text.split('').map(c=>c===' '?'<span class="logo-char" style="display:inline-block"> </span>':`<span class="logo-char" style="display:inline-block;transition:transform .25s,color .25s">${c}</span>`).join('');
-  const logo=document.querySelector('.logo');
-  if(!logo) return;
-  logo.addEventListener('mousemove',e=>{
-    lt.querySelectorAll('.logo-char').forEach(ch=>{
-      const r=ch.getBoundingClientRect();
-      const cx=r.left+r.width/2, cy=r.top+r.height/2;
-      const dx=e.clientX-cx, dy=e.clientY-cy;
-      const dist=Math.sqrt(dx*dx+dy*dy);
-      const max=70;
-      if(dist<max){
-        const s=1-dist/max;
-        ch.style.transform=`translate(${-dx*s*0.25}px,${-Math.abs(dy)*s*0.6-10*s}px)`;
-        ch.style.color=`rgba(226,255,0,${0.7+s*0.3})`;
-        ch.style.textShadow=`0 0 ${10*s}px rgba(226,255,0,0.8)`;
-      } else {
-        ch.style.transform=''; ch.style.color=''; ch.style.textShadow='';
-      }
-    });
-  });
-  logo.addEventListener('mouseleave',()=>{
-    lt.querySelectorAll('.logo-char').forEach(c=>{c.style.transform='';c.style.color='';c.style.textShadow='';});
+  const el=document.querySelector('.logo-tag');
+  if(!el)return;
+  const txt=el.textContent;
+  el.innerHTML='';
+  txt.split('').forEach(ch=>{
+    const s=document.createElement('span');
+    if(ch===' '){
+      s.style.cssText='display:inline-block;min-width:0.38em';
+      s.textContent=' ';
+    } else {
+      s.style.cssText='display:inline-block;transition:transform .25s,color .25s;cursor:default';
+      s.textContent=ch;
+      s.addEventListener('mouseover',function(){this.style.transform='translateY(-4px) scale(1.15)';this.style.color='#ff8c00';});
+      s.addEventListener('mouseout',function(){this.style.transform='';this.style.color='';});
+    }
+    el.appendChild(s);
   });
 }
