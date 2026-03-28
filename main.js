@@ -711,7 +711,7 @@ function initLogoFloat(){
   const el=document.querySelector('.logo-tag');
   if(!el)return;
   const txt=el.textContent;
-  el.innerHTML='';
+  el.style.whiteSpace='nowrap';el.innerHTML='';
   txt.split('').forEach(ch=>{
     const s=document.createElement('span');
     if(ch===' '){
