@@ -794,9 +794,62 @@ function initLogoFloat(){
     el.appendChild(s);
   });
 }
+function initHeroFloat(){
+  function wrapLetters(text,container,registry,glowColor,rippleColor){
+    text.split('').forEach(ch=>{
+      const s=document.createElement('span');
+      s.dataset.fi=registry.length;
+      if(ch===' '){
+        s.style.cssText='display:inline-block;min-width:0.28em;';
+        s.textContent=' ';
+      } else {
+        s.style.cssText='display:inline-block;transition:transform .22s cubic-bezier(.34,1.8,.64,1),color .15s,text-shadow .15s;cursor:default;position:relative;';
+        s.textContent=ch;
+        const myIdx=registry.length;
+        s.addEventListener('mouseover',function(){
+          registry.forEach((nb,ni)=>{
+            const d=Math.abs(ni-myIdx);
+            if(d===0){nb.style.transform='translateY(-22px) scale(1.25) rotate(-3deg)';nb.style.color=glowColor;nb.style.textShadow='0 0 12px '+glowColor+',0 0 30px '+glowColor+',0 0 60px '+rippleColor;nb.style.zIndex='10';}
+            else if(d===1){nb.style.transform='translateY(-13px) scale(1.13)';nb.style.color=rippleColor;nb.style.textShadow='0 0 10px '+rippleColor;}
+            else if(d===2){nb.style.transform='translateY(-7px) scale(1.06)';nb.style.color='';nb.style.textShadow='0 0 5px '+rippleColor;}
+            else if(d===3){nb.style.transform='translateY(-3px)';nb.style.color='';nb.style.textShadow='';}
+            else{nb.style.transform='';nb.style.color='';nb.style.textShadow='';}
+          });
+        });
+        s.addEventListener('mouseout',function(){
+          registry.forEach(nb=>{nb.style.transform='';nb.style.color='';nb.style.textShadow='';});
+        });
+      }
+      registry.push(s);
+      container.appendChild(s);
+    });
+  }
+  const h1=document.querySelector('.hero-h1');
+  if(h1){
+    const reg1=[],reg2=[];
+    h1.innerHTML='';
+    const line1=document.createElement('span');
+    line1.style.cssText='display:block;white-space:nowrap;';
+    wrapLetters('A Bagla',line1,reg1,'#ffe000','#ff8c00');
+    h1.appendChild(line1);
+    const line2=document.createElement('span');
+    line2.style.cssText='display:block;white-space:nowrap;color:#c8ff00;text-shadow:0 0 18px #c8ff00,0 0 40px #9acd00;';
+    wrapLetters('Financial Services',line2,reg2,'#ffffff','#c8ff00');
+    h1.appendChild(line2);
+  }
+  const tl=document.querySelector('.hero-tagline');
+  if(tl){
+    const text=tl.textContent.trim();
+    tl.innerHTML='';tl.style.whiteSpace='nowrap';
+    const reg=[];
+    wrapLetters(text,tl,reg,'#ffe000','#ff8c00');
+  }
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
   renderNews('icai');
   loadQuiz('gst', document.querySelector('.qtab'));
   initLogoFloat();
+  initHeroFloat();
 });
