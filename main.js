@@ -190,8 +190,8 @@ function calcIT(){
 
   // Rebate u/s 87A (resi$ents only)
   let rebate87a=0;
-  const rebateLimit = regime==='old' ? 500000 : 700000;
-  const rebateCap   = regime==='old' ? 12500   : 25000;
+  const rebateLimit = regime==='old' ? 500000 : 1200000;
+  const rebateCap   = regime==='old' ? 12500   : 60000;
   if(nationality==='resident' && taxable<=rebateLimit){
     rebate87a=Math.min(normalTax, rebateCap);
   }
@@ -480,79 +480,136 @@ function showGame(id, btn){
 /* ── GRAVITY BALL GAME ── */
 let gravityRAF=null, gravityScore=0, gravityBest=0;
 function startGravity(){
-  const canvas=document.getElementById('gravity-canvas');
-  if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  if(gravityRAF) cancelAnimationFrame(gravityRAF);
-  gravityScore=0; document.getElementById('gravity-score').textContent='0';
-  const ball={x:W/2,y:H-60,r:12,vx:0,vy:0,ay:0.35};
-  const keys={}, coins=[], walls=[];
-  let frame=0, speed=2.5;
-  function spawnWall(){ const gap=180,gapY=Math.random()*(H-gap-80)+40; walls.push({x:W,gapY,gap,w:22}); }
-  function spawnCoin(){ coins.push({x:W,y:Math.random()*(H-80)+40,r:9,collected:false}); }
-  const kd=e=>{keys[e.key]=true;}, ku=e=>{keys[e.key]=false;};
-  document.addEventListener('keydown',kd); document.addEventListener('keyup',ku);
-  function loop(){
-    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
-    if(keys['ArrowLeft']||keys['a']) ball.vx=Math.max(ball.vx-0.5,-5);
-    else if(keys['ArrowRight']||keys['d']) ball.vx=Math.min(ball.vx+0.5,5);
-    else ball.vx*=0.85;
-    ball.vy+=ball.ay; ball.x+=ball.vx; ball.y+=ball.vy;
-    if(ball.y+ball.r>H){ball.y=H-ball.r;ball.vy*=-0.55;}
-    if(ball.y-ball.r<0){ball.y=ball.r;ball.vy*=-0.4;}
-    if(ball.x-ball.r<0){ball.x=ball.r;ball.vx*=-0.5;}
-    if(ball.x+ball.r>W){ball.x=W-ball.r;ball.vx*=-0.5;}
-    frame++; speed=2.5+Math.floor(gravityScore/5)*0.35;
-    if(frame%70===0) spawnWall();
-    if(frame%90===0) spawnCoin();
-    for(let i=walls.length-1;i>=0;i--){
-      const w=walls[i]; w.x-=speed;
-      ctx.fillStyle='#e2ff00';
-      ctx.fillRect(w.x,0,w.w,w.gapY);
-      ctx.fillRect(w.x,w.gapY+w.gap,w.w,H-w.gapY-w.gap);
-      if(ball.x+ball.r>w.x&&ball.x-ball.r<w.x+w.w){
-        if(ball.y-ball.r<w.gapY||ball.y+ball.r>w.gapY+w.gap){
-          document.removeEventListener('keydown',kd); document.removeEventListener('keyup',ku);
-          cancelAnimationFrame(gravityRAF);
-          if(gravityScore>gravityBest){gravityBest=gravityScore;document.getElementById('gravity-best').textContent=gravityBest;}
-          ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle='#e2ff00'; ctx.font='bold 28px Orbitron'; ctx.textAlign='center';
-          ctx.fillText('GAME OVER',W/2,H/2-20);
-          ctx.fillStyle='#fff'; ctx.font='18px DM Sans';
-          ctx.fillText('Score: '+gravityScore+' | Best: '+gravityBest,W/2,H/2+18);
-          ctx.fillText('Click ▶ Start / Restart to play again',W/2,H/2+48);
-          ctx.textAlign='left'; return;
-        }
-      }
-      if(w.x+w.w<0){walls.splice(i,1);gravityScore++;document.getElementById('gravity-score').textContent=gravityScore;}
-    }
-    for(let i=coins.length-1;i>=0;i--){
-      const c=coins[i]; c.x-=speed;
-      if(!c.collected){
-        ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fillStyle='#ffd700';ctx.fill();
-        const dx=ball.x-c.x,dy=ball.y-c.y;
-        if(Math.sqrt(dx*dx+dy*dy)<ball.r+c.r){c.collected=true;gravityScore+=2;document.getElementById('gravity-score').textContent=gravityScore;}
-      }
-      if(c.x<-20) coins.splice(i,1);
-    }
-    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fillStyle='#e2ff00';ctx.fill();
-    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='13px DM Sans';ctx.fillText('← → or A D to move',8,18);
-    gravityRAF=requestAnimationFrame(loop);
-  }
-  loop();
-}
+  const cv=document.getElementById('gravity-canvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width||700, H=cv.height||420;
+  let balls=[], running=false, animId=null;
 
-/* ── SPEED TEST ── */
-const sentences=[
-  'GST was introduced in India on 1 July 2017 as a unified indirect tax replacing multiple state and central levies.',
-  'A Systematic Investment Plan lets investors put fixed amounts regularly into mutual funds to build long-term wealth.',
-  'Income tax in India is governed by the Income Tax Act 1961 and administered by the Central Board of Direct Taxes.',
-  'Section 80C allows deductions up to one lakh fifty thousand rupees for PPF, ELSS, and life insurance premiums.',
-  'The Reserve Bank of India is the central banking institution regulating monetary policy and financial stability.',
-];
-let speedTimer=null, speedRunning=false, speedStart=0, speedSentence='';
+  const COLORS=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF9F1C','#C77DFF','#F72585','#4CC9F0'];
+  const GRAVITY=0.35, BOUNCE=0.62, FRICTION=0.995;
+
+  function Ball(x,y){
+    this.x=x; this.y=y;
+    this.r=10+Math.random()*14;
+    this.vx=(Math.random()-0.5)*6;
+    this.vy=Math.random()*-4;
+    this.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.alive=true;
+  }
+
+  function spawnBall(x,y){
+    if(balls.length<60) balls.push(new Ball(x,y));
+  }
+
+  function update(){
+    for(let b of balls){
+      b.vy+=GRAVITY;
+      b.vx*=FRICTION;
+      b.x+=b.vx; b.y+=b.vy;
+      // Floor
+      if(b.y+b.r>H){ b.y=H-b.r; b.vy*=-BOUNCE; if(Math.abs(b.vy)<0.8) b.vy=0; }
+      // Walls
+      if(b.x-b.r<0){ b.x=b.r; b.vx=Math.abs(b.vx)*BOUNCE; }
+      if(b.x+b.r>W){ b.x=W-b.r; b.vx=-Math.abs(b.vx)*BOUNCE; }
+    }
+    // Remove balls that are fully still on floor
+    if(balls.length>55) balls=balls.filter(b=>Math.abs(b.vy)>0.1||Math.abs(b.vx)>0.1||balls.indexOf(b)<50);
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Background gradient
+    const bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#0f0c29'); bg.addColorStop(1,'#302b63');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    // Floor line
+    ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,H); ctx.stroke();
+    // Hint text if no balls
+    if(balls.length===0){
+      ctx.fillStyle='rgba(255,255,255,0.5)';
+      ctx.font='18px Arial'; ctx.textAlign='center';
+      ctx.fillText('Click anywhere to drop balls!',W/2,H/2);
+    }
+    // Draw balls
+    for(let b of balls){
+      ctx.beginPath();
+      ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      const grad=ctx.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.1,b.x,b.y,b.r);
+      grad.addColorStop(0,'rgba(255,255,255,0.6)');
+      grad.addColorStop(0.4,b.color);
+      grad.addColorStop(1,'rgba(0,0,0,0.4)');
+      ctx.fillStyle=grad; ctx.fill();
+      // Shadow
+      ctx.beginPath(); ctx.arc(b.x,b.y+b.r+3,b.r*0.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,0,0,0.15)'; ctx.fill();
+    }
+    // Ball count
+    if(balls.length>0){
+      ctx.fillStyle='rgba(255,255,255,0.4)';
+      ctx.font='13px Arial'; ctx.textAlign='right';
+      ctx.fillText('Balls: '+balls.length+' | Click to add more',W-10,18);
+    }
+  }
+
+  function loop(){ draw(); update(); animId=requestAnimationFrame(loop); }
+
+  function getPos(e){
+    const rect=cv.getBoundingClientRect();
+    const scaleX=W/rect.width, scaleY=H/rect.height;
+    if(e.touches){ return {x:(e.touches[0].clientX-rect.left)*scaleX, y:(e.touches[0].clientY-rect.top)*scaleY}; }
+    return {x:(e.clientX-rect.left)*scaleX, y:(e.clientY-rect.top)*scaleY};
+  }
+
+  // Remove old listeners by cloning canvas
+  const cv2=cv.cloneNode(true);
+  cv.parentNode.replaceChild(cv2,cv);
+  const canvas=document.getElementById('gravity-canvas');
+  const ctx2=canvas.getContext('2d');
+
+  function startGame(){
+    if(running) return;
+    running=true;
+    // Use cloned canvas context
+    Object.assign(ctx2, ctx2);
+    canvas.addEventListener('click',function(e){ const p=getPos(e); for(let i=0;i<3;i++) setTimeout(()=>{ const p2=getPos(e); balls.push(new Ball(p.x+(Math.random()-0.5)*20, p.y)); },i*60); });
+    canvas.addEventListener('touchstart',function(e){ e.preventDefault(); const p=getPos(e); for(let i=0;i<3;i++) setTimeout(()=>balls.push(new Ball(p.x+(Math.random()-0.5)*20,p.y)),i*60); },{passive:false});
+    function loop2(){ 
+      ctx2.clearRect(0,0,W,H);
+      const bg=ctx2.createLinearGradient(0,0,0,H);
+      bg.addColorStop(0,'#0f0c29'); bg.addColorStop(1,'#302b63');
+      ctx2.fillStyle=bg; ctx2.fillRect(0,0,W,H);
+      ctx2.strokeStyle='rgba(255,255,255,0.15)'; ctx2.lineWidth=1;
+      ctx2.beginPath(); ctx2.moveTo(0,H-1); ctx2.lineTo(W,H-1); ctx2.stroke();
+      if(balls.length===0){
+        ctx2.fillStyle='rgba(255,255,255,0.5)';
+        ctx2.font='20px Arial'; ctx2.textAlign='center';
+        ctx2.fillText('🎯 Click anywhere to drop balls!',W/2,H/2);
+        ctx2.font='14px Arial'; ctx2.fillStyle='rgba(255,255,255,0.3)';
+        ctx2.fillText('Each click drops 3 balls',W/2,H/2+30);
+      }
+      for(let b of balls){
+        b.vy+=GRAVITY; b.vx*=FRICTION; b.x+=b.vx; b.y+=b.vy;
+        if(b.y+b.r>H-1){ b.y=H-1-b.r; b.vy*=-BOUNCE; if(Math.abs(b.vy)<0.5) b.vy=0; }
+        if(b.x-b.r<0){ b.x=b.r; b.vx=Math.abs(b.vx)*0.7; }
+        if(b.x+b.r>W){ b.x=W-b.r; b.vx=-Math.abs(b.vx)*0.7; }
+        ctx2.beginPath(); ctx2.arc(b.x,b.y,b.r,0,Math.PI*2);
+        const g=ctx2.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.1,b.x,b.y,b.r);
+        g.addColorStop(0,'rgba(255,255,255,0.7)'); g.addColorStop(0.4,b.color); g.addColorStop(1,'rgba(0,0,0,0.5)');
+        ctx2.fillStyle=g; ctx2.fill();
+      }
+      if(balls.length>58) balls.splice(0,3);
+      if(balls.length>0){
+        ctx2.fillStyle='rgba(255,255,255,0.35)'; ctx2.font='12px Arial'; ctx2.textAlign='right';
+        ctx2.fillText('🎱 '+balls.length+' balls | click for more',W-8,16);
+      }
+      requestAnimationFrame(loop2);
+    }
+    loop2();
+  }
+  startGame();
+}
 function startSpeed(){
   if(speedRunning) return;
   clearInterval(speedTimer);
@@ -696,17 +753,10 @@ function answerQ(idx){
 
 /* ── CONTACT FORM ── */
 function handleSubmit(e){
-  e.preventDefault();
   const btn=e.target.querySelector('button[type=submit]');
-  btn.textContent='Sending...'; btn.disabled=true;
-  setTimeout(()=>{
-    document.getElementById('form-success').style.display='block';
-    btn.textContent='Send Message →'; btn.disabled=false;
-    e.target.reset();
-    setTimeout(()=>{ document.getElementById('form-success').style.display='none'; },5000);
-  },1000);
+  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
+  // Form submits naturally to FormSubmit.co — no preventDefault
 }
-/* -- LOGO FLOAT -- */
 function initLogoFloat(){
   const el=document.querySelector('.logo-tag');
   if(!el)return;
