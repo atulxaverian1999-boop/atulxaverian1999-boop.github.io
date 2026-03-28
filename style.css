@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* âââââââââââââââââââââââââââââââââââââââ
    A BAGLA FINANCIAL SERVICES
-   Neon Orange + Gold · Dark Theme
-═══════════════════════════════════════ */
+   Neon Orange + Gold Â· Dark Theme
+âââââââââââââââââââââââââââââââââââââââ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --neon:#ff8c00;--neon2:#ffb347;--gold:#c9a84c;--gold-lt:#e8c76d;
@@ -10,7 +10,7 @@
   --r:12px;--font-h:'Orbitron',sans-serif;--font-b:'DM Sans',sans-serif;--font-p:'Playfair Display',serif;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--font-b):background:var(--dark);color:var(--text);line-height:1.7;overflow-x:hidden}
+body{font-family:var(--font-b);background:var(--dark);color:var(--text);line-height:1.7;overflow-x:hidden}
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45}
 .scanlines{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px)}
 h1,h2,h3{line-height:1.15}
