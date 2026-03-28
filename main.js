@@ -480,136 +480,49 @@ function showGame(id, btn){
 /* ── GRAVITY BALL GAME ── */
 let gravityRAF=null, gravityScore=0, gravityBest=0;
 function startGravity(){
+  const cv0=document.getElementById('gravity-canvas');
+  if(!cv0)return;
+  const cv2=cv0.cloneNode(true);cv0.parentNode.replaceChild(cv2,cv0);
   const cv=document.getElementById('gravity-canvas');
-  if(!cv)return;
   const ctx=cv.getContext('2d');
-  const W=cv.width||700, H=cv.height||420;
-  let balls=[], running=false, animId=null;
-
-  const COLORS=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF9F1C','#C77DFF','#F72585','#4CC9F0'];
-  const GRAVITY=0.35, BOUNCE=0.62, FRICTION=0.995;
-
-  function Ball(x,y){
-    this.x=x; this.y=y;
-    this.r=10+Math.random()*14;
-    this.vx=(Math.random()-0.5)*6;
-    this.vy=Math.random()*-4;
-    this.color=COLORS[Math.floor(Math.random()*COLORS.length)];
-    this.alive=true;
+  const W=cv.width||700,H=cv.height||420;
+  const balls=[];
+  const COLS=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF9F1C','#C77DFF','#F72585','#4CC9F0','#00F5FF','#39FF14'];
+  function spawnAt(px){
+    for(let i=0;i<3;i++) setTimeout(()=>balls.push({x:px+(Math.random()-.5)*50,y:0,r:9+Math.random()*13,vx:(Math.random()-.5)*6,vy:Math.random()*2,col:COLS[Math.floor(Math.random()*COLS.length)]}),i*90);
   }
-
-  function spawnBall(x,y){
-    if(balls.length<60) balls.push(new Ball(x,y));
-  }
-
-  function update(){
-    for(let b of balls){
-      b.vy+=GRAVITY;
-      b.vx*=FRICTION;
-      b.x+=b.vx; b.y+=b.vy;
-      // Floor
-      if(b.y+b.r>H){ b.y=H-b.r; b.vy*=-BOUNCE; if(Math.abs(b.vy)<0.8) b.vy=0; }
-      // Walls
-      if(b.x-b.r<0){ b.x=b.r; b.vx=Math.abs(b.vx)*BOUNCE; }
-      if(b.x+b.r>W){ b.x=W-b.r; b.vx=-Math.abs(b.vx)*BOUNCE; }
-    }
-    // Remove balls that are fully still on floor
-    if(balls.length>55) balls=balls.filter(b=>Math.abs(b.vy)>0.1||Math.abs(b.vx)>0.1||balls.indexOf(b)<50);
-  }
-
-  function draw(){
+  function gx(e){const r=cv.getBoundingClientRect();return(e.clientX-r.left)*(W/r.width);}
+  cv.addEventListener('click',e=>spawnAt(gx(e)));
+  cv.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];const r=cv.getBoundingClientRect();spawnAt((t.clientX-r.left)*(W/r.width));},{passive:false});
+  (function loop(){
     ctx.clearRect(0,0,W,H);
-    // Background gradient
-    const bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#0f0c29'); bg.addColorStop(1,'#302b63');
-    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-    // Floor line
-    ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,H); ctx.stroke();
-    // Hint text if no balls
-    if(balls.length===0){
-      ctx.fillStyle='rgba(255,255,255,0.5)';
-      ctx.font='18px Arial'; ctx.textAlign='center';
-      ctx.fillText('Click anywhere to drop balls!',W/2,H/2);
+    const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#050510');bg.addColorStop(1,'#0d0225');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    for(let i=0;i<30;i++)ctx.fillRect((i*137+13)%W,(i*97+7)%H,1.5,1.5);
+    if(!balls.length){
+      ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='bold 18px Arial';ctx.textAlign='center';
+      ctx.fillText('Click anywhere — balls drop from the top!',W/2,H/2);
+      ctx.font='13px Arial';ctx.fillStyle='rgba(255,255,255,0.3)';ctx.fillText('Each click drops 3 glowing balls',W/2,H/2+28);
     }
-    // Draw balls
     for(let b of balls){
-      ctx.beginPath();
-      ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
-      const grad=ctx.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.1,b.x,b.y,b.r);
-      grad.addColorStop(0,'rgba(255,255,255,0.6)');
-      grad.addColorStop(0.4,b.color);
-      grad.addColorStop(1,'rgba(0,0,0,0.4)');
-      ctx.fillStyle=grad; ctx.fill();
-      // Shadow
-      ctx.beginPath(); ctx.arc(b.x,b.y+b.r+3,b.r*0.5,0,Math.PI*2);
-      ctx.fillStyle='rgba(0,0,0,0.15)'; ctx.fill();
+      b.vy+=0.45;b.vx*=0.993;b.x+=b.vx;b.y+=b.vy;
+      if(b.y+b.r>H){b.y=H-b.r;b.vy*=-.6;b.vx*=.88;if(Math.abs(b.vy)<.6)b.vy=0;}
+      if(b.x-b.r<0){b.x=b.r;b.vx=Math.abs(b.vx)*.65;}
+      if(b.x+b.r>W){b.x=W-b.r;b.vx=-Math.abs(b.vx)*.65;}
+      ctx.shadowBlur=18;ctx.shadowColor=b.col;
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      const g=ctx.createRadialGradient(b.x-b.r*.3,b.y-b.r*.3,b.r*.1,b.x,b.y,b.r);
+      g.addColorStop(0,'rgba(255,255,255,0.85)');g.addColorStop(.35,b.col);g.addColorStop(1,'rgba(0,0,0,0.6)');
+      ctx.fillStyle=g;ctx.fill();ctx.shadowBlur=0;
     }
-    // Ball count
-    if(balls.length>0){
-      ctx.fillStyle='rgba(255,255,255,0.4)';
-      ctx.font='13px Arial'; ctx.textAlign='right';
-      ctx.fillText('Balls: '+balls.length+' | Click to add more',W-10,18);
-    }
-  }
-
-  function loop(){ draw(); update(); animId=requestAnimationFrame(loop); }
-
-  function getPos(e){
-    const rect=cv.getBoundingClientRect();
-    const scaleX=W/rect.width, scaleY=H/rect.height;
-    if(e.touches){ return {x:(e.touches[0].clientX-rect.left)*scaleX, y:(e.touches[0].clientY-rect.top)*scaleY}; }
-    return {x:(e.clientX-rect.left)*scaleX, y:(e.clientY-rect.top)*scaleY};
-  }
-
-  // Remove old listeners by cloning canvas
-  const cv2=cv.cloneNode(true);
-  cv.parentNode.replaceChild(cv2,cv);
-  const canvas=document.getElementById('gravity-canvas');
-  const ctx2=canvas.getContext('2d');
-
-  function startGame(){
-    if(running) return;
-    running=true;
-    // Use cloned canvas context
-    Object.assign(ctx2, ctx2);
-    canvas.addEventListener('click',function(e){ const p=getPos(e); for(let i=0;i<3;i++) setTimeout(()=>{ const p2=getPos(e); balls.push(new Ball(p.x+(Math.random()-0.5)*20, p.y)); },i*60); });
-    canvas.addEventListener('touchstart',function(e){ e.preventDefault(); const p=getPos(e); for(let i=0;i<3;i++) setTimeout(()=>balls.push(new Ball(p.x+(Math.random()-0.5)*20,p.y)),i*60); },{passive:false});
-    function loop2(){ 
-      ctx2.clearRect(0,0,W,H);
-      const bg=ctx2.createLinearGradient(0,0,0,H);
-      bg.addColorStop(0,'#0f0c29'); bg.addColorStop(1,'#302b63');
-      ctx2.fillStyle=bg; ctx2.fillRect(0,0,W,H);
-      ctx2.strokeStyle='rgba(255,255,255,0.15)'; ctx2.lineWidth=1;
-      ctx2.beginPath(); ctx2.moveTo(0,H-1); ctx2.lineTo(W,H-1); ctx2.stroke();
-      if(balls.length===0){
-        ctx2.fillStyle='rgba(255,255,255,0.5)';
-        ctx2.font='20px Arial'; ctx2.textAlign='center';
-        ctx2.fillText('🎯 Click anywhere to drop balls!',W/2,H/2);
-        ctx2.font='14px Arial'; ctx2.fillStyle='rgba(255,255,255,0.3)';
-        ctx2.fillText('Each click drops 3 balls',W/2,H/2+30);
-      }
-      for(let b of balls){
-        b.vy+=GRAVITY; b.vx*=FRICTION; b.x+=b.vx; b.y+=b.vy;
-        if(b.y+b.r>H-1){ b.y=H-1-b.r; b.vy*=-BOUNCE; if(Math.abs(b.vy)<0.5) b.vy=0; }
-        if(b.x-b.r<0){ b.x=b.r; b.vx=Math.abs(b.vx)*0.7; }
-        if(b.x+b.r>W){ b.x=W-b.r; b.vx=-Math.abs(b.vx)*0.7; }
-        ctx2.beginPath(); ctx2.arc(b.x,b.y,b.r,0,Math.PI*2);
-        const g=ctx2.createRadialGradient(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.1,b.x,b.y,b.r);
-        g.addColorStop(0,'rgba(255,255,255,0.7)'); g.addColorStop(0.4,b.color); g.addColorStop(1,'rgba(0,0,0,0.5)');
-        ctx2.fillStyle=g; ctx2.fill();
-      }
-      if(balls.length>58) balls.splice(0,3);
-      if(balls.length>0){
-        ctx2.fillStyle='rgba(255,255,255,0.35)'; ctx2.font='12px Arial'; ctx2.textAlign='right';
-        ctx2.fillText('🎱 '+balls.length+' balls | click for more',W-8,16);
-      }
-      requestAnimationFrame(loop2);
-    }
-    loop2();
-  }
-  startGame();
+    if(balls.length>65)balls.splice(0,balls.length-60);
+    if(balls.length){ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='12px Arial';ctx.textAlign='right';ctx.fillText(balls.length+' balls | click for more',W-10,18);}
+    requestAnimationFrame(loop);
+  })();
 }
+let speedRunning=false,speedTimer=null,speedSentence='',speedTimeLeft=60;
+const sentences=['The quick brown fox jumps over the lazy dog.','Compound interest is the eighth wonder of the world.','Do not save what is left after spending but spend what is left after saving.','An investment in knowledge pays the best interest always.','Never spend your money before you have truly earned it.','The stock market rewards patience over perfect timing every time.','Budget your money wisely or your money will budget your life.','A penny saved is a penny earned according to the wise old saying.','Wealth is not about having a lot of money but having a lot of options.','Financial discipline is the bridge between goals and financial reality.'];
 function startSpeed(){
   if(speedRunning) return;
   clearInterval(speedTimer);
@@ -675,39 +588,34 @@ function changeMatrixColor(){
 /* ── FINANCE QUIZ ── */
 const quizData={
   gst:[
-    {q:'What does GST stand for?',opts:['General Sales Tax','Goods and Services Tax','Government Service Tax','Global Supply Tax'],ans:1},
-    {q:'GST was implemented in India on:',opts:['1 April 2017','1 July 2017','1 January 2018','15 August 2017'],ans:1},
-    {q:'Which return covers outward supplies filed monthly by regular taxpayers?',opts:['GSTR-3B','GSTR-1','GSTR-9','GSTR-4'],ans:1},
-    {q:'CGST is collected by:',opts:['State Government','Central Government','Both equally','Local Panchayat'],ans:1},
-    {q:'Standard GST rate on most professional services in India:',opts:['5%','12%','18%','28%'],ans:2},
+    {q:'GST was launched in India on which date?',opts:['1 April 2017','1 July 2017','1 January 2018','15 August 2017'],ans:1},
+    {q:'Which GST slab applies to essential food items like rice and wheat?',opts:['5%','12%','18%','0% Exempt'],ans:3},
+    {q:'Which return form is filed monthly by regular GST taxpayers?',opts:['GSTR-1','GSTR-3B','GSTR-9','GSTR-4'],ans:1},
+    {q:'Input Tax Credit (ITC) allows businesses to deduct tax paid on?',opts:['Employee salaries','Input goods & services','Office rent','Bank interest'],ans:1},
+    {q:'Which GST rate applies to luxury cars and tobacco products?',opts:['18%','28%','12%','5%'],ans:1},
+    {q:'GSTIN is a unique identification number of how many characters?',opts:['10','12','15','16'],ans:2},
+    {q:'Composition scheme under GST is for businesses with turnover up to?',opts:['50 lakh','1 crore','1.5 crore','2 crore'],ans:2},
+    {q:'Who chairs the GST Council in India?',opts:['RBI Governor','Finance Minister','Prime Minister','SEBI Chairman'],ans:1}
   ],
-  income:[
-    {q:'Standard deduction for salaried (New Regime, FY 2024-25):',opts:['₹40,000','₹50,000','₹75,000','₹1,00,000'],ans:2},
-    {q:'Section 80C maximum deduction limit:',opts:['₹1,00,000','₹1,25,000','₹1,50,000','₹2,00,000'],ans:2},
-    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2},
-    {q:'Rebate u/s 87A (New Regime FY 2024-25) available up to taxable income of:',opts:['₹5,00,000','₹7,00,000','₹10,00,000','₹12,00,000'],ans:1},
-    {q:'Form 26AS is related to:',opts:['GST filing','Tax Credit Statement','Bank statement','Company registration'],ans:1},
+  income_tax:[
+    {q:'Under Budget 2025, income up to how much is tax-free in New Regime?',opts:['7 lakh','10 lakh','12 lakh','15 lakh'],ans:2},
+    {q:'Section 80C allows deduction up to how much for PPF and ELSS?',opts:['1 lakh','1.5 lakh','2 lakh','50,000'],ans:1},
+    {q:'HRA exemption is available only under which tax regime?',opts:['New Regime','Old Regime','Both','Neither'],ans:1},
+    {q:'Section 87A rebate under New Regime (FY 2025-26) applies up to?',opts:['5 lakh','7 lakh','10 lakh','12 lakh'],ans:3},
+    {q:'Long Term Capital Gains on equity above 1.25L are taxed at?',opts:['10%','12.5%','15%','20%'],ans:1},
+    {q:'TDS on salary is deducted under which section?',opts:['Section 192','Section 194A','Section 194C','Section 195'],ans:0},
+    {q:'Which ITR form is used by salaried individuals with income up to 50 lakh?',opts:['ITR-1','ITR-2','ITR-3','ITR-4'],ans:0},
+    {q:'Advance tax must be paid if tax liability exceeds how much in a year?',opts:['5,000','10,000','15,000','25,000'],ans:1}
   ],
-  mf:[
-    {q:'SIP stands for:',opts:['Simple Investment Plan','Systematic Investment Plan','Structured Income Plan','Savings Interest Plan'],ans:1},
-    {q:'NAV stands for:',opts:['Net Annual Value','Net Asset Value','Normal Asset Value','New Account Value'],ans:1},
-    {q:'ELSS funds have a mandatory lock-in period of:',opts:['1 year','2 years','3 years','5 years'],ans:2},
-    {q:'AMFI stands for:',opts:['Association of Mutual Funds of India','Asset Management Finance Institution','Annual MF Index','None of these'],ans:0},
-    {q:'Long-term capital gains on equity mutual funds above ₹1 lakh taxed at:',opts:['0%','10%','15%','20%'],ans:1},
-  ],
-  tds:[
-    {q:'TDS on salary income is governed by:',opts:['Section 194J','Section 192','Section 194C','Section 195'],ans:1},
-    {q:'TDS threshold for bank interest (Section 194A) per year:',opts:['₹5,000','₹10,000','₹40,000','₹50,000'],ans:2},
-    {q:'Quarterly TDS return for non-salary payments is filed in:',opts:['Form 24Q','Form 26Q','Form 27EQ','Form 27Q'],ans:1},
-    {q:'Form 16 is issued by the employer for:',opts:['GST compliance','TDS on salary','Investment proof','PF details'],ans:1},
-    {q:'TDS rate on professional fees under Section 194J:',opts:['1%','2%','5%','10%'],ans:3},
-  ],
-  accounting:[
-    {q:'Which principle requires expenses to be matched against revenue?',opts:['Cost Principle','Matching Principle','Consistency Principle','Materiality Principle'],ans:1},
-    {q:'A debit balance in a personal account indicates:',opts:['Amount receivable (asset)','Liability','Income','Expense'],ans:0},
-    {q:'P&L stands for:',opts:['Profit & Loss','Purchase & Ledger','Payment & Liability','Price & Labour'],ans:0},
-    {q:'Depreciation is typically charged on:',opts:['Current assets','Fixed assets','Investments','Cash balance'],ans:1},
-    {q:'Working capital is calculated as:',opts:['Fixed assets − Current liabilities','Current assets − Current liabilities','Total assets − Total liabilities','Equity − Reserves'],ans:1},
+  investment:[
+    {q:'Which investment offers guaranteed returns backed by Government of India?',opts:['Mutual Funds','PPF (Public Provident Fund)','Stocks','Cryptocurrency'],ans:1},
+    {q:'SIP stands for Systematic Investment Plan. Its key benefit is?',opts:['Guaranteed returns','Rupee cost averaging','Tax-free returns','Zero risk'],ans:1},
+    {q:'ELSS mutual funds have a mandatory lock-in period of how many years?',opts:['1 year','2 years','3 years','5 years'],ans:2},
+    {q:'Rule of 72: at 8% annual return, money doubles in approximately?',opts:['8 years','9 years','10 years','12 years'],ans:1},
+    {q:'Which ratio measures a mutual fund manager risk-adjusted performance?',opts:['P/E Ratio','Sharpe Ratio','Current Ratio','Debt/Equity Ratio'],ans:1},
+    {q:'SEBI regulates which financial market in India?',opts:['Banking','Insurance','Securities & Capital Markets','Real Estate'],ans:2},
+    {q:'NPS (National Pension System) matures at what default age?',opts:['55 years','58 years','60 years','65 years'],ans:2},
+    {q:'A Chartered Accountant in India is certified by which body?',opts:['SEBI','RBI','ICAI','IRDA'],ans:2}
   ]
 };
 let quizTopic='gst', quizQ=0, quizScore=0, quizTimer=null, quizTime=30;
@@ -718,40 +626,35 @@ function loadQuiz(topic, btn){
   showQuestion();
 }
 function showQuestion(){
-  clearInterval(quizTimer);
-  const qs=quizData[quizTopic];
-  if(quizQ>=qs.length){
-    document.getElementById('quiz-body').innerHTML=`
-      <div style="text-align:center;padding:30px 20px">
-        <div style="font-size:3rem;margin-bottom:8px">🎉</div>
-        <h3 style="color:var(--neon,#e2ff00);margin:0 0 8px">Quiz Complete!</h3>
-        <p style="font-size:1.25rem;margin:0 0 6px">Score: <strong>${quizScore} / ${qs.length}</strong></p>
-        <p style="color:rgba(255,255,255,0.6);margin:0 0 20px;font-size:.9rem">${quizScore===qs.length?'🏆 Perfect! You\'re a finance expert!':quizScore>=3?'👍 Great job! Keep learning!':'📚 Keep practicing — consult A Bagla for expert guidance!'}</p>
-        <button class="btn-neon-sm" onclick="loadQuiz('${quizTopic}',null)">Try Again</button>
-      </div>`; return;
+  const data=quizData[quizTopic];
+  if(!data||quizQ>=data.length){
+    document.getElementById('q-box').innerHTML='<div style="text-align:center;padding:2rem"><div style="font-size:3rem">🎉</div><div style="font-size:1.3rem;color:#c8ff00;margin:.5rem 0">Quiz Complete!</div><div style="color:#aaa">Score: <strong style="color:#ffe000">'+quizScore+'<\/strong> \/ '+data.length+'<\/div><button onclick="loadQuiz(quizTopic)" style="margin-top:1rem;padding:.5rem 1.5rem;background:#c8ff00;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer">&#128260; Retry<\/button><\/div>';
+    return;
   }
-  document.getElementById('q-num').textContent=quizQ+1;
-  const q=qs[quizQ];
-  document.getElementById('quiz-body').innerHTML=`
-    <div class="quiz-question">${q.q}</div>
-    <div class="quiz-options">${q.opts.map((o,i)=>`<button class="qopt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>`;
-  quizTime=30; document.getElementById('q-time').textContent=quizTime;
-  quizTimer=setInterval(()=>{ quizTime--; document.getElementById('q-time').textContent=quizTime; if(quizTime<=0){clearInterval(quizTimer);answerQ(-1);} },1000);
-}
-function answerQ(idx){
-  clearInterval(quizTimer);
-  const q=quizData[quizTopic][quizQ];
-  document.querySelectorAll('.qopt').forEach((b,i)=>{
-    b.disabled=true;
-    if(i===q.ans) b.style.background='rgba(76,175,80,0.45)';
-    else if(i===idx) b.style.background='rgba(255,82,82,0.45)';
+  const q=data[quizQ];
+  const L=['A','B','C','D'];
+  const C=['#4D96FF','#6BCB77','#FF9F1C','#C77DFF'];
+  let h='<div style="font-size:.98rem;font-weight:600;color:#fff;margin-bottom:1.1rem;line-height:1.55">Q'+(quizQ+1)+'. '+q.q+'<\/div>';
+  q.opts.forEach(function(o,i){
+    h+='<button onclick="answerQ('+i+')" style="display:flex;align-items:center;gap:.7rem;width:100%;margin:.38rem 0;padding:.6rem .95rem;background:rgba(255,255,255,0.04);border:1.5px solid '+C[i]+';border-radius:10px;color:#fff;font-size:.87rem;cursor:pointer;transition:background .18s" onmouseover="this.style.background=''+C[i]+'44'" onmouseout="this.style.background='rgba(255,255,255,0.04)'"><span style="min-width:26px;height:26px;border-radius:50%;background:'+C[i]+';color:#fff;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">'+L[i]+'<\/span>'+o+'<\/button>';
   });
-  if(idx===q.ans){ quizScore++; document.getElementById('q-score').textContent=quizScore; }
-  quizQ++;
-  setTimeout(showQuestion,1300);
+  h+='<div style="text-align:right;margin-top:.6rem;font-size:.78rem;color:#666">Q'+(quizQ+1)+' of '+data.length+' &nbsp;&bull;&nbsp; Score: <span style="color:#ffe000">'+quizScore+'<\/span><\/div>';
+  document.getElementById('q-box').innerHTML=h;
 }
-
-/* ── CONTACT FORM ── */
+function answerQ(i){
+  const data=quizData[quizTopic];if(!data)return;
+  const q=data[quizQ];
+  const C=['#4D96FF','#6BCB77','#FF9F1C','#C77DFF'];
+  const btns=[...document.getElementById('q-box').querySelectorAll('button[onclick]')];
+  btns.forEach(function(b,bi){
+    b.style.pointerEvents='none';
+    if(bi===q.ans){b.style.background=C[bi]+'88';b.style.borderColor=C[bi];}
+    else if(bi===i){b.style.background='rgba(255,60,60,0.25)';b.style.borderColor='#ff5555';}
+  });
+  if(i===q.ans)quizScore++;
+  document.getElementById('q-score').textContent=quizScore;
+  setTimeout(function(){quizQ++;showQuestion();},1100);
+}
 function handleSubmit(e){
   const btn=e.target.querySelector('button[type=submit]');
   if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
