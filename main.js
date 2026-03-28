@@ -1,8 +1,8 @@
-// ══════════════════════════════════════════════════
-//  A Bagla Financial Services — main.js
-// ══════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââ
+//  A Bagla Financial Services â main.js
+// ââââââââââââââââââââââââââââââââââââââââââââââââââ
 
-/* ── BACKGROUND CANVAS ── */
+/* ââ BACKGROUND CANVAS ââ */
 (function initBg(){
   const canvas = document.getElementById('bg-canvas');
   if(!canvas) return;
@@ -32,7 +32,7 @@
   init(); draw();
 })();
 
-/* ── NAVBAR SCROLL ── */
+/* ââ NAVBAR SCROLL ââ */
 const navbar = document.getElementById('navbar');
 if(navbar){
   window.addEventListener('scroll',()=>{
@@ -40,7 +40,7 @@ if(navbar){
   });
 }
 
-/* ── HAMBURGER MENU ── */
+/* ââ HAMBURGER MENU ââ */
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 if(hamburger && mobileMenu){
@@ -54,7 +54,7 @@ function closeMobile(){
   if(mobileMenu) mobileMenu.classList.remove('open');
 }
 
-/* ── SMOOTH SCROLL ── */
+/* ââ SMOOTH SCROLL ââ */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id = a.getAttribute('href').slice(1);
@@ -63,18 +63,18 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* ── SERVICE MODAL ── */
+/* ââ SERVICE MODAL ââ */
 const svcData = {
-  gst:{icon:'🧾',title:'GST Compliance & Advisory',desc:'Complete GST management from registration to monthly returns. We handle GSTR-1, GSTR-3B, GSTR-9, and reconciliation with GSTR-2A/2B. Includes advisory on GST applicability, rate classification, reverse charge mechanisms, and audit support.',points:['GST Registration & Amendments','Monthly / Quarterly Return Filing (GSTR-1, GSTR-3B)','GSTR-2A / 2B Reconciliation','GST Annual Return & Audit (GSTR-9, 9C)','E-Invoice & E-Way Bill Management','Notices & Departmental Correspondence']},
-  tds:{icon:'📋',title:'TDS / TCS Compliance',desc:'End-to-end TDS management ensuring timely deduction, payment, and filing. We handle all TDS sections — salary (192), professional fees (194J), rent (194I), contractor (194C), and more.',points:['TDS Computation & Challan Payment','Quarterly TDS Returns (24Q, 26Q, 27Q)','Form 16 / 16A Generation','TDS Mismatch Resolution & Rectification','Lower Deduction Certificate (Sec 197)','TCS Compliance under Sec 206C']},
-  it:{icon:'📊',title:'Income Tax Services',desc:'Comprehensive income tax planning and compliance for individuals, HUFs, partnership firms, LLPs and companies. We optimise your tax liability legally while ensuring full compliance.',points:['ITR Filing (All Forms — ITR 1 to 7)','Tax Planning & Optimisation','Advance Tax Computation & Payment','Scrutiny / Notice Handling','Capital Gains Tax Planning','Appeal before CIT(A) & ITAT']},
-  books:{icon:'📚',title:'Bookkeeping & Accounting',desc:'Accurate, timely books of accounts maintained by qualified accountants. From daily journal entries to final financial statements — we keep your numbers clean and meaningful.',points:['Day-to-Day Bookkeeping','Bank & Party Reconciliation','Payroll Processing & Compliance','Monthly MIS & Management Reports','P&L, Balance Sheet, Cash Flow Statements','Tally / Zoho / Busy / QuickBooks Support']},
-  inventory:{icon:'📦',title:'Inventory Management',desc:'Systematic inventory control to reduce shrinkage, improve turnover, and maintain compliance with GST stock requirements. Suitable for traders, manufacturers, and service businesses.',points:['Stock Inward / Outward Tracking','FIFO / LIFO / Weighted Average Valuation','Slow-Moving & Dead Stock Analysis','GST-Compliant Stock Register Maintenance','Physical Verification Support','ERP & Software Integration Assistance']},
-  vendor:{icon:'🤝',title:'Vendor Management',desc:'Streamlined vendor payment and compliance processes to avoid TDS defaults, GST mismatches, and audit queries. We handle end-to-end vendor account management.',points:['Vendor Onboarding & KYC Verification','Payment Scheduling & Reconciliation','TDS on Vendor Payments','GSTR-2A Vendor Reconciliation','Vendor Ledger Management','Vendor Compliance Monitoring']},
-  einvoice:{icon:'⚡',title:'E-Invoice & E-Way Bill',desc:'Mandatory for businesses above ₹5 Cr turnover. We handle IRN generation, QR codes, e-way bill creation and management in full compliance with GST e-invoicing mandates.',points:['IRN & QR Code Generation','E-Invoice Cancellation & Amendment','E-Way Bill Creation & Extension','Bulk E-Invoice Processing','API Integration Setup & Testing','Compliance Monitoring & Alerts']},
-  itc:{icon:'🔄',title:'ITC (Input Tax Credit) Management',desc:'Maximise your eligible Input Tax Credit while staying compliant. We identify ITC leakages, reconcile GSTR-2A/2B with your books, and handle reversals and blocked credits.',points:['Monthly ITC Reconciliation','GSTR-2A vs Books Matching','Blocked Credit (Section 17(5)) Analysis','ITC Reversal Compliance','ITC Optimisation Strategy','Annual ITC Audit & Reporting']},
-  finance:{icon:'💰',title:'Financial Planning & Advisory',desc:'Beyond tax — we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for entrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
-  mf:{icon:'📈',title:'Mutual Fund Advisory',desc:'Goal-based investment advisory with a focus on long-term wealth creation. We analyse your risk profile, recommend suitable mutual funds, monitor portfolio performance, and rebalance as needed.',points:['Risk Profiling & Goal Mapping','SIP Planning & Direct Fund Selection','Portfolio Review & Rebalancing','Tax-Efficient Investing (ELSS, Debt Funds)','Lump Sum Deployment Strategy','Regular Performance Reporting']}
+  gst:{icon:'ð§¾',title:'GST Compliance & Advisory',desc:'Complete GST management from registration to monthly returns. We handle GSTR-1, GSTR-3B, GSTR-9, and reconciliation with GSTR-2A/2B. Includes advisory on GST applicability, rate classification, reverse charge mechanisms, and audit support.',points:['GST Registration & Amendments','Monthly / Quarterly Return Filing (GSTR-1, GSTR-3B)','GSTR-2A / 2B Reconciliation','GST Annual Return & Audit (GSTR-9, 9C)','E-Invoice & E-Way Bill Management','Notices & Departmental Correspondence']},
+  tds:{icon:'ð',title:'TDS / TCS Compliance',desc:'End-to-end TDS management ensuring timely deduction, payment, and filing. We handle all TDS sections â salary (192), professional fees (194J), rent (194I), contractor (194C), and more.',points:['TDS Computation & Challan Payment','Quarterly TDS Returns (24Q, 26Q, 27Q)','Form 16 / 16A Generation','TDS Mismatch Resolution & Rectification','Lower Deduction Certificate (Sec 197)','TCS Compliance under Sec 206C']},
+  it:{icon:'ð',title:'Income Tax Services',desc:'Comprehensive income tax planning and compliance for individuals, HUFs, partnership firms, LLPs and companies. We optimise your tax liability legally while ensuring full compliance.',points:['ITR Filing (All Forms â ITR 1 to 7)','Tax Planning & Optimisation','Advance Tax Computation & Payment','Scrutiny / Notice Handling','Capital Gains Tax Planning','Appeal before CIT(A) & ITAT']},
+  books:{icon:'ð',title:'Bookkeeping & Accounting',desc:'Accurate, timely books of accounts maintained by qualified accountants. From daily journal entries to final financial statements â we keep your numbers clean and meaningful.',points:['Day-to-Day Bookkeeping','Bank & Party Reconciliation','Payroll Processing & Compliance','Monthly MIS & Management Reports','P&L, Balance Sheet, Cash Flow Statements','Tally / Zoho / Busy / QuickBooks Support']},
+  inventory:{icon:'ð¦',title:'Inventory Management',desc:'Systematic inventory control to reduce shrinkage, improve turnover, and maintain compliance with GST stock requirements. Suitable for traders, manufacturers, and service businesses.',points:['Stock Inward / Outward Tracking','FIFO / LIFO / Weighted Average Valuation','Slow-Moving & Dead Stock Analysis','GST-Compliant Stock Register Maintenance','Physical Verification Support','ERP & Software Integration Assistance']},
+  vendor:{icon:'ð¤',title:'Vendor Management',desc:'Streamlined vendor payment and compliance processes to avoid TDS defaults, GST mismatches, and audit queries. We handle end-to-end vendor account management.',points:['Vendor Onboarding & KYC Verification','Payment Scheduling & Reconciliation','TDS on Vendor Payments','GSTR-2A Vendor Reconciliation','Vendor Ledger Management','Vendor Compliance Monitoring']},
+  einvoice:{icon:'â¡',title:'E-Invoice & E-Way Bill',desc:'Mandatory for businesses above â¹5 Cr turnover. We handle IRN generation, QR codes, e-way bill creation and management in full compliance with GST e-invoicing mandates.',points:['IRN & QR Code Generation','E-Invoice Cancellation & Amendment','E-Way Bill Creation & Extension','Bulk E-Invoice Processing','API Integration Setup & Testing','Compliance Monitoring & Alerts']},
+  itc:{icon:'ð',title:'ITC (Input Tax Credit) Management',desc:'Maximise your eligible Input Tax Credit while staying compliant. We identify ITC leakages, reconcile GSTR-2A/2B with your books, and handle reversals and blocked credits.',points:['Monthly ITC Reconciliation','GSTR-2A vs Books Matching','Blocked Credit (Section 17(5)) Analysis','ITC Reversal Compliance','ITC Optimisation Strategy','Annual ITC Audit & Reporting']},
+  finance:{icon:'ð°',title:'Financial Planning & Advisory',desc:'Beyond tax â we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for entrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
+  mf:{icon:'ð',title:'Mutual Fund Advisory',desc:'Goal-based investment advisory with a focus on long-term wealth creation. We analyse your risk profile, recommend suitable mutual funds, monitor portfolio performance, and rebalance as needed.',points:['Risk Profiling & Goal Mapping','SIP Planning & Direct Fund Selection','Portfolio Review & Rebalancing','Tax-Efficient Investing (ELSS, Debt Funds)','Lump Sum Deployment Strategy','Regular Performance Reporting']}
 };
 
 function openService(id){
@@ -88,7 +88,7 @@ function openService(id){
     <p style="color:rgba(255,255,255,0.8);line-height:1.75;margin-bottom:16px;font-size:.95rem">${s.desc}</p>
     <ul style="padding-left:20px;margin-bottom:20px;line-height:1.9">${pts}</ul>
     <div style="text-align:center">
-      <a href="#contact" onclick="closeModal()" class="btn-neon" style="display:inline-block;padding:10px 28px;text-decoration:none;border-radius:4px">Get a Free Consultation →</a>
+      <a href="#contact" onclick="closeModal()" class="btn-neon" style="display:inline-block;padding:10px 28px;text-decoration:none;border-radius:4px">Get a Free Consultation â</a>
     </div>`;
   document.getElementById('svcModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -99,7 +99,7 @@ function closeModal(){
   document.body.style.overflow = '';
 }
 
-/* ── CALCULATOR TABS ── */
+/* ââ CALCULATOR TABS ââ */
 function showCalc(id, btn){
   document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
@@ -113,7 +113,7 @@ function showCalc(id, btn){
   if(id==='hra-calc') calcHRA();
 }
 
-/* ── INCOME TAX CALCULATOR ── */
+/* ââ INCOME TAX CALCULATOR ââ */
 
 let regime = 'old';
 function switchRegime(r){
@@ -125,7 +125,7 @@ function switchRegime(r){
   calcIT();
 }
 
-function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+function fmt(n){ return 'â¹'+Math.round(n).toLocaleString('en-IN'); }
 
 function calcIT(){
   const age         = (document.getElementById('it-age')||{value:'general'}).value;
@@ -174,7 +174,7 @@ function calcIT(){
     brackets.forEach(([lim,rate],i)=>{
       const chunk=Math.min(rem,lim); if(chunk<=0) return;
       const t=chunk*rate; normalTax+=t; rem-=chunk;
-      slabs.push(`${fmt(starts[i])}–${i===brackets.length-1?'above':fmt(starts[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
+      slabs.push(`${fmt(starts[i])}â${i===brackets.length-1?'above':fmt(starts[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
     });
   } else {
     // New Regime FY 2025-26 (Finance Act 2024)
@@ -184,7 +184,7 @@ function calcIT(){
     nr.forEach(([lim,rate],i)=>{
       const chunk=Math.min(rem,lim); if(chunk<=0) return;
       const t=chunk*rate; normalTax+=t; rem-=chunk;
-      if(t>0||i===0) slabs.push(`${fmt(ns[i])}–${i===6?'above':fmt(ns[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
+      if(t>0||i===0) slabs.push(`${fmt(ns[i])}â${i===6?'above':fmt(ns[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
     });
   }
 
@@ -208,7 +208,7 @@ function calcIT(){
 
   // Special rate taxes
   const stcgTax = stcg111a * 0.20;  // STCG 111A @ 20% from FY25-26
-  const ltcgFree = 125000; // LTCG exemption ₹1.25L from FY25-26
+  const ltcgFree = 125000; // LTCG exemption â¹1.25L from FY25-26
   const ltcgTax  = Math.max(0, ltcg112a - ltcgFree) * 0.125; // LTCG @ 12.5%
 
   const totalBeforeCess = normalTaxFinal + stcgTax + ltcgTax;
@@ -219,22 +219,22 @@ function calcIT(){
   // Update UI
   document.getElementById('it-gross').textContent   = fmt(gross);
   const sdEl=document.getElementById('it-std-ded');
-  if(sdEl) sdEl.textContent = '− '+fmt(stdDed);
+  if(sdEl) sdEl.textContent = 'â '+fmt(stdDed);
   const odEl=document.getElementById('it-ded');
-  if(odEl){ const od2=totalDed-stdDed; odEl.textContent=(od2>0?'− ':'')+fmt(od2); }
+  if(odEl){ const od2=totalDed-stdDed; odEl.textContent=(od2>0?'â ':'')+fmt(od2); }
   document.getElementById('it-taxable').textContent = fmt(taxable);
-  document.getElementById('it-slabs').innerHTML     = slabs.map(s=>`<div class="slab-row">${s}</div>`).join('')||'<div class="slab-row">No tax — zero liability in all slabs</div>';
+  document.getElementById('it-slabs').innerHTML     = slabs.map(s=>`<div class="slab-row">${s}</div>`).join('')||'<div class="slab-row">No tax â zero liability in all slabs</div>';
   document.getElementById('it-before-cess').textContent = fmt(normalTax);
 
   const rbRow=document.getElementById('it-rebate-row');
   const rbEl=document.getElementById('it-rebate');
   if(rbRow) rbRow.style.display=rebate87a>0?'':'none';
-  if(rbEl)  rbEl.textContent='− '+fmt(rebate87a);
+  if(rbEl)  rbEl.textContent='â '+fmt(rebate87a);
 
   const mrRow=document.getElementById('it-marginal-row');
   const mrEl=document.getElementById('it-marginal');
   if(mrRow) mrRow.style.display=marginalRelief>0?'':'none';
-  if(mrEl)  mrEl.textContent='− '+fmt(marginalRelief);
+  if(mrEl)  mrEl.textContent='â '+fmt(marginalRelief);
 
   // STCG/LTCG rows
   const stEl=document.getElementById('it-stcg-tax');
@@ -249,10 +249,10 @@ function calcIT(){
 
   const vd=document.getElementById('it-verdict');
   if(vd){
-    if(total===0) vd.innerHTML='🎉 <strong>Zero Tax!</strong> Fully covered by rebate u/s 87A.';
-    else if(effRate<10) vd.innerHTML='✅ <strong>Low Tax Burden.</strong> Effective rate under 10% — well planned!';
-    else if(effRate<20) vd.innerHTML='📊 <strong>Moderate Tax.</strong> Maximise deductions to reduce liability.';
-    else vd.innerHTML='⚠️ <strong>High Tax.</strong> Consult us for legal tax-saving optimisation.';
+    if(total===0) vd.innerHTML='ð <strong>Zero Tax!</strong> Fully covered by rebate u/s 87A.';
+    else if(effRate<10) vd.innerHTML='â <strong>Low Tax Burden.</strong> Effective rate under 10% â well planned!';
+    else if(effRate<20) vd.innerHTML='ð <strong>Moderate Tax.</strong> Maximise deductions to reduce liability.';
+    else vd.innerHTML='â ï¸ <strong>High Tax.</strong> Consult us for legal tax-saving optimisation.';
   }
 
   // Store for PDF
@@ -263,7 +263,7 @@ function downloadTaxPDF(){
   const d = window._taxData;
   if(!d){ calcIT(); }
   const t = window._taxData;
-  const ageLabel = {general:'Below 60 (General)',senior:'60–80 (Senior Citizen)',supersenior:'Above 80 (Super Senior)'}[t.age]||t.age;
+  const ageLabel = {general:'Below 60 (General)',senior:'60â80 (Senior Citizen)',supersenior:'Above 80 (Super Senior)'}[t.age]||t.age;
   const natLabel = t.nationality==='resident'?'Resident Indian':'NRI / NOR';
   const rows = [
     ['Assessment Year','AY 2026-27 (FY 2025-26)'],
@@ -280,14 +280,14 @@ function downloadTaxPDF(){
     ['Other Income', fmt(t.other)],
     ['Gross Total Income', fmt(t.gross)],
     ['---'],
-    ['Standard Deduction', '− '+fmt(t.stdDed)],
-    ['Other Deductions', '− '+fmt(Math.max(0,t.totalDed-t.stdDed))],
+    ['Standard Deduction', 'â '+fmt(t.stdDed)],
+    ['Other Deductions', 'â '+fmt(Math.max(0,t.totalDed-t.stdDed))],
     ['Taxable Income', fmt(t.taxable)],
     ['---'],
     ...t.slabs.map(s=>['  '+s,'']),
     ['Tax on Normal Income', fmt(t.normalTax)],
-    ...(t.rebate87a>0?[['Rebate u/s 87A','− '+fmt(t.rebate87a)]]:[]),
-    ...(t.marginalRelief>0?[['Marginal Relief','− '+fmt(t.marginalRelief)]]:[]),
+    ...(t.rebate87a>0?[['Rebate u/s 87A','â '+fmt(t.rebate87a)]]:[]),
+    ...(t.marginalRelief>0?[['Marginal Relief','â '+fmt(t.marginalRelief)]]:[]),
     ...(t.stcgTax>0?[['STCG Tax @ 20%',fmt(t.stcgTax)]]:[]),
     ...(t.ltcgTax>0?[['LTCG Tax @ 12.5%',fmt(t.ltcgTax)]]:[]),
     ['Health & Edu. Cess (4%)', fmt(t.cess)],
@@ -306,10 +306,10 @@ function downloadTaxPDF(){
   .sep{border-top:1px dashed #ccc}.total-row td{background:#333;color:#fff;font-size:14px}
   .footer{margin-top:32px;font-size:11px;color:#888;border-top:1px solid #ccc;padding-top:10px}
   </style></head><body>
-  <h1>Income Tax Computation — FY 2025-26 / AY 2026-27</h1>
+  <h1>Income Tax Computation â FY 2025-26 / AY 2026-27</h1>
   <p style="color:#555;font-size:12px">Prepared by A Bagla Financial Services | atulbagla.com</p>
   <table>${rows.map(r=>r[0]==='---'?'<tr class="sep"><td colspan="2" style="padding:2px"></td></tr>':`<tr${r[0]==='TOTAL TAX PAYABLE'?' class="total-row"':''}><td>${r[0]}</td><td>${r[1]||''}</td></tr>`).join('')}
-  </table><div class="footer">Disclaimer: This is an indicative calculation for FY 2025-26. Surcharge, AMT, and other complex provisions not included. Consult a CA for professional advice.<br>© A Bagla Financial Services — atulbagla.com</div>
+  </table><div class="footer">Disclaimer: This is an indicative calculation for FY 2025-26. Surcharge, AMT, and other complex provisions not included. Consult a CA for professional advice.<br>Â© A Bagla Financial Services â atulbagla.com</div>
   </body></html>`;
   const w=window.open('','_blank');
   w.document.write(html);
@@ -317,7 +317,7 @@ function downloadTaxPDF(){
   setTimeout(()=>w.print(),400);
 }
 
-/* ── GST CALCULATOR ── */
+/* ââ GST CALCULATOR ââ */
 function calcGST(){
   const amt  = +document.getElementById('gst-amount').value||0;
   const rate = +document.getElementById('gst-rate').value||0;
@@ -341,7 +341,7 @@ function calcGST(){
   document.getElementById('gst-output').innerHTML = html;
 }
 
-/* ── SIP CALCULATOR ── */
+/* ââ SIP CALCULATOR ââ */
 function calcSIP(){
   const sip  = +document.getElementById('sip-amt').value||0;
   const ret  = (+document.getElementById('sip-ret').value||0)/100;
@@ -373,7 +373,7 @@ function calcSIP(){
   if(br) br.style.width=rPct.toFixed(1)+'%';
 }
 
-/* ── EMI CALCULATOR ── */
+/* ââ EMI CALCULATOR ââ */
 function calcEMI(){
   const P=+document.getElementById('emi-amt').value||0;
   const ar=+document.getElementById('emi-rate').value||0;
@@ -389,7 +389,7 @@ function calcEMI(){
     <div class="itr-row"><span>Interest as % of Principal</span><strong>${P>0?(totalInt/P*100).toFixed(1):0}%</strong></div>`;
 }
 
-/* ── HRA CALCULATOR ── */
+/* ââ HRA CALCULATOR ââ */
 function calcHRA(){
   const basic=+document.getElementById('hra-basic').value||0;
   const recv =+document.getElementById('hra-recv').value||0;
@@ -399,18 +399,18 @@ function calcHRA(){
   const c1=recv, c2=Math.max(0,rent-basic*0.1), c3=basic*mRate;
   const exempt=Math.min(c1,c2,c3), taxable=Math.max(0,recv-exempt);
   document.getElementById('hra-output').innerHTML=`
-    <div class="itr-row"><span>Condition 1 — Actual HRA Received</span><strong>${fmt(c1)}/mo</strong></div>
-    <div class="itr-row"><span>Condition 2 — Rent − 10% of Basic</span><strong>${fmt(c2)}/mo</strong></div>
-    <div class="itr-row"><span>Condition 3 — ${mRate*100}% of Basic (${city==='metro'?'Metro':'Non-Metro'})</span><strong>${fmt(c3)}/mo</strong></div>
+    <div class="itr-row"><span>Condition 1 â Actual HRA Received</span><strong>${fmt(c1)}/mo</strong></div>
+    <div class="itr-row"><span>Condition 2 â Rent â 10% of Basic</span><strong>${fmt(c2)}/mo</strong></div>
+    <div class="itr-row"><span>Condition 3 â ${mRate*100}% of Basic (${city==='metro'?'Metro':'Non-Metro'})</span><strong>${fmt(c3)}/mo</strong></div>
     <div class="itr-row final"><span>HRA Exempt (Least of above)</span><strong>${fmt(exempt)}/mo</strong></div>
     <div class="itr-row"><span>Taxable HRA / Month</span><strong style="color:#ff6b6b">${fmt(taxable)}/mo</strong></div>
     <div class="itr-row"><span>Annual HRA Exemption</span><strong style="color:#4caf50">${fmt(exempt*12)}</strong></div>`;
 }
 
-/* ── NEWS ── */
+/* ââ NEWS ââ */
 const newsData = {
   icai:[
-    {title:'ICAI issues Guidance Note on Audit of Banks — 2024 Edition',date:'Mar 2024',url:'https://icai.org',tag:'Guidance'},
+    {title:'ICAI issues Guidance Note on Audit of Banks â 2024 Edition',date:'Mar 2024',url:'https://icai.org',tag:'Guidance'},
     {title:'ICAI revises CA Final Exam pattern effective Nov 2024 onwards',date:'Feb 2024',url:'https://icai.org',tag:'Exam'},
     {title:'New CPE requirement: 40 hours annually for all CA members',date:'Jan 2024',url:'https://icai.org',tag:'CPE'},
     {title:'ICAI releases Exposure Draft of revised SA 600 on Group Audits',date:'Mar 2024',url:'https://icai.org',tag:'Standard'},
@@ -418,32 +418,32 @@ const newsData = {
     {title:'ICAI clarifies applicability of Ind AS 116 for MSMEs',date:'Jan 2024',url:'https://icai.org',tag:'Clarification'},
   ],
   incometax:[
-    {title:'New ITR forms released for AY 2024-25 — e-filing open',date:'Apr 2024',url:'https://incometax.gov.in',tag:'ITR'},
+    {title:'New ITR forms released for AY 2024-25 â e-filing open',date:'Apr 2024',url:'https://incometax.gov.in',tag:'ITR'},
     {title:'Income Tax Dept notifies updated Form 26AS and AIS',date:'Mar 2024',url:'https://incometax.gov.in',tag:'AIS'},
     {title:'Section 87A rebate clarification for special rate income issued',date:'Jul 2024',url:'https://incometax.gov.in',tag:'Rebate'},
-    {title:'TDS on Rent: Sec 194-IB threshold remains ₹50,000/month',date:'Apr 2024',url:'https://incometax.gov.in',tag:'TDS'},
+    {title:'TDS on Rent: Sec 194-IB threshold remains â¹50,000/month',date:'Apr 2024',url:'https://incometax.gov.in',tag:'TDS'},
     {title:'Faceless appeal scheme extended to all income tax assessments',date:'Feb 2024',url:'https://incometax.gov.in',tag:'Appeal'},
     {title:'Updated return (ITR-U) window: 2 years from the relevant AY',date:'Jan 2024',url:'https://incometax.gov.in',tag:'Deadline'},
   ],
   gst:[
     {title:'GST Council reduces rate on cancer drugs and medical devices',date:'Jun 2024',url:'https://gst.gov.in',tag:'Rate Change'},
-    {title:'E-invoice threshold lowered to ₹1 Cr — mandatory from Oct 2023',date:'Oct 2023',url:'https://gst.gov.in',tag:'E-Invoice'},
-    {title:'GSTR-1A notified — new return for amending GSTR-1 data',date:'Jul 2024',url:'https://gst.gov.in',tag:'New Return'},
+    {title:'E-invoice threshold lowered to â¹1 Cr â mandatory from Oct 2023',date:'Oct 2023',url:'https://gst.gov.in',tag:'E-Invoice'},
+    {title:'GSTR-1A notified â new return for amending GSTR-1 data',date:'Jul 2024',url:'https://gst.gov.in',tag:'New Return'},
     {title:'GST on online gaming platforms: 28% on full face value upheld',date:'Aug 2024',url:'https://gst.gov.in',tag:'Gaming'},
-    {title:'ISD mechanism revamped — mandatory compliance from Apr 2025',date:'Sep 2024',url:'https://gst.gov.in',tag:'ISD'},
+    {title:'ISD mechanism revamped â mandatory compliance from Apr 2025',date:'Sep 2024',url:'https://gst.gov.in',tag:'ISD'},
     {title:'GSTR-9 and GSTR-9C due date extended to 31 December 2024',date:'Dec 2024',url:'https://gst.gov.in',tag:'Deadline'},
   ],
   mca:[
-    {title:'MCA21 V3 portal — new forms and filing system fully live',date:'Mar 2024',url:'https://mca.gov.in',tag:'Portal'},
+    {title:'MCA21 V3 portal â new forms and filing system fully live',date:'Mar 2024',url:'https://mca.gov.in',tag:'Portal'},
     {title:'Companies (CSR Policy) Amendment Rules 2024 notified',date:'Feb 2024',url:'https://mca.gov.in',tag:'CSR'},
-    {title:'MSME Udyam Registration — new guidelines and portal update',date:'Jan 2024',url:'https://mca.gov.in',tag:'MSME'},
+    {title:'MSME Udyam Registration â new guidelines and portal update',date:'Jan 2024',url:'https://mca.gov.in',tag:'MSME'},
     {title:'IBC amendment: Pre-packaged insolvency for MSMEs updated',date:'Mar 2024',url:'https://mca.gov.in',tag:'IBC'},
     {title:'Director KYC (DIR-3 KYC) annual deadline: 30 September',date:'Sep 2023',url:'https://mca.gov.in',tag:'KYC'},
     {title:'Annual Compliance: MGT-7A for OPCs and small companies',date:'Nov 2023',url:'https://mca.gov.in',tag:'Compliance'},
   ],
   mf:[
     {title:'SEBI introduces new asset class between Mutual Funds & PMS',date:'Aug 2024',url:'https://amfiindia.com',tag:'SEBI'},
-    {title:'AMFI data: Monthly SIP inflows cross ₹20,000 Cr milestone',date:'Jun 2024',url:'https://amfiindia.com',tag:'SIP'},
+    {title:'AMFI data: Monthly SIP inflows cross â¹20,000 Cr milestone',date:'Jun 2024',url:'https://amfiindia.com',tag:'SIP'},
     {title:'Debt fund taxation: Indexation benefit removed for new investments',date:'Apr 2024',url:'https://amfiindia.com',tag:'Taxation'},
     {title:'SEBI allows Balanced Advantage hybrid sub-categories in MFs',date:'Mar 2024',url:'https://amfiindia.com',tag:'Category'},
     {title:'TER (Total Expense Ratio) disclosure norms tightened by SEBI',date:'Feb 2024',url:'https://amfiindia.com',tag:'TER'},
@@ -462,11 +462,11 @@ function renderNews(id){
     <a class="news-card" href="${n.url}" target="_blank" rel="noopener noreferrer">
       <span class="news-tag">${n.tag}</span>
       <h4 class="news-title">${n.title}</h4>
-      <span class="news-date">${n.date} · Official Source ↗</span>
+      <span class="news-date">${n.date} Â· Official Source â</span>
     </a>`).join('');
 }
 
-/* ── PLAYGROUND TABS ── */
+/* ââ PLAYGROUND TABS ââ */
 function showGame(id, btn){
   document.querySelectorAll('.pgpanel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.pgtab').forEach(b=>b.classList.remove('active'));
@@ -475,9 +475,10 @@ function showGame(id, btn){
   if(btn) btn.classList.add('active');
   if(id==='matrix') startMatrix();
   if(id==='quiz') loadQuiz('gst', document.querySelector('.qtab'));
+  if(id==='gravity') startGravity();
 }
 
-/* ── GRAVITY BALL GAME ── */
+/* ââ GRAVITY BALL GAME ââ */
 let gravityRAF=null, gravityScore=0, gravityBest=0;
 function startGravity(){
   const cv0=document.getElementById('gravity-canvas');
@@ -502,7 +503,7 @@ function startGravity(){
     for(let i=0;i<30;i++)ctx.fillRect((i*137+13)%W,(i*97+7)%H,1.5,1.5);
     if(!balls.length){
       ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='bold 18px Arial';ctx.textAlign='center';
-      ctx.fillText('Click anywhere — balls drop from the top!',W/2,H/2);
+      ctx.fillText('Click anywhere â balls drop from the top!',W/2,H/2);
       ctx.font='13px Arial';ctx.fillStyle='rgba(255,255,255,0.3)';ctx.fillText('Each click drops 3 glowing balls',W/2,H/2+28);
     }
     for(let b of balls){
@@ -552,7 +553,7 @@ function checkSpeed(){
   document.getElementById('char-val').textContent=typed.length;
 }
 
-/* ── MATRIX RAIN ── */
+/* ââ MATRIX RAIN ââ */
 let matrixRAF=null, matrixRunning=false;
 const matrixColors=['#00ff41','#e2ff00','#00d4ff','#ff00ff','#ffd700'];
 let matrixColorIdx=0, matrixColor='#00ff41';
@@ -561,7 +562,7 @@ function startMatrix(){
   const ctx=canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
   const cols=Math.floor(W/16), drops=Array(cols).fill(1);
-  const chars='アイウエオカキクケコ0123456789GSTITEMRTF₹SIP@#%&';
+  const chars='ã¢ã¤ã¦ã¨ãªã«ã­ã¯ã±ã³0123456789GSTITEMRTFâ¹SIP@#%&';
   if(matrixRAF) cancelAnimationFrame(matrixRAF);
   matrixRunning=true;
   function draw(){
@@ -585,7 +586,7 @@ function changeMatrixColor(){
   matrixColor=matrixColors[matrixColorIdx];
 }
 
-/* ── FINANCE QUIZ ── */
+/* ââ FINANCE QUIZ ââ */
 const quizData={
   gst:[
     {q:'GST was launched in India on which date?',opts:['1 April 2017','1 July 2017','1 January 2018','15 August 2017'],ans:1},
@@ -629,7 +630,7 @@ function showQuestion(){
   const data=quizData[quizTopic];
   if(!data||quizQ>=data.length){
     const sc=quizScore,tot=data?data.length:0;
-    document.getElementById("q-box").innerHTML=
+    document.getElementById("quiz-body").innerHTML=
       "<div style=\"text-align:center;padding:2rem\">"
       +"<div style=\"font-size:3rem\">&#x1F389;</div>"
       +"<div style=\"font-size:1.3rem;color:#c8ff00;margin:.5rem 0\">Quiz Complete!</div>"
@@ -654,13 +655,13 @@ function showQuestion(){
     h+="<button class=\"qbtn\" onclick=\"answerQ("+i+")\" style=\"border-color:"+C[i]+";\">"+badge+o+"</button>";
   });
   h+="<div style=\"text-align:right;margin-top:.6rem;font-size:.78rem;color:#666\">Q"+(quizQ+1)+" of "+data.length+" &nbsp;&bull;&nbsp; Score: <span style=\"color:#ffe000\">"+quizScore+"</span></div>";
-  document.getElementById("q-box").innerHTML=h;
+  document.getElementById("quiz-body").innerHTML=h;
 }
 function answerQ(i){
   const data=quizData[quizTopic];if(!data)return;
   const q=data[quizQ];
   const C=["#4D96FF","#6BCB77","#FF9F1C","#C77DFF"];
-  const btns=[...document.getElementById("q-box").querySelectorAll(".qbtn")];
+  const btns=[...document.getElementById("quiz-body").querySelectorAll(".qbtn")];
   btns.forEach(function(b,bi){
     b.style.pointerEvents="none";
     if(bi===q.ans){b.style.background=C[bi]+"88";b.style.borderColor=C[bi];b.style.fontWeight="700";}
@@ -672,8 +673,8 @@ function answerQ(i){
 }
 function handleSubmit(e){
   const btn=e.target.querySelector('button[type=submit]');
-  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
-  // Form submits naturally to FormSubmit.co — no preventDefault
+  if(btn){ btn.textContent='Sendingâ¦'; btn.disabled=true; }
+  // Form submits naturally to FormSubmit.co â no preventDefault
 }
 function initLogoFloat(){
   const el=document.querySelector('.logo-tag');
@@ -686,7 +687,7 @@ function initLogoFloat(){
     s.dataset.i=i;
     if(ch===' '){
       s.style.cssText='display:inline-block;min-width:0.42em;';
-      s.textContent=' ';
+      s.textContent='Â ';
     } else {
       s.style.cssText='display:inline-block;transition:transform .18s cubic-bezier(.34,1.56,.64,1),color .18s,text-shadow .18s;cursor:default;';
       s.textContent=ch;
@@ -719,7 +720,7 @@ function initHeroFloat(){
       s.dataset.fi=registry.length;
       if(ch===' '){
         s.style.cssText='display:inline-block;min-width:0.28em;';
-        s.textContent=' ';
+        s.textContent='Â ';
       } else {
         s.style.cssText='display:inline-block;transition:transform .22s cubic-bezier(.34,1.8,.64,1),color .15s,text-shadow .15s;cursor:default;position:relative;';
         s.textContent=ch;
@@ -768,6 +769,29 @@ window.addEventListener('DOMContentLoaded',()=>{
   calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
   renderNews('icai');
   loadQuiz('gst', document.querySelector('.qtab'));
-  initLogoFloat();
+  
+function playCoinSound(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const notes=[523,659,784,1047];notes.forEach(function(freq,i){const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sine';o.frequency.value=freq;const t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
+function setupHeroEffects(){
+  const h1=document.querySelector('.hero-h1');
+  const neon=document.querySelector('.neon-text');
+  const tl=document.querySelector('.hero-tagline');
+  if(h1){
+    h1.style.transition='transform 0.35s ease,text-shadow 0.35s ease';
+    h1.addEventListener('mouseenter',function(){this.style.transform='scale(1.06) translateY(-4px)';this.style.textShadow='0 0 30px rgba(226,255,0,0.5)';playCoinSound();});
+    h1.addEventListener('mouseleave',function(){this.style.transform='';this.style.textShadow='';});
+  }
+  if(neon){
+    neon.style.transition='text-shadow 0.35s ease,transform 0.35s ease';
+    neon.addEventListener('mouseenter',function(){this.style.textShadow='0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)';this.style.transform='scale(1.04)';playCoinSound();});
+    neon.addEventListener('mouseleave',function(){this.style.textShadow='';this.style.transform='';});
+  }
+  if(tl){
+    tl.style.transition='letter-spacing 0.3s ease,opacity 0.3s ease';
+    tl.addEventListener('mouseenter',function(){this.style.letterSpacing='0.08em';this.style.opacity='1';});
+    tl.addEventListener('mouseleave',function(){this.style.letterSpacing='';this.style.opacity='';});
+  }
+}
+initLogoFloat();
   initHeroFloat();
+  setupHeroEffects();
 });
