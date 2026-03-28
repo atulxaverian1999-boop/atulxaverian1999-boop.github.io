@@ -477,6 +477,7 @@ function showGame(id, btn){
   if(btn) btn.classList.add('active');
   if(id==='matrix') startMatrix();
   if(id==='quiz') loadQuiz('gst', document.querySelector('.qtab'));
+  initLogoFloat();
 }
 
 /* ââ GRAVITY BALL GAME ââ */
