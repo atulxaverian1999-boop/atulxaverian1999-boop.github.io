@@ -760,24 +760,40 @@ function handleSubmit(e){
 function initLogoFloat(){
   const el=document.querySelector('.logo-tag');
   if(!el)return;
-  const txt=el.textContent;
-  el.style.whiteSpace='nowrap';el.innerHTML='';
-  txt.split('').forEach(ch=>{
+  el.style.cssText+='white-space:nowrap;display:inline-block;';
+  const orig=el.textContent.trim();
+  el.innerHTML='';
+  orig.split('').forEach((ch,i)=>{
     const s=document.createElement('span');
+    s.dataset.i=i;
     if(ch===' '){
-      s.style.cssText='display:inline-block;min-width:0.38em';
+      s.style.cssText='display:inline-block;min-width:0.42em;';
       s.textContent=' ';
     } else {
-      s.style.cssText='display:inline-block;transition:transform .25s,color .25s;cursor:default';
+      s.style.cssText='display:inline-block;transition:transform .18s cubic-bezier(.34,1.56,.64,1),color .18s,text-shadow .18s;cursor:default;';
       s.textContent=ch;
-      s.addEventListener('mouseover',function(){this.style.transform='translateY(-4px) scale(1.15)';this.style.color='#ff8c00';});
-      s.addEventListener('mouseout',function(){this.style.transform='';this.style.color='';});
+      s.addEventListener('mouseover',function(){
+        this.style.transform='translateY(-7px) scale(1.5)';
+        this.style.color='#ffe000';
+        this.style.textShadow='0 0 8px #ffe000, 0 0 18px #ff8c00';
+        // Ripple neighbours
+        const all=[...el.querySelectorAll('span[data-i]')];
+        const me=+this.dataset.i;
+        all.forEach(nb=>{
+          const d=Math.abs(+nb.dataset.i - me);
+          if(d===1){nb.style.transform='translateY(-4px) scale(1.25)';nb.style.color='#ffaa00';nb.style.textShadow='0 0 5px #ff8c00';}
+          else if(d===2){nb.style.transform='translateY(-2px) scale(1.1)';nb.style.color='';nb.style.textShadow='';}
+        });
+      });
+      s.addEventListener('mouseout',function(){
+        this.style.transform='';this.style.color='';this.style.textShadow='';
+        const all=[...el.querySelectorAll('span[data-i]')];
+        all.forEach(nb=>{nb.style.transform='';nb.style.color='';nb.style.textShadow='';});
+      });
     }
     el.appendChild(s);
   });
 }
-
-/* -- INIT -- */
 window.addEventListener('DOMContentLoaded',()=>{
   calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
   renderNews('icai');
