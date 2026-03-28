@@ -127,70 +127,167 @@ function switchRegime(r){
 function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
 
 function calcIT(){
-  const salary = +document.getElementById('it-salary').value||0;
-  const other  = +document.getElementById('it-other').value||0;
-  const rental = +document.getElementById('it-rental').value||0;
-  const gross  = salary + other + rental;
-  let taxable, totalDed;
+  const age         = (document.getElementById('it-age')||{value:'general'}).value;
+  const nationality = (document.getElementById('it-nationality')||{value:'resident'}).value;
+  const salary   = +document.getElementById('it-salary')?.value  ||0;
+  const business = +(document.getElementById('it-business')?.value)||0;
+  const rental   = +document.getElementById('it-rental')?.value  ||0;
+  const interest = +(document.getElementById('it-interest')?.value)||0;
+  const stcg111a = +(document.getElementById('it-stcg')?.value)  ||0;
+  const ltcg112a = +(document.getElementById('it-ltcg')?.value)  ||0;
+  const other    = +document.getElementById('it-other')?.value   ||0;
+
+  const gross       = salary + business + rental + interest + stcg111a + ltcg112a + other;
+  const normalGross = gross - stcg111a - ltcg112a;
+
+  let stdDed, totalDed, taxable;
 
   if(regime === 'old'){
-    const c80  = Math.min(+document.getElementById('it-80c').value||0, 150000);
-    const d80  = +document.getElementById('it-80d').value||0;
-    const hra  = +document.getElementById('it-hra').value||0;
-    const hl   = +document.getElementById('it-hl').value||0;
-    const nps  = Math.min(+document.getElementById('it-nps').value||0, 50000);
-    const otd  = +document.getElementById('it-other-ded').value||0;
-    totalDed   = c80 + d80 + hra + hl + nps + otd + 50000; // 50k std deduction
-    taxable    = Math.max(0, gross - totalDed);
+    const c80 = Math.min(+(document.getElementById('it-80c')?.value)||0, 150000);
+    const d80 = +(document.getElementById('it-80d')?.value)||0;
+    const hra = +(document.getElementById('it-hra')?.value)||0;
+    const hl  = +(document.getElementById('it-hl')?.value)||0;
+    const nps = Math.min(+(document.getElementById('it-nps')?.value)||0, 50000);
+    const otd = +(document.getElementById('it-other-ded')?.value)||0;
+    stdDed   = 50000;
+    totalDed = c80+d80+hra+hl+nps+otd+stdDed;
+    taxable  = Math.max(0, normalGross - totalDed);
   } else {
-    totalDed = 75000; // New regime std deduction FY 2024-25
-    taxable  = Math.max(0, gross - totalDed);
+    stdDed   = 75000;
+    totalDed = stdDed;
+    taxable  = Math.max(0, normalGross - stdDed);
   }
 
-  let tax = 0, slabs = [];
+  let normalTax = 0, slabs = [];
+
   if(regime === 'old'){
-    const brackets = [[250000,0],[250000,0.05],[500000,0.20],[Infinity,0.30]];
-    const starts   = [0,250000,500000,1000000];
-    let rem = taxable;
+    let brackets, starts;
+    if(age==='supersenior'){
+      brackets=[[500000,0],[500000,0.20],[Infinity,0.30]]; starts=[0,500000,1000000];
+    } else if(age==='senior'){
+      brackets=[[300000,0],[200000,0.05],[500000,0.20],[Infinity,0.30]]; starts=[0,300000,500000,1000000];
+    } else {
+      brackets=[[250000,0],[250000,0.05],[500000,0.20],[Infinity,0.30]]; starts=[0,250000,500000,1000000];
+    }
+    let rem=taxable;
     brackets.forEach(([lim,rate],i)=>{
-      const chunk = Math.min(rem, lim); if(chunk<=0) return;
-      const t = chunk*rate; tax += t; rem -= chunk;
-      if(t>0) slabs.push(`${fmt(starts[i])}–${i===3?'above':fmt(starts[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
+      const chunk=Math.min(rem,lim); if(chunk<=0) return;
+      const t=chunk*rate; normalTax+=t; rem-=chunk;
+      slabs.push(`${fmt(starts[i])}–${i===brackets.length-1?'above':fmt(starts[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
     });
-    if(taxable <= 500000) tax = 0;
   } else {
-    const nr     = [[300000,0],[400000,0.05],[300000,0.10],[300000,0.15],[300000,0.20],[Infinity,0.30]];
-    const nstart = [0,300000,700000,1000000,1300000,1600000];
-    let rem = taxable;
+    // New Regime FY 2025-26 (Finance Act 2024)
+    const nr=[[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
+    const ns=[0,400000,800000,1200000,1600000,2000000,2400000];
+    let rem=taxable;
     nr.forEach(([lim,rate],i)=>{
-      const chunk = Math.min(rem, lim); if(chunk<=0) return;
-      const t = chunk*rate; tax += t; rem -= chunk;
-      if(t>0) slabs.push(`${fmt(nstart[i])}–${i===5?'above':fmt(nstart[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
+      const chunk=Math.min(rem,lim); if(chunk<=0) return;
+      const t=chunk*rate; normalTax+=t; rem-=chunk;
+      if(t>0||i===0) slabs.push(`${fmt(ns[i])}–${i===6?'above':fmt(ns[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
     });
-    if(taxable <= 700000) tax = 0;
   }
 
-  const cess   = tax * 0.04;
-  const total  = tax + cess;
-  const effRate= gross>0 ? (total/gross*100) : 0;
+  // Rebate u/s 87A (residents only)
+  let rebate87a=0;
+  const rebateLimit = regime==='old' ? 500000 : 700000;
+  const rebateCap   = regime==='old' ? 12500   : 25000;
+  if(nationality==='resident' && taxable<=rebateLimit){
+    rebate87a=Math.min(normalTax, rebateCap);
+  }
 
-  document.getElementById('it-gross').textContent    = fmt(gross);
-  document.getElementById('it-ded').textContent      = '− '+fmt(totalDed);
-  document.getElementById('it-taxable').textContent  = fmt(taxable);
-  document.getElementById('it-slabs').innerHTML      = slabs.map(s=>`<div class="slab-row">${s}</div>`).join('')||'<div class="slab-row">No tax — zero liability in all slabs</div>';
-  document.getElementById('it-before-cess').textContent = fmt(tax);
-  document.getElementById('it-cess').textContent     = fmt(cess);
-  document.getElementById('it-total').textContent    = fmt(total);
-  document.getElementById('it-monthly').textContent  = fmt(total/12)+'/mo';
-  document.getElementById('it-rate').textContent     = effRate.toFixed(2)+'%';
-  const vd = document.getElementById('it-verdict');
+  // Marginal Relief
+  let marginalRelief=0;
+  if(nationality==='resident' && taxable>rebateLimit){
+    const excess=taxable-rebateLimit;
+    const taxAfterRebate=normalTax-rebate87a;
+    if(taxAfterRebate>excess) marginalRelief=taxAfterRebate-excess;
+  }
+
+  const normalTaxFinal = Math.max(0, normalTax - rebate87a - marginalRelief);
+
+  // Special rate taxes
+  const stcgTax = stcg111a * 0.20;
+  const ltcgFree = 125000;
+  const ltcgTax  = Math.max(0, ltcg112a - ltcgFree) * 0.125;
+
+  const totalBeforeCess = normalTaxFinal + stcgTax + ltcgTax;
+  const cess  = totalBeforeCess * 0.04;
+  const total = totalBeforeCess + cess;
+  const effRate = gross>0 ? (total/gross*100) : 0;
+
+  // Update UI
+  document.getElementById('it-gross').textContent   = fmt(gross);
+  const sdEl=document.getElementById('it-std-ded');
+  if(sdEl) sdEl.textContent = '− '+fmt(stdDed);
+  const odEl=document.getElementById('it-ded');
+  if(odEl){ const od2=totalDed-stdDed; odEl.textContent=(od2>0?'− ':'')+fmt(od2); }
+  document.getElementById('it-taxable').textContent = fmt(taxable);
+  document.getElementById('it-slabs').innerHTML     = slabs.map(s=>`<div class="slab-row">${s}</div>`).join('')||'<div class="slab-row">No tax — zero liability in all slabs</div>';
+  document.getElementById('it-before-cess').textContent = fmt(normalTax);
+
+  const rbRow=document.getElementById('it-rebate-row');
+  const rbEl=document.getElementById('it-rebate');
+  if(rbRow) rbRow.style.display=rebate87a>0?'':'none';
+  if(rbEl)  rbEl.textContent='− '+fmt(rebate87a);
+
+  const mrRow=document.getElementById('it-marginal-row');
+  const mrEl=document.getElementById('it-marginal');
+  if(mrRow) mrRow.style.display=marginalRelief>0?'':'none';
+  if(mrEl)  mrEl.textContent='− '+fmt(marginalRelief);
+
+  // STCG/LTCG rows
+  const stEl=document.getElementById('it-stcg-tax');
+  const ltEl=document.getElementById('it-ltcg-tax');
+  if(stEl){ stEl.parentElement.style.display=stcgTax>0?'':'none'; stEl.textContent=fmt(stcgTax); }
+  if(ltEl){ ltEl.parentElement.style.display=ltcgTax>0?'':'none'; ltEl.textContent=fmt(ltcgTax); }
+
+  document.getElementById('it-cess').textContent    = fmt(cess);
+  document.getElementById('it-total').textContent   = fmt(total);
+  document.getElementById('it-monthly').textContent = fmt(total/12)+'/mo';
+  document.getElementById('it-rate').textContent    = effRate.toFixed(2)+'%';
+
+  const vd=document.getElementById('it-verdict');
   if(vd){
     if(total===0) vd.innerHTML='🎉 <strong>Zero Tax!</strong> Fully covered by rebate u/s 87A.';
     else if(effRate<10) vd.innerHTML='✅ <strong>Low Tax Burden.</strong> Effective rate under 10% — well planned!';
     else if(effRate<20) vd.innerHTML='📊 <strong>Moderate Tax.</strong> Maximise deductions to reduce liability.';
     else vd.innerHTML='⚠️ <strong>High Tax.</strong> Consult us for legal tax-saving optimisation.';
   }
+
+  window._taxData = {regime,age,nationality,gross,stdDed,totalDed,taxable,slabs,normalTax,rebate87a,marginalRelief,stcgTax,ltcgTax,cess,total,effRate,salary,business,rental,interest,stcg111a,ltcg112a,other};
 }
+
+function downloadTaxPDF(){
+  if(!window._taxData) calcIT();
+  const t=window._taxData;
+  const ageLabel={general:'Below 60 (General)',senior:'60–80 (Senior Citizen)',supersenior:'Above 80 (Super Senior)'}[t.age]||t.age;
+  const natLabel=t.nationality==='resident'?'Resident Indian':'NRI / NOR';
+  const rows=[
+    ['Assessment Year','AY 2026-27 (FY 2025-26)'],
+    ['Tax Regime',t.regime==='old'?'Old Regime':'New Regime'],
+    ['Age Group',ageLabel],['Residency',natLabel],['---'],
+    ['Salary / Pension',fmt(t.salary)],['Business / Profession',fmt(t.business)],
+    ['Rental Income',fmt(t.rental)],['Interest Income',fmt(t.interest)],
+    ['STCG u/s 111A',fmt(t.stcg111a)],['LTCG u/s 112A',fmt(t.ltcg112a)],
+    ['Other Income',fmt(t.other)],['Gross Total Income',fmt(t.gross)],['---'],
+    ['Standard Deduction','− '+fmt(t.stdDed)],
+    ['Other Deductions','− '+fmt(Math.max(0,t.totalDed-t.stdDed))],
+    ['Taxable Income',fmt(t.taxable)],['---'],
+    ...t.slabs.map(s=>['  '+s,'']),
+    ['Tax on Normal Income',fmt(t.normalTax)],
+    ...(t.rebate87a>0?[['Rebate u/s 87A','− '+fmt(t.rebate87a)]]:{}),
+    ...(t.marginalRelief>0?[['Marginal Relief','− '+fmt(t.marginalRelief)]]:{}),
+    ...(t.stcgTax>0?[['STCG Tax @ 20%',fmt(t.stcgTax)]]:{}),
+    ...(t.ltcgTax>0?[['LTCG Tax @ 12.5%',fmt(t.ltcgTax)]]:{}),
+    ['Health & Edu. Cess (4%)',fmt(t.cess)],['---'],
+    ['TOTAL TAX PAYABLE',fmt(t.total)],
+    ['Monthly TDS',fmt(t.total/12)+'/mo'],
+    ['Effective Tax Rate',t.effRate.toFixed(2)+'%']
+  ];
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tax Computation FY 2025-26</title><style>body{font-family:Arial;max-width:680px;margin:30px auto;font-size:13px}table{width:100%;border-collapse:collapse}td{padding:5px 10px}tr:nth-child(even){background:#f9f9f9}.sep td{border-top:1px dashed #ccc;padding:3px}.total-row td{background:#222;color:#fff;font-size:14px;font-weight:700}td:last-child{text-align:right;font-weight:600}</style></head><body><h2 style="border-bottom:2px solid #333;padding-bottom:6px">Income Tax Computation — FY 2025-26 / AY 2026-27</h2><p style="color:#666;font-size:11px">A Bagla Financial Services | atulbagla.com</p><table>${rows.map(r=>r[0]==='---'?'<tr class="sep"><td colspan="2"></td></tr>':`<tr${r[0]==='TOTAL TAX PAYABLE'?' class="total-row"':''}><td>${r[0]}</td><td>${r[1]||''}</td></tr>`).join('')}</table><p style="font-size:10px;color:#999;margin-top:20px">Disclaimer: Indicative calculation for FY 2025-26. Consult a CA for professional advice.</p></body></html>`;
+  const w=window.open('','_blank'); if(w){ w.document.write(html); w.document.close(); setTimeout(()=>w.print(),500); }
+}
+
 
 /* ── GST CALCULATOR ── */
 function calcGST(){
@@ -590,3 +687,34 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderNews('icai');
   loadQuiz('gst', document.querySelector('.qtab'));
 });
+
+
+/* ── LOGO FLOAT EFFECT ── */
+function initLogoFloat(){
+  const lt=document.querySelector('.logo-tag');
+  if(!lt) return;
+  const text=lt.textContent;
+  lt.innerHTML=text.split('').map(c=>c===' '?'<span class="logo-char" style="display:inline-block"> </span>':`<span class="logo-char" style="display:inline-block;transition:transform .25s,color .25s">${c}</span>`).join('');
+  const logo=document.querySelector('.logo');
+  if(!logo) return;
+  logo.addEventListener('mousemove',e=>{
+    lt.querySelectorAll('.logo-char').forEach(ch=>{
+      const r=ch.getBoundingClientRect();
+      const cx=r.left+r.width/2, cy=r.top+r.height/2;
+      const dx=e.clientX-cx, dy=e.clientY-cy;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      const max=70;
+      if(dist<max){
+        const s=1-dist/max;
+        ch.style.transform=`translate(${-dx*s*0.25}px,${-Math.abs(dy)*s*0.6-10*s}px)`;
+        ch.style.color=`rgba(226,255,0,${0.7+s*0.3})`;
+        ch.style.textShadow=`0 0 ${10*s}px rgba(226,255,0,0.8)`;
+      } else {
+        ch.style.transform=''; ch.style.color=''; ch.style.textShadow='';
+      }
+    });
+  });
+  logo.addEventListener('mouseleave',()=>{
+    lt.querySelectorAll('.logo-char').forEach(c=>{c.style.transform='';c.style.color='';c.style.textShadow='';});
+  });
+}
