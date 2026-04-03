@@ -697,14 +697,6 @@ function initHeroFloat(){
   }
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
-  renderNews('icai');
-  loadQuiz('gst', document.querySelector('.qtab'));
-  
-function playCoinSound(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes=[523,659,784,1047];notes.forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type="sine";o.frequency.value=f;var t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
-function setupHeroEffects(){var h1=document.querySelector(".hero-h1");var neon=document.querySelector(".neon-text");var tl=document.querySelector(".hero-tagline");if(h1){h1.style.transition="transform 0.35s ease,text-shadow 0.35s ease";h1.addEventListener("mouseenter",function(){this.style.transform="scale(1.06) translateY(-4px)";this.style.textShadow="0 0 30px rgba(226,255,0,0.5)";playCoinSound();});h1.addEventListener("mouseleave",function(){this.style.transform="";this.style.textShadow="";});}if(neon){neon.style.transition="text-shadow 0.35s ease,transform 0.35s ease";neon.addEventListener("mouseenter",function(){this.style.textShadow="0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)";this.style.transform="scale(1.03)";playCoinSound();});neon.addEventListener("mouseleave",function(){this.style.textShadow="";this.style.transform="";});}if(tl){tl.style.transition="letter-spacing 0.3s ease";tl.addEventListener("mouseenter",function(){this.style.letterSpacing="0.07em";});tl.addEventListener("mouseleave",function(){this.style.letterSpacing="";}); }}
-initLogoFloat();
 function refreshLivePrices(){
   var btn=document.getElementById('live-refresh-btn');
   if(btn){btn.textContent='Refreshing...';btn.disabled=true;}
@@ -715,6 +707,15 @@ function refreshLivePrices(){
   fetch('https://api.exchangerate-api.com/v4/latest/USD').then(function(r){return r.json();}).then(function(d){try{var rate=d.rates.INR;var el=document.getElementById('live-usd');if(el)el.innerHTML='Rs. '+rate.toFixed(2);}catch(e){}}).catch(function(){});
   setTimeout(function(){if(btn){btn.textContent='Refresh Prices';btn.disabled=false;}},7000);
 }
+
+window.addEventListener('DOMContentLoaded',()=>{
+  calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
+  renderNews('icai');
+  loadQuiz('gst', document.querySelector('.qtab'));
+  
+function playCoinSound(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes=[523,659,784,1047];notes.forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type="sine";o.frequency.value=f;var t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
+function setupHeroEffects(){var h1=document.querySelector(".hero-h1");var neon=document.querySelector(".neon-text");var tl=document.querySelector(".hero-tagline");if(h1){h1.style.transition="transform 0.35s ease,text-shadow 0.35s ease";h1.addEventListener("mouseenter",function(){this.style.transform="scale(1.06) translateY(-4px)";this.style.textShadow="0 0 30px rgba(226,255,0,0.5)";playCoinSound();});h1.addEventListener("mouseleave",function(){this.style.transform="";this.style.textShadow="";});}if(neon){neon.style.transition="text-shadow 0.35s ease,transform 0.35s ease";neon.addEventListener("mouseenter",function(){this.style.textShadow="0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)";this.style.transform="scale(1.03)";playCoinSound();});neon.addEventListener("mouseleave",function(){this.style.textShadow="";this.style.transform="";});}if(tl){tl.style.transition="letter-spacing 0.3s ease";tl.addEventListener("mouseenter",function(){this.style.letterSpacing="0.07em";});tl.addEventListener("mouseleave",function(){this.style.letterSpacing="";}); }}
+initLogoFloat();
 
   initHeroFloat();
   setupHeroEffects();
