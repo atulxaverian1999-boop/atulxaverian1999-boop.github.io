@@ -114,109 +114,310 @@ function showCalc(id, btn){
 }
 
 /* ── INCOME TAX CALCULATOR ── */
-
-let regime = 'old';
-function switchRegime(r){
-  regime = r;
-  document.getElementById('regime-old').classList.toggle('active', r==='old');
-  document.getElementById('regime-new').classList.toggle('active', r==='new');
-  const od = document.getElementById('old-deductions');
-  if(od) od.style.display = r==='old' ? '' : 'none';
-  calcIT();
-}
-
 function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
 
+/* ── IT Helper: Old Regime Slab Tax ── */
+function _oldSlabTax(taxable, age){
+  var ex = age==='supersenior'?500000:(age==='senior'?300000:250000);
+  if(taxable<=ex) return 0;
+  var tax=0,rem=taxable-ex;
+  var t1b = (500000-ex); // bracket to 5L
+  if(age!=='supersenior'){
+    var t1=Math.min(rem,t1b); tax+=t1*0.05; rem-=t1;
+  }
+  var t2=Math.min(rem,500000); tax+=t2*0.20; rem-=t2;
+  tax+=Math.max(0,rem)*0.30;
+  return tax;
+}
+
+/* ── IT Helper: New Regime Slab Tax FY 2025-26 ── */
+function _newSlabTax(taxable){
+  var s=[[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
+  var tax=0,rem=taxable;
+  s.forEach(([l,r])=>{ var c=Math.min(rem,l); tax+=c*r; rem-=c; });
+  return tax;
+}
+
+/* ── IT Helper: Base Tax + Rebate + Marginal Relief at 12L (returns after-rebate total base tax) ── */
+function _baseTaxAfterRebate(normalTaxable,stcgAmt,ltcgAmt,regime,age){
+  var slab = regime==='old'?_oldSlabTax(normalTaxable,age):_newSlabTax(normalTaxable);
+  var stcgT= stcgAmt*0.20;
+  var ltcgT= Math.max(0,ltcgAmt-125000)*0.125;
+  var totalInc=normalTaxable+stcgAmt+ltcgAmt;
+  var rebate=0;
+  if(regime==='old'&&totalInc<=500000) rebate=Math.min(12500,slab);
+  if(regime==='new'&&totalInc<=1200000) rebate=slab;
+  var afterRebate=Math.max(0,slab-rebate)+stcgT+ltcgT;
+  // Marginal relief at ₹12L rebate boundary (New Regime only)
+  if(regime==='new'&&totalInc>1200000){
+    var excessOver12L=totalInc-1200000;
+    var mr12L=Math.max(0,afterRebate-excessOver12L);
+    afterRebate=Math.max(0,afterRebate-mr12L);
+  }
+  return afterRebate;
+}
+
+/* ── IT Helper: Compute Surcharge with Marginal Relief ── */
+function _computeSurcharge(totalInc,baseTax,stcgAmt,ltcgAmt,regime,age,stdDed){
+  var thrs=regime==='old'
+    ?[[50000000,0.37],[20000000,0.25],[10000000,0.15],[5000000,0.10]]
+    :[[50000000,0.25],[20000000,0.25],[10000000,0.15],[5000000,0.10]];
+  var scRate=0,threshold=0,prevRate=0;
+  for(var i=0;i<thrs.length;i++){
+    if(totalInc>thrs[i][0]){ scRate=thrs[i][1]; threshold=thrs[i][0]; prevRate=i+1<thrs.length?thrs[i+1][1]:0; break; }
+  }
+  if(scRate===0) return {sc:0,scRate:0,relief:0};
+  var sc=baseTax*scRate;
+  // Marginal relief: tax+surcharge on I minus tax+prevSurcharge at threshold ≤ excess income
+  var stcgLtcg=stcgAmt+ltcgAmt;
+  var normAtThresh=Math.max(0,threshold-stcgLtcg);
+  var baseTaxAtThresh=_baseTaxAfterRebate(normAtThresh,stcgAmt,ltcgAmt,regime,age);
+  var taxAtThreshWithPrevSC=baseTaxAtThresh*(1+prevRate);
+  var excessInc=totalInc-threshold;
+  var additionalTax=(baseTax+sc)-taxAtThreshWithPrevSC;
+  var relief=Math.max(0,additionalTax-excessInc);
+  sc=Math.max(0,sc-relief);
+  return {sc,scRate,relief};
+}
+
+/* ── Main IT Calculator ── */
 function calcIT(){
-  function v(id){return parseFloat((document.getElementById(id)||{}).value)||0;}
-  function fmt(n){return 'Rs. '+Math.round(n).toLocaleString('en-IN');}
-  function pct(n,d){return d>0?(n/d*100).toFixed(2)+'%':'0%';}
-  var salary=v('it-salary'),business=v('it-business'),rental=v('it-rental');
-  var interest=v('it-interest'),stcg=v('it-stcg'),ltcg=v('it-ltcg'),other=v('it-other');
-  var gross=salary+business+rental+interest+stcg+ltcg+other;
-  var resEl=document.getElementById('it-result');
-  if(gross<=0){resEl.innerHTML='<div style="color:#ff6b6b;text-align:center;padding:1rem">Please enter your income details above.</div>';return;}
-  var entityEl=document.getElementById('it-entity-type');
-  var entity=entityEl?entityEl.value:'individual';
+  var el=function(id){ return document.getElementById(id)||{value:''}; };
+  var entity=(el('it-entity-type').value)||'individual';
+  var age   =(el('it-age').value)||'below60';
+  var salary  =+el('it-salary').value||0;
+  var other   =+el('it-other').value||0;
+  var rental  =+el('it-rental').value||0;
+  var interest=+el('it-interest').value||0;
+  var stcg    =+el('it-stcg').value||0;
+  var ltcg    =+el('it-ltcg').value||0;
+  var grossOrd=salary+other+rental+interest;
+  var gross   =grossOrd+stcg+ltcg;
+  var res=document.getElementById('it-result');
+  if(!res) return;
+
+  /* Company Tax */
   if(entity==='company-d'||entity==='company-f'){
-    var isF=entity==='company-f';
-    var br=isF?0.40:0.22;
-    var sr=isF?(gross>100000000?0.05:gross>10000000?0.02:0):0.10;
-    var bt=gross*br,sc=bt*sr,cs=(bt+sc)*0.04,tot=bt+sc+cs;
-    var lbl=isF?'Foreign Company (40%)':'Domestic Company Sec 115BAA (22%)';
-    resEl.innerHTML='<div style="background:rgba(74,74,244,0.1);border:1px solid #4a4af4;border-radius:12px;padding:1.5rem"><h3 style="color:#a0aec0;margin-bottom:1rem;text-align:center">'+lbl+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.5rem;color:#a0aec0">Gross Income</td><td style="text-align:right;color:#e2e8f0;font-weight:600">'+fmt(gross)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Base Tax ('+Math.round(br*100)+'%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(bt)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Surcharge ('+Math.round(sr*100)+'%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(sc)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Health & Ed Cess (4%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(cs)+'</td></tr><tr style="border-top:2px solid #4a4af4"><td style="padding:.8rem .5rem;color:#e2e8f0;font-weight:700;font-size:1.1rem">Total Tax</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.2rem">'+fmt(tot)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Effective Rate</td><td style="text-align:right;color:#f6ad55">'+pct(tot,gross)+'</td></tr></table></div>';
+    var cRate=entity==='company-d'?0.22:0.40;
+    var cSCrate=entity==='company-d'?0.10:(gross>100000000?0.05:(gross>10000000?0.02:0));
+    var cBase=grossOrd*cRate, cSC=cBase*cSCrate, cCess=(cBase+cSC)*0.04, cTot=cBase+cSC+cCess;
+    var cEff=grossOrd>0?cTot/grossOrd*100:0;
+    window._lastITresult={entity,gross:grossOrd,baseT:cBase,sc:cSC,cess:cCess,total:cTot,eff:cEff};
+    res.innerHTML=`<div class="it-co-title">🏢 ${entity==='company-d'?'Domestic Company — Sec 115BAA':'Foreign Company'} Tax</div>
+<div class="itr-row"><span>Total Income (PBT)</span><strong>${fmt(grossOrd)}</strong></div>
+<div class="itr-row"><span>Corporate Tax (${entity==='company-d'?'22%':'40%'})</span><strong>${fmt(cBase)}</strong></div>
+<div class="itr-row"><span>Surcharge (${(cSCrate*100).toFixed(0)}%)</span><strong>${fmt(cSC)}</strong></div>
+<div class="itr-row"><span>Health &amp; Edu. Cess (4%)</span><strong>${fmt(cCess)}</strong></div>
+<div class="itr-row final-total"><span>Total Tax Payable</span><strong>${fmt(cTot)}</strong></div>
+<div class="itr-row"><span>Effective Tax Rate</span><strong>${cEff.toFixed(2)}%</strong></div>
+<div class="it-disclosure">📌 <b>Note:</b> Sec 115BAA Domestic rate 22% — no deductions/exemptions. Surcharge 10% flat for domestic (Sec 115BAA). Foreign: surcharge 2% (&gt;₹1Cr), 5% (&gt;₹10Cr). Cess 4% on tax+surcharge. MAT &amp; AMT provisions not included. This is an indicative estimate only.</div>
+<button class="btn-download-comp" onclick="downloadITcomp()">⬇ Download Computation</button>`;
     return;
   }
-  var ded=v('it-80c')+v('it-80d')+v('it-hra')+v('it-hl')+v('it-nps')+v('it-other-ded');
-  var stdN=75000,tblN=Math.max(0,gross-stdN);
-  function txN(ti){if(ti<=300000)return 0;if(ti<=700000)return(ti-300000)*0.05;if(ti<=1000000)return 20000+(ti-700000)*0.10;if(ti<=1200000)return 50000+(ti-1000000)*0.15;if(ti<=1500000)return 80000+(ti-1200000)*0.20;return 140000+(ti-1500000)*0.30;}
-  var tBN=txN(tblN);if(tblN<=700000)tBN=0;
-  var stdO=50000,tblO=Math.max(0,gross-stdO-ded);
-  function txO(ti){if(ti<=250000)return 0;if(ti<=500000)return(ti-250000)*0.05;if(ti<=1000000)return 12500+(ti-500000)*0.20;return 112500+(ti-1000000)*0.30;}
-  var tBO=txO(tblO);if(tblO<=500000)tBO=0;
-  function gSC(g,t,isN){if(g<=5000000)return 0;if(g<=10000000)return t*0.10;if(g<=20000000)return t*0.15;if(g<=50000000)return t*0.25;return t*(isN?0.25:0.37);}
-  var scN=gSC(gross,tBN,true),csN=(tBN+scN)*0.04,totN=tBN+scN+csN;
-  var scO=gSC(gross,tBO,false),csO=(tBO+scO)*0.04,totO=tBO+scO+csO;
-  var better=totN<=totO?'New Regime':'Old Regime',saved=Math.abs(totO-totN);
-  var scNote=gross>5000000?'<p style="color:#f6ad55;font-size:0.78rem;margin:.4rem 0 0">Surcharge applied (income &gt; Rs. 50L)</p>':''; 
-  resEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem"><div style="background:rgba(74,74,244,0.1);border:2px solid '+(better==='New Regime'?'#6BCB77':'#4a4af4')+';border-radius:12px;padding:1.2rem"><h3 style="color:#a0aec0;margin-bottom:.8rem;text-align:center;font-size:.9rem">NEW REGIME'+(better==='New Regime'?' <span style="color:#6BCB77">BETTER</span>':'')+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Taxable Income</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tblN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Base Tax</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tBN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Surcharge</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(scN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Cess (4%)</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(csN)+'</td></tr><tr style="border-top:1px solid #4a4af4"><td style="padding:.5rem .4rem;color:#e2e8f0;font-weight:700">Total</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(totN)+'</td></tr></table></div><div style="background:rgba(74,74,244,0.1);border:2px solid '+(better==='Old Regime'?'#6BCB77':'#4a4af4')+';border-radius:12px;padding:1.2rem"><h3 style="color:#a0aec0;margin-bottom:.8rem;text-align:center;font-size:.9rem">OLD REGIME'+(better==='Old Regime'?' <span style="color:#6BCB77">BETTER</span>':'')+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Taxable Income</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tblO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Base Tax</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tBO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Surcharge</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(scO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Cess (4%)</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(csO)+'</td></tr><tr style="border-top:1px solid #4a4af4"><td style="padding:.5rem .4rem;color:#e2e8f0;font-weight:700">Total</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(totO)+'</td></tr></table></div></div><div style="background:rgba(74,74,244,0.15);border-radius:8px;padding:.8rem;text-align:center"><span style="color:#a0aec0">Save </span><span style="color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(saved)+'</span><span style="color:#a0aec0"> by choosing </span><span style="color:#f6ad55;font-weight:700">'+better+'</span></div>'+scNote;
+
+  /* ── OLD REGIME ── */
+  var c80 =Math.min(+el('it-80c').value||0,150000);
+  var d80 =+el('it-80d').value||0;
+  var hra =+el('it-hra').value||0;
+  var hl  =+el('it-hl').value||0;
+  var nps =Math.min(+el('it-nps').value||0,50000);
+  var otd =+el('it-other-ded').value||0;
+  var stdOld=50000;
+  var totalDedOld=c80+d80+hra+hl+nps+otd+stdOld;
+  var taxableOld=Math.max(0,grossOrd-totalDedOld);
+  var totalIncOld=taxableOld+stcg+ltcg;
+
+  var oldSlabTax=_oldSlabTax(taxableOld,age);
+  var stcgTax=stcg*0.20;
+  var ltcgTax=Math.max(0,ltcg-125000)*0.125;
+  var rebateOld=totalIncOld<=500000?Math.min(12500,oldSlabTax):0;
+  var taxOldAfterRebate=Math.max(0,oldSlabTax-rebateOld);
+  var totalBaseOld=taxOldAfterRebate+stcgTax+ltcgTax;
+  var scResOld=_computeSurcharge(totalIncOld,totalBaseOld,stcg,ltcg,'old',age,stdOld);
+  var cessOld=(totalBaseOld+scResOld.sc)*0.04;
+  var totalOld=totalBaseOld+scResOld.sc+cessOld;
+  var effOld=gross>0?totalOld/gross*100:0;
+
+  /* Slabs for display - Old */
+  var oldSlabRows=[];
+  var ex=age==='supersenior'?500000:(age==='senior'?300000:250000);
+  if(taxableOld>ex){
+    var rem=taxableOld-ex;
+    if(age!=='supersenior'){ var c=Math.min(rem,500000-ex); if(c>0){ oldSlabRows.push([ex,500000,5,c*0.05]); rem-=c; } }
+    else { rem=Math.max(0,taxableOld-500000); }
+    var c2=Math.min(rem,500000); if(c2>0){ oldSlabRows.push([500000,1000000,20,c2*0.20]); rem-=c2; }
+    if(rem>0) oldSlabRows.push([1000000,Infinity,30,rem*0.30]);
+  }
+
+  /* ── NEW REGIME ── */
+  var stdNew=75000;
+  var taxableNew=Math.max(0,grossOrd-stdNew);
+  var totalIncNew=taxableNew+stcg+ltcg;
+
+  var newSlabTax=_newSlabTax(taxableNew);
+  var rebateNew=totalIncNew<=1200000?newSlabTax:0;
+  var taxNewAfterRebate=Math.max(0,newSlabTax-rebateNew);
+  var mr12L=0;
+  if(totalIncNew>1200000){
+    var excessOver12L=totalIncNew-1200000;
+    var fullNew=taxNewAfterRebate+stcgTax+ltcgTax;
+    mr12L=Math.max(0,fullNew-excessOver12L);
+    taxNewAfterRebate=Math.max(0,taxNewAfterRebate-Math.min(mr12L,taxNewAfterRebate));
+  }
+  var totalBaseNew=Math.max(0,taxNewAfterRebate+stcgTax+ltcgTax);
+  var scResNew=_computeSurcharge(totalIncNew,totalBaseNew,stcg,ltcg,'new',age,stdNew);
+  var cessNew=(totalBaseNew+scResNew.sc)*0.04;
+  var totalNew=totalBaseNew+scResNew.sc+cessNew;
+  var effNew=gross>0?totalNew/gross*100:0;
+
+  /* Slabs for display - New */
+  var newSlabRows=[];
+  var ns=[[0,400000,0],[400000,800000,5],[800000,1200000,10],[1200000,1600000,15],[1600000,2000000,20],[2000000,2400000,25],[2400000,Infinity,30]];
+  var rem2=taxableNew;
+  ns.forEach(([from,to,pct])=>{
+    var size=to===Infinity?rem2:Math.min(rem2,to-from); if(size<=0) return;
+    if(pct>0) newSlabRows.push([from,to,pct,size*pct/100]);
+    rem2-=size;
+  });
+
+  var newIsBetter=totalNew<=totalOld;
+
+  /* Store for download */
+  window._lastITresult={entity,age,gross,grossOrd,stcg,ltcg,
+    old:{taxable:taxableOld,totalDed:totalDedOld,slabTax:oldSlabTax,rebate:rebateOld,taxAfterRebate:taxOldAfterRebate,totalBase:totalBaseOld,sc:scResOld.sc,scRate:scResOld.scRate,mrSurcharge:scResOld.relief,cess:cessOld,total:totalOld,eff:effOld,slabs:oldSlabRows},
+    new:{taxable:taxableNew,stdDed:stdNew,slabTax:newSlabTax,rebate:rebateNew,mr12L:mr12L,taxAfterRebate:taxNewAfterRebate,totalBase:totalBaseNew,sc:scResNew.sc,scRate:scResNew.scRate,mrSurcharge:scResNew.relief,cess:cessNew,total:totalNew,eff:effNew,slabs:newSlabRows}
+  };
+
+  /* Panel builder */
+  function panel(r,taxable,totalInc,grossInc,dedAmt,dedLabel,slabRows,slabTax,rebate,mrRebate,taxAfterRebate,scRate,sc,mrSurcharge,cess,total,eff,isBetter){
+    var saving=Math.abs(totalOld-totalNew);
+    var slabHTML=slabRows.length?slabRows.map(([f,t,p,tx])=>
+      `<div class="slab-row">${fmt(f)}–${t===Infinity?'above':fmt(t)} @ ${p}% = ${fmt(tx)}</div>`
+    ).join(''):'<div class="slab-row">All income below taxable threshold</div>';
+    var scPct=(scRate*100).toFixed(0);
+    return `<div class="it-panel ${r}-panel${isBetter?' best-panel':''}">
+  <div class="it-panel-hd">${r==='new'?'🆕 NEW REGIME':'📁 OLD REGIME'}${isBetter?'<span class="badge-better">✓ BETTER</span>':''}</div>
+  <div class="itr-row"><span>Gross Income</span><strong>${fmt(grossInc)}</strong></div>
+  <div class="itr-row deduct-row"><span>${dedLabel}</span><strong>− ${fmt(dedAmt)}</strong></div>
+  <div class="itr-row taxable-row"><span>Taxable Income</span><strong>${fmt(taxable)}</strong></div>
+  ${stcg>0||ltcg>0?`<div class="it-slab-title">Special Rate Income</div>${stcg>0?`<div class="slab-row">STCG u/s 111A — ${fmt(stcg)} @20% = ${fmt(stcgTax)}</div>`:''}${ltcg>0?`<div class="slab-row">LTCG u/s 112A — ${fmt(ltcg)} (₹1.25L exempt) @12.5% = ${fmt(ltcgTax)}</div>`:''}`:``}
+  <div class="it-slab-title">Tax Slab Breakdown</div>
+  ${slabHTML}
+  <div class="itr-row"><span>Base Tax (Slab)</span><strong>${fmt(slabTax)}</strong></div>
+  ${rebate>0?`<div class="itr-row rebate-row"><span>87A Rebate</span><strong class="green-val">− ${fmt(rebate)}</strong></div>`:''}
+  ${mrRebate>0?`<div class="itr-row rebate-row"><span>Marginal Relief (₹12L)</span><strong class="green-val">− ${fmt(mrRebate)}</strong></div>`:''}
+  ${stcg>0||ltcg>0?`<div class="itr-row"><span>Tax on Special Income</span><strong>${fmt(stcgTax+ltcgTax)}</strong></div>`:''}
+  ${sc>0?`<div class="itr-row sc-row"><span>Surcharge (${scPct}%)</span><strong>${fmt(sc)}</strong></div>`:''}
+  ${mrSurcharge>0?`<div class="itr-row rebate-row"><span>Marginal Relief (Surcharge)</span><strong class="green-val">− ${fmt(mrSurcharge)}</strong></div>`:''}
+  <div class="itr-row"><span>H&amp;E Cess (4%)</span><strong>${fmt(cess)}</strong></div>
+  <div class="itr-row final-total"><span>Total Tax Payable</span><strong>${fmt(total)}</strong></div>
+  <div class="itr-row"><span>Monthly TDS est.</span><strong>${fmt(total/12)}/mo</strong></div>
+  <div class="itr-row"><span>Effective Tax Rate</span><strong>${eff.toFixed(2)}%</strong></div>
+  ${saving>0?`<div class="itr-row saving-row"><span>${isBetter?'You save vs '+( r==='new'?'Old':'New')+' Regime':'Extra cost vs '+(r==='new'?'Old':'New')+' Regime'}</span><strong class="${isBetter?'green-val':'red-val'}">${isBetter?'−':'+'}${fmt(saving)}</strong></div>`:''}
+</div>`;
+  }
+
+  var newPanel=panel('new',taxableNew,totalIncNew,grossOrd,stdNew,'Std Deduction (₹75,000)',newSlabRows,newSlabTax,rebateNew,mr12L,taxNewAfterRebate,scResNew.scRate,scResNew.sc,scResNew.relief,cessNew,totalNew,effNew,newIsBetter);
+  var oldPanel=panel('old',taxableOld,totalIncOld,grossOrd,totalDedOld,'Total Deductions (incl. ₹50K std)',oldSlabRows,oldSlabTax,rebateOld,0,taxOldAfterRebate,scResOld.scRate,scResOld.sc,scResOld.relief,cessOld,totalOld,effOld,!newIsBetter);
+
+  res.innerHTML<`<div class="it-compare-title">📊 FY 2025-26 (AY 2026-27) — Both Regimes at a Glance</div>
+<div class="it-compare-wrap">${newIsBetter?newPanel+oldPanel:oldPanel+newPanel}</div>
+<div class="it-disclosure">📌 <b>Disclosures:</b> STCG u/s 111A @20% (Budget 2024). LTCG u/s 112A @12.5% on gains above ₹1.25L. Rebate u/s 87A — Old Regime: max ₹12,500 if total income ≤ ₹5L; New Regime: full rebate (zero tax) if total income ≤ ₹12L (Budget 2025-26). Surcharge: 10% (&gt;₹50L), 15% (&gt;₹1Cr), 25% (&gt;₹2Cr); New Regime capped at 25% (Old Regime: 37% above ₹5Cr). Marginal relief applied at all surcharge thresholds &amp; ₹12L boundary. Standard deduction: ₹75,000 (New), ₹50,000 (Old). HUF treated same as Individual. This is an indicative estimate — consult a CA for final computation.</div>
+<button class="btn-download-comp" onclick="downloadITcomp()">⬇ Download Tax Computation</button>`;
 }
-function downloadTaxPDF(){
-  const d = window._taxData;
-  if(!d){ calcIT(); }
-  const t = window._taxData;
-  const ageLabel = {general:'Below 60 (General)',senior:'60–80 (Senior Citizen)',supersenior:'Above 80 (Super Senior)'}[t.age]||t.age;
-  const natLabel = t.nationality==='resident'?'Resident Indian':'NRI / NOR';
-  const rows = [
-    ['Assessment Year','AY 2026-27 (FY 2025-26)'],
-    ['Tax Regime', t.regime==='old'?'Old Regime':'New Regime'],
-    ['Age Group', ageLabel],
-    ['Residency', natLabel],
-    ['---'],
-    ['Salary / Pension', fmt(t.salary)],
-    ['Business / Profession', fmt(t.business)],
-    ['Rental Income', fmt(t.rental)],
-    ['Interest Income', fmt(t.interest)],
-    ['STCG u/s 111A', fmt(t.stcg111a)],
-    ['LTCG u/s 112A', fmt(t.ltcg112a)],
-    ['Other Income', fmt(t.other)],
-    ['Gross Total Income', fmt(t.gross)],
-    ['---'],
-    ['Standard Deduction', '− '+fmt(t.stdDed)],
-    ['Other Deductions', '− '+fmt(Math.max(0,t.totalDed-t.stdDed))],
-    ['Taxable Income', fmt(t.taxable)],
-    ['---'],
-    ...t.slabs.map(s=>['  '+s,'']),
-    ['Tax on Normal Income', fmt(t.normalTax)],
-    ...(t.rebate87a>0?[['Rebate u/s 87A','− '+fmt(t.rebate87a)]]:[]),
-    ...(t.marginalRelief>0?[['Marginal Relief','− '+fmt(t.marginalRelief)]]:[]),
-    ...(t.stcgTax>0?[['STCG Tax @ 20%',fmt(t.stcgTax)]]:[]),
-    ...(t.ltcgTax>0?[['LTCG Tax @ 12.5%',fmt(t.ltcgTax)]]:[]),
-    ['Health & Edu. Cess (4%)', fmt(t.cess)],
-    ['---'],
-    ['TOTAL TAX PAYABLE', fmt(t.total)],
-    ['Monthly TDS', fmt(t.total/12)+'/mo'],
-    ['Effective Tax Rate', t.effRate.toFixed(2)+'%'],
-  ];
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tax Computation FY 2025-26</title>
-  <style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#222;font-size:13px}
-  h1{font-size:18px;border-bottom:2px solid #333;padding-bottom:8px}
-  h2{font-size:14px;color:#444;margin-top:24px}
-  table{width:100%;border-collapse:collapse;margin-top:12px}
-  tr:nth-child(even){background:#f9f9f9}
-  td{padding:6px 10px}td:last-child{text-align:right;font-weight:600}
-  .sep{border-top:1px dashed #ccc}.total-row td{background:#333;color:#fff;font-size:14px}
-  .footer{margin-top:32px;font-size:11px;color:#888;border-top:1px solid #ccc;padding-top:10px}
-  </style></head><body>
-  <h1>Income Tax Computation — FY 2025-26 / AY 2026-27</h1>
-  <p style="color:#555;font-size:12px">Prepared by A Bagla Financial Services | atulbagla.com</p>
-  <table>${rows.map(r=>r[0]==='---'?'<tr class="sep"><td colspan="2" style="padding:2px"></td></tr>':`<tr${r[0]==='TOTAL TAX PAYABLE'?' class="total-row"':''}><td>${r[0]}</td><td>${r[1]||''}</td></tr>`).join('')}
-  </table><div class="footer">Disclaimer: This is an indicative calculation for FY 2025-26. Surcharge, AMT, and other complex provisions not included. Consult a CA for professional advice.<br>© A Bagla Financial Services — atulbagla.com</div>
-  </body></html>`;
-  const w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  setTimeout(()=>w.print(),400);
+
+/* ── Download / Print Tax Computation ── */
+function downloadITcomp(){
+  var r=window._lastITresult;
+  if(!r){alert('Please enter income details first.');return;}
+  var dt=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  var isIndividual=r.entity==='individual';
+  var slabTableRows=function(slabs){ return (slabs||[]).map(([f,t,p,tx])=>`<tr><td>${fmt(f)} – ${t===Infinity?'Above':fmt(t)}</td><td>${p}%</td><td style="text-align:right">${fmt(tx)}</td></tr>`).join('')||'<tr><td colspan="3">No tax in any slab</td></tr>'; };
+  var compHTML=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tax Computation FY 2025-26</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:30px auto;color:#111;font-size:13px;line-height:1.5;}
+h1{font-size:18px;margin-bottom:2px;} .subtitle{color:#555;font-size:11px;margin-bottom:20px;}
+h3{font-size:14px;background:#1a1a1a;color:#fff;padding:6px 10px;margin:18px 0 8px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+table{width:100%;border-collapse:collapse;margin-bottom:12px;}
+th{background:#333;color:#fff;padding:6px 8px;text-align:left;font-size:11px;}
+td{padding:5px 8px;border-bottom:1px solid #eee;}
+.total-row td{font-weight:bold;background:#f0f0f0;border-top:2px solid #333;}
+.rebate-row td{color:#2e7d32;} .sc-row td{color:#b71c1c;}
+.saving-row td{color:#1565c0;font-weight:bold;}
+.disclosure{font-size:10px;color:#777;border-top:1px solid #ddd;padding-top:10px;margin-top:20px;line-height:1.6;}
+.footer{text-align:center;margin-top:24px;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:10px;}
+.badge{display:inline-block;background:#4caf50;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold;margin-left:6px;}
+@media print{button{display:none!important;}.no-print{display:none!important;}}
+</style></head><body>
+<h1>Income Tax Computation — FY 2025-26 (AY 2026-27)</h1>
+<div class="subtitle">Generated by A Bagla Financial Services &nbsp;|&nbsp; www.atulbagla.com &nbsp;|&nbsp; ${dt}</div>
+${isIndividual?`
+<h3>Income Details</h3>
+<table><tr><th>Head</th><th style="text-align:right">Amount</th></tr>
+<tr><td>Gross Total Income (Salary/Business/Rental/Interest)</td><td style="text-align:right">${fmt(r.grossOrd)}</td></tr>
+${r.stcg>0?`<tr><td>STCG u/s 111A (Equity)</td><td style="text-align:right">${fmt(r.stcg)}</td></tr>`:''}
+${r.ltcg>0?`<tr><td>LTCG u/s 112A (Equity)</td><td style="text-align:right">${fmt(r.ltcg)}</td></tr>`:''}
+<tr class="total-row"><td>Grand Total Income</td><td style="text-align:right">${fmt(r.gross)}</td></tr></table>
+
+<h3>Regime Comparison</h3>
+<div class="grid">
+<div>
+<h3 style="background:#1565c0">🆕 New Regime${r.new.total<=r.old.total?'<span class="badge">BETTER</span>':''}</h3>
+<table>
+<tr><th>Particulars</th><th style="text-align:right">Amount</th></tr>
+<tr><td>Gross Income</td><td style="text-align:right">${fmt(r.grossOrd)}</td></tr>
+<tr class="rebate-row"><td>Standard Deduction</td><td style="text-align:right">− ${fmt(r.new.stdDed)}</td></tr>
+<tr><td>Taxable Income</td><td style="text-align:right">${fmt(r.new.taxable)}</td></tr>
+<tr><td>Slab Tax (as per New Regime)</td><td style="text-align:right">${fmt(r.new.slabTax)}</td></tr>
+${r.new.rebate>0?`<tr class="rebate-row"><td>Less: Rebate u/s 87A</td><td style="text-align:right">− ${fmt(r.new.rebate)}</td></tr>`:''}
+${r.new.mr12L>0?`<tr class="rebate-row"><td>Less: Marginal Relief (₹12L boundary)</td><td style="text-align:right">− ${fmt(r.new.mr12L)}</td></tr>`:''}
+${r.stcg>0||r.ltcg>0?`<tr><td>Tax on Special Rate Income (STCG/LTCG)</td><td style="text-align:right">${fmt(r.stcg*0.20+Math.max(0,r.ltcg-125000)*0.125)}</td></tr>`:''}
+${r.new.sc>0?`<tr class="sc-row"><td>Add: Surcharge @ ${(r.new.scRate*100).toFixed(0)}%</td><td style="text-align:right">${fmt(r.new.sc)}</td></tr>`:''}
+${r.new.mrSurcharge>0?`<tr class="rebate-row"><td>Less: Marginal Relief (Surcharge)</td><td style="text-align:right">− ${fmt(r.new.mrSurcharge)}</td></tr>`:''}
+<tr><td>Health &amp; Education Cess @ 4%</td><td style="text-align:right">${fmt(r.new.cess)}</td></tr>
+<tr class="total-row"><td>Total Tax Payable</td><td style="text-align:right">${fmt(r.new.total)}</td></tr>
+<tr><td>Effective Tax Rate</td><td style="text-align:right">${r.new.eff.toFixed(2)}%</td></tr>
+<tr><td>Monthly TDS Estimate</td><td style="text-align:right">${fmt(r.new.total/12)}/mo</td></tr>
+</table>
+</div>
+<div>
+<h3 style="background:#4a4a4a">📁 Old Regime${r.old.total<=r.new.total?'<span class="badge">BETTER</span>':''}</h3>
+<table>
+<tr><th>Particulars</th><th style="text-align:right">Amount</th></tr>
+<tr><td>Gross Income</td><td style="text-align:right">${fmt(r.grossOrd)}</td></tr>
+<tr class="rebate-row"><td>Total Deductions (incl. ₹50K std)</td><td style="text-align:right">− ${fmt(r.old.totalDed)}</td></tr>
+<tr><td>Taxable Income</td><td style="text-align:right">${fmt(r.old.taxable)}</td></tr>
+<tr><td>Slab Tax (as per Old Regime)</td><td style="text-align:right">${fmt(r.old.slabTax)}</td></tr>
+${r.old.rebate>0?`<tr class="rebate-row"><td>Less: Rebate u/s 87A</td><td style="text-align:right">− ${fmt(r.old.rebate)}</td></tr>`:''}
+${r.stcg>0||r.ltcg>0?`<tr><td>Tax on Special Rate Income (STCG/LTCG)</td><td style="text-align:right">${fmt(r.stcg*0.20+Math.max(0,r.ltcg-125000)*0.125)}</td></tr>`:''}
+${r.old.sc>0?`<tr class="sc-row"><td>Add: Surcharge @ ${(r.old.scRate*100).toFixed(0)}%</td><td style="text-align:right">${fmt(r.old.sc)}</td></tr>`:''}
+${r.old.mrSurcharge>0?`<tr class="rebate-row"><td>Less: Marginal Relief (Surcharge)</td><td style="text-align:right">− ${fmt(r.old.mrSurcharge)}</td></tr>`:''}
+<tr><td>Health &amp; Education Cess @ 4%</td><td style="text-align:right">${fmt(r.old.cess)}</td></tr>
+<tr class="total-row"><td>Total Tax Payable</td><td style="text-align:right">${fmt(r.old.total)}</td></tr>
+<tr><td>Effective Tax Rate</td><td style="text-align:right">${r.old.eff.toFixed(2)}%</td></tr>
+<tr><td>Monthly TDS Estimate</td><td style="text-align:right">${fmt(r.old.total/12)}/mo</td></tr>
+</table>
+</div></div>
+<h3 style="background:#1b5e20">Recommended: ${r.new.total<=r.old.total?'New Regime':'Old Regime'} — Saving of ${fmt(Math.abs(r.old.total-r.new.total))}</h3>
+`:`<h3>${r.entity==='company-d'?'Domestic Company (Sec 115BAA)':'Foreign Company'} Tax</h3>
+<table>
+<tr><th>Particulars</th><th style="text-align:right">Amount</th></tr>
+<tr><td>Total Income</td><td style="text-align:right">${fmt(r.gross)}</td></tr>
+<tr><td>Corporate Tax</td><td style="text-align:right">${fmt(r.baseT)}</td></tr>
+<tr class="sc-row"><td>Surcharge</td><td style="text-align:right">${fmt(r.sc)}</td></tr>
+<tr><td>Health &amp; Education Cess (4%)</td><td style="text-align:right">${fmt(r.cess)}</td></tr>
+<tr class="total-row"><td>Total Tax Payable</td><td style="text-align:right">${fmt(r.total)}</td></tr>
+<tr><td>Effective Rate</td><td style="text-align:right">${r.eff.toFixed(2)}%</td></tr>
+</table>`}
+<div class="disclosure"><b>DISCLAIMER:</b> This computation is generated from user-entered estimates and is for indicative purposes only. It does not constitute professional tax advice. Actual tax liability may vary based on specific facts, CBDT circulars, judicial pronouncements, and deductions not captured here. A Bagla Financial Services accepts no liability for any reliance placed on this computation. For accurate tax planning and filing, please consult our qualified team.</div>
+<div class="footer">A Bagla Financial Services | CA Services for Individuals, HUFs &amp; Corporates | www.atulbagla.com<br>
+📞 Contact us for ITR filing, tax planning, and compliance | This document is computer-generated</div>
+<br><button onclick="window.print()" style="padding:8px 20px;background:#1a1a1a;color:#fff;border:none;cursor:pointer;font-size:13px;">🖨 Print / Save as PDF</button>
+</body></html>`;
+  var w=window.open('','_blank');
+  if(w){ w.document.write(compHTML); w.document.close(); }
+  else{ alert('Please allow pop-ups to download the computation.'); }
 }
 
 /* ── GST CALCULATOR ── */
@@ -377,55 +578,86 @@ function showGame(id, btn){
   if(btn) btn.classList.add('active');
   if(id==='matrix') startMatrix();
   if(id==='quiz') loadQuiz('gst', document.querySelector('.qtab'));
-  if(id==='gravity') startGravity();
 }
 
 /* ── GRAVITY BALL GAME ── */
 let gravityRAF=null, gravityScore=0, gravityBest=0;
+const _gravityColors=['#e2ff00','#00ffcc','#ff4fcf','#4fd1ff','#ffd700','#ff6b35','#a78bfa'];
 function startGravity(){
-  const cv0=document.getElementById('gravity-canvas');
-  if(!cv0)return;
-  const cv2=cv0.cloneNode(true);cv0.parentNode.replaceChild(cv2,cv0);
-  const cv=document.getElementById('gravity-canvas');
-  const ctx=cv.getContext('2d');
-  const W=cv.width||700,H=cv.height||420;
+  const canvas=document.getElementById('gravity-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  if(gravityRAF) cancelAnimationFrame(gravityRAF);
+  gravityScore=0; document.getElementById('gravity-score').textContent='0';
   const balls=[];
-  const COLS=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF9F1C','#C77DFF','#F72585','#4CC9F0','#00F5FF','#39FF14'];
-  function spawnAt(px){
-    for(let i=0;i<3;i++) setTimeout(()=>balls.push({x:px+(Math.random()-.5)*50,y:0,r:9+Math.random()*13,vx:(Math.random()-.5)*6,vy:Math.random()*2,col:COLS[Math.floor(Math.random()*COLS.length)]}),i*90);
+  const GY=0.42, BOUNCE=0.60, FRICTION=0.991, MAX_BALLS=30;
+
+  function spawnBall(x,y){
+    if(balls.length>=MAX_BALLS) balls.shift();
+    const r=9+Math.random()*10;
+    balls.push({x,y,r,vx:(Math.random()-0.5)*4,vy:-1,color:_gravityColors[Math.floor(Math.random()*_gravityColors.length)]});
+    gravityScore=balls.length;
+    document.getElementById('gravity-score').textContent=gravityScore;
   }
-  function gx(e){const r=cv.getBoundingClientRect();return(e.clientX-r.left)*(W/r.width);}
-  cv.addEventListener('click',e=>spawnAt(gx(e)));
-  cv.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];const r=cv.getBoundingClientRect();spawnAt((t.clientX-r.left)*(W/r.width));},{passive:false});
-  (function loop(){
-    ctx.clearRect(0,0,W,H);
-    const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#050510');bg.addColorStop(1,'#0d0225');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(255,255,255,0.4)';
-    for(let i=0;i<30;i++)ctx.fillRect((i*137+13)%W,(i*97+7)%H,1.5,1.5);
-    if(!balls.length){
-      ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='bold 18px Arial';ctx.textAlign='center';
-      ctx.fillText('Click anywhere — balls drop from the top!',W/2,H/2);
-      ctx.font='13px Arial';ctx.fillStyle='rgba(255,255,255,0.3)';ctx.fillText('Each click drops 3 glowing balls',W/2,H/2+28);
+
+  // Remove any old listener, add exactly ONE new click listener
+  if(canvas._gravClick) canvas.removeEventListener('click',canvas._gravClick);
+  canvas._gravClick=function(e){
+    const rect=canvas.getBoundingClientRect();
+    spawnBall((e.clientX-rect.left)*(W/rect.width),(e.clientY-rect.top)*(H/rect.height));
+  };
+  canvas.addEventListener('click',canvas._gravClick);
+
+  function loop(){
+    ctx.fillStyle='rgba(10,10,10,0.2)'; ctx.fillRect(0,0,W,H);
+    for(let i=0;i<balls.length;i++){
+      const b=balls[i];
+      b.vy+=GY; b.vx*=FRICTION; b.vy*=FRICTION;
+      b.x+=b.vx; b.y+=b.vy;
+      if(b.y+b.r>H){b.y=H-b.r; b.vy*=-BOUNCE; b.vx*=0.9;}
+      if(b.y-b.r<0){b.y=b.r; b.vy*=-BOUNCE;}
+      if(b.x-b.r<0){b.x=b.r; b.vx*=-BOUNCE;}
+      if(b.x+b.r>W){b.x=W-b.r; b.vx*=-BOUNCE;}
+      for(let j=i+1;j<balls.length;j++){
+        const o=balls[j];
+        const dx=o.x-b.x,dy=o.y-b.y,dist=Math.sqrt(dx*dx+dy*dy),minD=b.r+o.r;
+        if(dist<minD&&dist>0.1){
+          const nx=dx/dist,ny=dy/dist,ov=(minD-dist)/2;
+          b.x-=nx*ov; b.y-=ny*ov; o.x+=nx*ov; o.y+=ny*ov;
+          const rv=(b.vx-o.vx)*nx+(b.vy-o.vy)*ny;
+          if(rv>0){b.vx-=rv*nx*0.55; b.vy-=rv*ny*0.55; o.vx+=rv*nx*0.55; o.vy+=rv*ny*0.55;}
+        }
+      }
+      const g=ctx.createRadialGradient(b.x-b.r*.28,b.y-b.r*.28,b.r*.08,b.x,b.y,b.r);
+      g.addColorStop(0,'rgba(255,255,255,0.9)'); g.addColorStop(0.35,b.color); g.addColorStop(1,'rgba(0,0,0,0.45)');
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+      ctx.strokeStyle=b.color; ctx.lineWidth=1.2; ctx.globalAlpha=0.6; ctx.stroke(); ctx.globalAlpha=1;
     }
-    for(let b of balls){
-      b.vy+=0.45;b.vx*=0.993;b.x+=b.vx;b.y+=b.vy;
-      if(b.y+b.r>H){b.y=H-b.r;b.vy*=-.6;b.vx*=.88;if(Math.abs(b.vy)<.6)b.vy=0;}
-      if(b.x-b.r<0){b.x=b.r;b.vx=Math.abs(b.vx)*.65;}
-      if(b.x+b.r>W){b.x=W-b.r;b.vx=-Math.abs(b.vx)*.65;}
-      ctx.shadowBlur=18;ctx.shadowColor=b.col;
-      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
-      const g=ctx.createRadialGradient(b.x-b.r*.3,b.y-b.r*.3,b.r*.1,b.x,b.y,b.r);
-      g.addColorStop(0,'rgba(255,255,255,0.85)');g.addColorStop(.35,b.col);g.addColorStop(1,'rgba(0,0,0,0.6)');
-      ctx.fillStyle=g;ctx.fill();ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(255,255,255,0.32)'; ctx.font='13px DM Sans';
+    ctx.fillText('🖱 Click anywhere to drop a ball — max 30',10,18);
+    if(balls.length===0){
+      ctx.fillStyle='rgba(226,255,0,0.55)'; ctx.font='bold 19px Orbitron'; ctx.textAlign='center';
+      ctx.fillText('Click on the canvas to drop balls!',W/2,H/2); ctx.textAlign='left';
     }
-    if(balls.length>65)balls.splice(0,balls.length-60);
-    if(balls.length){ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='12px Arial';ctx.textAlign='right';ctx.fillText(balls.length+' balls | click for more',W-10,18);}
-    requestAnimationFrame(loop);
-  })();
+    gravityRAF=requestAnimationFrame(loop);
+  }
+  ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(226,255,0,0.5)'; ctx.font='bold 19px Orbitron'; ctx.textAlign='center';
+  ctx.fillText('Click ▶ Start / Restart, then click to drop!',W/2,H/2); ctx.textAlign='left';
+  loop();
 }
-let speedRunning=false,speedTimer=null,speedSentence='',speedTimeLeft=60;
-const sentences=['The quick brown fox jumps over the lazy dog.','Compound interest is the eighth wonder of the world.','Do not save what is left after spending but spend what is left after saving.','An investment in knowledge pays the best interest always.','Never spend your money before you have truly earned it.','The stock market rewards patience over perfect timing every time.','Budget your money wisely or your money will budget your life.','A penny saved is a penny earned according to the wise old saying.','Wealth is not about having a lot of money but having a lot of options.','Financial discipline is the bridge between goals and financial reality.'];
+
+/* ── SPEED TEST ── */
+const sentences=[
+  'GST was introduced in India on 1 July 2017 as a unified indirect tax replacing multiple state and central levies.',
+  'A Systematic Investment Plan lets investors put fixed amounts regularly into mutual funds to build long-term wealth.',
+  'Income tax in India is governed by the Income Tax Act 1961 and administered by the Central Board of Direct Taxes.',
+  'Section 80C allows deductions up to one lakh fifty thousand rupees for PPF, ELSS, and life insurance premiums.',
+  'The Reserve Bank of India is the central banking institution regulating monetary policy and financial stability.',
+];
+let speedTimer=null, speedRunning=false, speedStart=0, speedSentence='';
 function startSpeed(){
   if(speedRunning) return;
   clearInterval(speedTimer);
@@ -464,7 +696,7 @@ function startMatrix(){
   const ctx=canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
   const cols=Math.floor(W/16), drops=Array(cols).fill(1);
-  const chars='アイウエオカキクケコ0123456789GSTITEMRTF₹SIP@#%&';
+  const chars='アイウエオカ�クケコ0123456789GSTITEMRTF₹SIP@#%&';
   if(matrixRAF) cancelAnimationFrame(matrixRAF);
   matrixRunning=true;
   function draw(){
@@ -491,66 +723,66 @@ function changeMatrixColor(){
 /* ── FINANCE QUIZ ── */
 const quizData={
   gst:[
-    {q:"What is the current standard GST rate in India?",opts:["5%","12%","18%","28%"],ans:2},
-    {q:"GST was launched in India on which date?",opts:["1 April 2017","1 July 2017","1 January 2018","15 August 2017"],ans:1},
-    {q:"Under which Constitutional Amendment was GST introduced?",opts:["99th","100th","101st","102nd"],ans:2},
-    {q:"GSTIN is a unique identification number of how many digits?",opts:["10","12","15","16"],ans:2},
-    {q:"Composition Scheme under GST is for businesses with turnover up to?",opts:["50 lakh","75 lakh","1.5 crore","2 crore"],ans:2},
-    {q:"Input Tax Credit CANNOT be claimed on which item?",opts:["Raw materials","Capital goods","Personal consumption goods","Office equipment"],ans:2},
-    {q:"IGST is levied on which type of transactions?",opts:["Intra-state supply","Inter-state supply","Both","Neither"],ans:1},
-    {q:"Which authority resolves disputes between Centre and States under GST?",opts:["GST Council","GSTAT","High Court","CBIC"],ans:1},
+    {q:'What does GST stand for?',opts:['General Sales Tax','Goods and Services Tax','Government Service Tax','Global Supply Tax'],ans:1},
+    {q:'GST was implemented in India on:',opts:['1 April 2017','1 July 2017','1 January 2018','15 August 2017'],ans:1},
+    {q:'Which return covers outward supplies filed monthly by regular taxpayers?',opts:['GSTR-3B','GSTR-1','GSTR-9','GSTR-4'],ans:1},
+    {q:'CGST is collected by:',opts:['State Government','Central Government','Both equally','Local Panchayat'],ans:1},
+    {q:'Standard GST rate on most professional services in India:',opts:['5%','12%','18%','28%'],ans:2},
+    {q:'GST council is chaired by:',opts:['RBI Governor','Prime Minister','Union Finance Minister','SEBI Chairman'],ans:2},
+    {q:'E-way bill is required for inter-state goods movement above:',opts:['₹10,000','₹25,000','₹50,000','₹1,00,000'],ans:2},
+    {q:'GSTIN is a unique number of how many digits?',opts:['10','12','15','18'],ans:2},
   ],
   income:[
-    {q:"Basic exemption limit under New Tax Regime for FY 2024-25?",opts:["Rs. 2.5 lakh","Rs. 3 lakh","Rs. 5 lakh","Rs. 4 lakh"],ans:1},
-    {q:"Standard deduction for salaried under New Regime (Budget 2024)?",opts:["Rs. 40,000","Rs. 50,000","Rs. 75,000","Rs. 1,00,000"],ans:2},
-    {q:"Maximum rebate under Section 87A in Old Regime?",opts:["Rs. 5,000","Rs. 12,500","Rs. 25,000","Rs. 50,000"],ans:1},
-    {q:"Maximum deduction allowed under Section 80C?",opts:["Rs. 50,000","Rs. 1 lakh","Rs. 1.5 lakh","Rs. 2 lakh"],ans:2},
-    {q:"Tax rate for income Rs. 12L-15L under New Regime FY 2024-25?",opts:["10%","15%","20%","25%"],ans:2},
-    {q:"LTCG on listed equity shares above Rs. 1.25 lakh taxed at (Budget 2024)?",opts:["10%","12.5%","15%","20%"],ans:1},
-    {q:"Health and Education Cess rate on income tax?",opts:["2%","3%","4%","5%"],ans:2},
-    {q:"Which ITR form is filed by individual with only salary income?",opts:["ITR-1","ITR-2","ITR-3","ITR-4"],ans:0},
+    {q:'Standard deduction for salaried (New Regime, FY 2025-26):',opts:['₹40,000','₹50,000','₹75,000','₹1,00,000'],ans:2},
+    {q:'Section 80C maximum deduction limit:',opts:['₹1,00,000','₹1,25,000','₹1,50,000','₹2,00,000'],ans:2},
+    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2},
+    {q:'Rebate u/s 87A (New Regime FY 2025-26) — zero tax up to income of:',opts:['₹7,00,000','₹10,00,000','₹12,00,000','₹15,00,000'],ans:2},
+    {q:'Form 26AS is related to:',opts:['GST filing','Tax Credit Statement','Bank statement','Company registration'],ans:1},
+    {q:'LTCG on equity shares above ₹1.25L taxed at (Budget 2024):',opts:['10%','12.5%','15%','20%'],ans:1},
+    {q:'STCG on listed equity shares taxed at (Budget 2024):',opts:['10%','15%','20%','Slab Rate'],ans:2},
+    {q:'Maximum surcharge rate under New Regime is:',opts:['15%','25%','30%','37%'],ans:1},
   ],
   mf:[
-    {q:"Full form of NAV in mutual funds?",opts:["Net Annual Value","Net Asset Value","Nominal Asset Value","New Asset Value"],ans:1},
-    {q:"ELSS stands for?",opts:["Equity Linked Savings Scheme","Equity Long-term Saving System","Exchange Listed Security","Equity Liquid Savings Solution"],ans:0},
-    {q:"Minimum lock-in period for ELSS funds?",opts:["1 year","2 years","3 years","5 years"],ans:2},
-    {q:"Which ratio measures risk-adjusted return of a mutual fund?",opts:["P/E Ratio","Sharpe Ratio","Beta","Alpha"],ans:1},
-    {q:"Full form of TER in mutual fund context?",opts:["Total Expense Ratio","Tax Exemption Ratio","Trading Entry Rate","Term Equity Return"],ans:0},
-    {q:"SIP primarily helps investors achieve?",opts:["Lump sum gains","Rupee cost averaging","Tax evasion","Fixed returns"],ans:1},
-    {q:"SEBI categorized MFs by market cap (large/mid/small) in which year?",opts:["2015","2017","2019","2021"],ans:1},
-    {q:"Which fund category has mandatory 3-year lock-in AND gives 80C benefit?",opts:["Index Fund","ELSS","Liquid Fund","Balanced Advantage Fund"],ans:1},
+    {q:'SIP stands for:',opts:['Simple Investment Plan','Systematic Investment Plan','Structured Income Plan','Savings Interest Plan'],ans:1},
+    {q:'NAV stands for:',opts:['Net Annual Value','Net Asset Value','Normal Asset Value','New Account Value'],ans:1},
+    {q:'ELSS funds have a mandatory lock-in period of:',opts:['1 year','2 years','3 years','5 years'],ans:2},
+    {q:'AMFI stands for:',opts:['Association of Mutual Funds of India','Asset Management Finance Institution','Annual MF Index','None of these'],ans:0},
+    {q:'LTCG on equity mutual funds above ₹1.25L taxed at (Budget 2024):',opts:['0%','10%','12.5%','15%'],ans:2},
+    {q:'Which body regulates Mutual Funds in India?',opts:['RBI','SEBI','AMFI','IRDAI'],ans:1},
+    {q:'Exit load is charged when:',opts:['You invest in a fund','You redeem before the exit load period','NAV rises','Fund declares dividend'],ans:1},
+    {q:'Debt mutual funds held beyond 3 years (pre-Apr 2023) were taxed at:',opts:['10% flat','20% with indexation','Slab rate','Exempt'],ans:1},
   ],
   tds:[
-    {q:"TDS on salary is deducted under which section?",opts:["Section 194A","Section 194C","Section 192","Section 194J"],ans:2},
-    {q:"TDS rate on technical services (Section 194J) from FY 2020-21?",opts:["10%","2%","5%","7.5%"],ans:1},
-    {q:"TDS deducted in March must be deposited by?",opts:["7th April","30th April","31st May","7th May"],ans:1},
-    {q:"Form 26AS is?",opts:["Annual tax credit statement","Wealth tax return","Advance tax challan","TDS certificate for rent"],ans:0},
-    {q:"TDS certificate for salary is issued in?",opts:["Form 16","Form 16A","Form 26Q","Form 24Q"],ans:0},
-    {q:"If PAN is not provided, TDS is deducted at?",opts:["Normal TDS rate","20% or applicable higher rate","Nil","5% flat"],ans:1},
-    {q:"Section 194N covers TDS on?",opts:["Interest on FD","Cash withdrawal from bank","Professional fees","Rent"],ans:1},
-    {q:"Quarterly TDS return for non-salary payments is filed in?",opts:["Form 24Q","Form 26Q","Form 27Q","Form 27EQ"],ans:1},
+    {q:'TDS on salary income is governed by:',opts:['Section 194J','Section 192','Section 194C','Section 195'],ans:1},
+    {q:'TDS threshold for bank interest (Section 194A) for non-senior citizens:',opts:['₹5,000','₹10,000','₹40,000','₹50,000'],ans:2},
+    {q:'Quarterly TDS return for non-salary payments is filed in:',opts:['Form 24Q','Form 26Q','Form 27EQ','Form 27Q'],ans:1},
+    {q:'Form 16 is issued by the employer for:',opts:['GST compliance','TDS on salary','Investment proof','PF details'],ans:1},
+    {q:'TDS rate on professional fees under Section 194J:',opts:['1%','2%','5%','10%'],ans:3},
+    {q:'TDS on rent of plant & machinery (Section 194I) is:',opts:['2%','5%','10%','15%'],ans:0},
+    {q:'Lower TDS deduction certificate is obtained under:',opts:['Section 195','Section 197','Section 194C','Section 206C'],ans:1},
+    {q:'Form 15G / 15H is submitted to:',opts:['IT Department','Employer','Bank/Payer (for NIL TDS)','TRACES'],ans:2},
   ],
   accounting:[
-    {q:"Double entry system requires every transaction to have?",opts:["Two debits","Two credits","Equal debit and credit","No credits"],ans:2},
-    {q:"Depreciation under SLM is calculated on?",opts:["Written down value","Original cost","Market value","Book value"],ans:1},
-    {q:"ICAI was established in which year?",opts:["1947","1949","1956","1961"],ans:1},
-    {q:"Goodwill is classified as?",opts:["Current asset","Fictitious asset","Intangible fixed asset","Tangible fixed asset"],ans:2},
-    {q:"Which concept requires consistent application of accounting policies?",opts:["Going concern","Consistency concept","Materiality","Prudence"],ans:1},
-    {q:"Revenue is recognized when (as per AS-9)?",opts:["Cash received","Goods delivered or services rendered","Invoice raised","Order received"],ans:1},
-    {q:"Full form of EBITDA?",opts:["Earnings Before Interest Tax Depreciation and Amortization","Equity Before Income Tax Dividends Assets","Earnings Before Income Tax Dues Assessment","None of the above"],ans:0},
-    {q:"Ind AS is based on which global standards?",opts:["US GAAP","IFRS","ICAI own standards","UK GAAP"],ans:1},
+    {q:'Which principle requires expenses to be matched against revenue?',opts:['Cost Principle','Matching Principle','Consistency Principle','Materiality Principle'],ans:1},
+    {q:'A debit balance in a personal account indicates:',opts:['Amount receivable (asset)','Liability','Income','Expense'],ans:0},
+    {q:'P&L stands for:',opts:['Profit & Loss','Purchase & Ledger','Payment & Liability','Price & Labour'],ans:0},
+    {q:'Depreciation is typically charged on:',opts:['Current assets','Fixed assets','Investments','Cash balance'],ans:1},
+    {q:'Working capital is calculated as:',opts:['Fixed assets − Current liabilities','Current assets − Current liabilities','Total assets − Total liabilities','Equity − Reserves'],ans:1},
+    {q:'The accounting equation is:',opts:['Assets = Liabilities + Equity','Assets = Revenue − Expenses','Equity = Assets + Liabilities','Revenue = Assets − Liabilities'],ans:0},
+    {q:'Cash Flow from Operations does NOT include:',opts:['Net profit','Depreciation','Sale of fixed assets','Working capital changes'],ans:2},
+    {q:'Which financial statement shows financial position at a point in time?',opts:['P&L Statement','Cash Flow Statement','Balance Sheet','Trial Balance'],ans:2},
   ],
   current:[
-    {q:"Union Budget 2025-26: No income tax payable up to income of?",opts:["Rs. 7 lakh","Rs. 10 lakh","Rs. 12 lakh","Rs. 15 lakh"],ans:2},
-    {q:"India fiscal deficit target for FY 2025-26 is?",opts:["4.5% of GDP","4.4% of GDP","5.1% of GDP","3.5% of GDP"],ans:1},
-    {q:"SEBI T+0 settlement means trades settle on?",opts:["Next working day","Same day","2 days later","Weekly basis"],ans:1},
-    {q:"Which index represents the top 50 companies on NSE?",opts:["SENSEX","NIFTY 50","BSE 100","NIFTY BANK"],ans:1},
-    {q:"Budget 2025: TDS threshold on bank FD interest (194A) raised to?",opts:["Rs. 40,000","Rs. 50,000","Rs. 75,000","Rs. 1,00,000"],ans:1},
-    {q:"RBI cut its repo rate in February 2025 to?",opts:["6.75%","6.50%","6.25%","6.00%"],ans:2},
-    {q:"Which scheme offers paid internships in top 500 Indian companies (Budget 2024)?",opts:["PM Internship Scheme","Skill India 2.0","Digital India Jobs","MUDRA Internship"],ans:0},
-    {q:"LTCG tax on equity was raised in Budget 2024 to?",opts:["10%","12.5%","15%","20%"],ans:1},
-  ],
-}
+    {q:'Union Budget 2025-26: No income tax payable up to income of:',opts:['₹7,00,000','₹10,00,000','₹12,00,000','₹15,00,000'],ans:2},
+    {q:'RBI repo rate as of early 2025 (after Feb 2025 cut):',opts:['5.90%','6.25%','6.50%','6.75%'],ans:1},
+    {q:'Budget 2025-26 raised LTCG exemption on equity to:',opts:['₹1,00,000','₹1,25,000','₹1,50,000','₹2,00,000'],ans:1},
+    {q:'New regime standard deduction increased in Budget 2024 to:',opts:['₹50,000','₹60,000','₹75,000','₹1,00,000'],ans:2},
+    {q:'Section 87A rebate (New Regime FY 2025-26) max rebate amount is:',opts:['₹12,500','₹25,000','₹60,000','No cap — full rebate'],ans:3},
+    {q:'GST on health insurance premium (proposed, 2025):',opts:['Exempt (0%)','5%','12%','18%'],ans:0},
+    {q:'STCG on equity shares — revised rate from Budget 2024:',opts:['10%','15%','20%','25%'],ans:2},
+    {q:'TDS on e-commerce operators (Section 194-O) rate:',opts:['0.1%','0.5%','1%','2%'],ans:2},
+  ]
+};
 let quizTopic='gst', quizQ=0, quizScore=0, quizTimer=null, quizTime=30;
 function loadQuiz(topic, btn){
   if(btn){ document.querySelectorAll('.qtab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
@@ -559,164 +791,102 @@ function loadQuiz(topic, btn){
   showQuestion();
 }
 function showQuestion(){
-  const data=quizData[quizTopic];
-  if(!data||quizQ>=data.length){
-    const sc=quizScore,tot=data?data.length:0;
-    document.getElementById("quiz-body").innerHTML=
-      "<div style=\"text-align:center;padding:2rem\">"
-      +"<div style=\"font-size:3rem\">&#x1F389;</div>"
-      +"<div style=\"font-size:1.3rem;color:#c8ff00;margin:.5rem 0\">Quiz Complete!</div>"
-      +"<div style=\"color:#aaa\">Score: <strong style=\"color:#ffe000\">"+sc+"</strong> / "+tot+"</div>"
-      +"<button onclick=\"loadQuiz(quizTopic)\" style=\"margin-top:1rem;padding:.5rem 1.5rem;background:#c8ff00;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer\">&#x1F504; Retry</button>"
-      +"</div>";
-    return;
+  clearInterval(quizTimer);
+  const qs=quizData[quizTopic];
+  if(quizQ>=qs.length){
+    document.getElementById('quiz-body').innerHTML=`
+      <div style="text-align:center;padding:30px 20px">
+        <div style="font-size:3rem;margin-bottom:8px">🎉</div>
+        <h3 style="color:var(--neon,#e2ff00);margin:0 0 8px">Quiz Complete!</h3>
+        <p style="font-size:1.25rem;margin:0 0 6px">Score: <strong>${quizScore} / ${qs.length}</strong></p>
+        <p style="color:rgba(255,255,255,0.6);margin:0 0 20px;font-size:.9rem">${quizScore===qs.length?'🏆 Perfect! You\'re a finance expert!':quizScore>=3?'👍 Great job! Keep learning!':'📚 Keep practicing — consult A Bagla for expert guidance!'}</p>
+        <button class="btn-neon-sm" onclick="loadQuiz('${quizTopic}',null)">Try Again</button>
+      </div>`; return;
   }
-  const q=data[quizQ];
-  const L=["A","B","C","D"];
-  const C=["#4D96FF","#6BCB77","#FF9F1C","#C77DFF"];
-  // Inject quiz button styles once
-  if(!document.getElementById("qbtn-style")){
-    const st=document.createElement("style");
-    st.id="qbtn-style";
-    st.textContent=".qbtn{display:flex;align-items:center;gap:.7rem;width:100%;margin:.4rem 0;padding:.62rem .95rem;border-radius:10px;color:#fff;font-size:.87rem;cursor:pointer;text-align:left;transition:opacity .15s,background .15s;border-width:1.5px;border-style:solid;background:rgba(255,255,255,0.04)}.qbtn:hover{opacity:.85;filter:brightness(1.15)}";
-    document.head.appendChild(st);
-  }
-  let h="<div style=\"font-size:.98rem;font-weight:600;color:#fff;margin-bottom:1.1rem;line-height:1.55\">Q"+(quizQ+1)+". "+q.q+"</div>";
-  q.opts.forEach(function(o,i){
-    const badge="<span style=\"min-width:26px;height:26px;border-radius:50%;background:"+C[i]+";color:#fff;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0\">"+L[i]+"</span>";
-    h+="<button class=\"qbtn\" onclick=\"answerQ("+i+")\" style=\"border-color:"+C[i]+";\">"+badge+o+"</button>";
+  document.getElementById('q-num').textContent=quizQ+1;
+  const q=qs[quizQ];
+  document.getElementById('quiz-body').innerHTML=`
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i)=>`<button class="qopt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>`;
+  quizTime=30; document.getElementById('q-time').textContent=quizTime;
+  quizTimer=setInterval(()=>{ quizTime--; document.getElementById('q-time').textContent=quizTime; if(quizTime<=0){clearInterval(quizTimer);answerQ(-1);} },1000);
+}
+function answerQ(idx){
+  clearInterval(quizTimer);
+  const q=quizData[quizTopic][quizQ];
+  document.querySelectorAll('.qopt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans) b.style.background='rgba(76,175,80,0.45)';
+    else if(i===idx) b.style.background='rgba(255,82,82,0.45)';
   });
-  h+="<div style=\"text-align:right;margin-top:.6rem;font-size:.78rem;color:#666\">Q"+(quizQ+1)+" of "+data.length+" &nbsp;&bull;&nbsp; Score: <span style=\"color:#ffe000\">"+quizScore+"</span></div>";
-  document.getElementById("quiz-body").innerHTML=h;
-}
-function answerQ(i){
-  const data=quizData[quizTopic];if(!data)return;
-  const q=data[quizQ];
-  const C=["#4D96FF","#6BCB77","#FF9F1C","#C77DFF"];
-  const btns=[...document.getElementById("quiz-body").querySelectorAll(".qbtn")];
-  btns.forEach(function(b,bi){
-    b.style.pointerEvents="none";
-    if(bi===q.ans){b.style.background=C[bi]+"88";b.style.borderColor=C[bi];b.style.fontWeight="700";}
-    else if(bi===i){b.style.background="rgba(255,60,60,0.25)";b.style.borderColor="#ff5555";}
-  });
-  if(i===q.ans)quizScore++;
-  document.getElementById("q-score").textContent=quizScore;
-  setTimeout(function(){quizQ++;showQuestion();},1100);
-}
-function handleSubmit(e){
-  const btn=e.target.querySelector('button[type=submit]');
-  if(btn){ btn.textContent='Sending…'; btn.disabled=true; }
-  // Form submits naturally to FormSubmit.co — no preventDefault
-}
-function initLogoFloat(){
-  const el=document.querySelector('.logo-tag');
-  if(!el)return;
-  el.style.cssText+='white-space:nowrap;display:inline-block;';
-  const orig=el.textContent.trim();
-  el.innerHTML='';
-  orig.split('').forEach((ch,i)=>{
-    const s=document.createElement('span');
-    s.dataset.i=i;
-    if(ch===' '){
-      s.style.cssText='display:inline-block;min-width:0.42em;';
-      s.textContent=' ';
-    } else {
-      s.style.cssText='display:inline-block;transition:transform .18s cubic-bezier(.34,1.56,.64,1),color .18s,text-shadow .18s;cursor:default;';
-      s.textContent=ch;
-      s.addEventListener('mouseover',function(){
-        this.style.transform='translateY(-7px) scale(1.5)';
-        this.style.color='#ffe000';
-        this.style.textShadow='0 0 8px #ffe000, 0 0 18px #ff8c00';
-        // Ripple neighbours
-        const all=[...el.querySelectorAll('span[data-i]')];
-        const me=+this.dataset.i;
-        all.forEach(nb=>{
-          const d=Math.abs(+nb.dataset.i - me);
-          if(d===1){nb.style.transform='translateY(-4px) scale(1.25)';nb.style.color='#ffaa00';nb.style.textShadow='0 0 5px #ff8c00';}
-          else if(d===2){nb.style.transform='translateY(-2px) scale(1.1)';nb.style.color='';nb.style.textShadow='';}
-        });
-      });
-      s.addEventListener('mouseout',function(){
-        this.style.transform='';this.style.color='';this.style.textShadow='';
-        const all=[...el.querySelectorAll('span[data-i]')];
-        all.forEach(nb=>{nb.style.transform='';nb.style.color='';nb.style.textShadow='';});
-      });
-    }
-    el.appendChild(s);
-  });
-}
-function initHeroFloat(){
-  function wrapLetters(text,container,registry,glowColor,rippleColor){
-    text.split('').forEach(ch=>{
-      const s=document.createElement('span');
-      s.dataset.fi=registry.length;
-      if(ch===' '){
-        s.style.cssText='display:inline-block;min-width:0.28em;';
-        s.textContent=' ';
-      } else {
-        s.style.cssText='display:inline-block;transition:transform .22s cubic-bezier(.34,1.8,.64,1),color .15s,text-shadow .15s;cursor:default;position:relative;';
-        s.textContent=ch;
-        const myIdx=registry.length;
-        s.addEventListener('mouseover',function(){
-          registry.forEach((nb,ni)=>{
-            const d=Math.abs(ni-myIdx);
-            if(d===0){nb.style.transform='translateY(-22px) scale(1.25) rotate(-3deg)';nb.style.color=glowColor;nb.style.textShadow='0 0 12px '+glowColor+',0 0 30px '+glowColor+',0 0 60px '+rippleColor;nb.style.zIndex='10';}
-            else if(d===1){nb.style.transform='translateY(-13px) scale(1.13)';nb.style.color=rippleColor;nb.style.textShadow='0 0 10px '+rippleColor;}
-            else if(d===2){nb.style.transform='translateY(-7px) scale(1.06)';nb.style.color='';nb.style.textShadow='0 0 5px '+rippleColor;}
-            else if(d===3){nb.style.transform='translateY(-3px)';nb.style.color='';nb.style.textShadow='';}
-            else{nb.style.transform='';nb.style.color='';nb.style.textShadow='';}
-          });
-        });
-        s.addEventListener('mouseout',function(){
-          registry.forEach(nb=>{nb.style.transform='';nb.style.color='';nb.style.textShadow='';});
-        });
-      }
-      registry.push(s);
-      container.appendChild(s);
-    });
-  }
-  const h1=document.querySelector('.hero-h1');
-  if(h1){
-    const reg1=[],reg2=[];
-    h1.innerHTML='';
-    const line1=document.createElement('span');
-    line1.style.cssText='display:block;white-space:nowrap;';
-    wrapLetters('A Bagla',line1,reg1,'#ffe000','#ff8c00');
-    h1.appendChild(line1);
-    const line2=document.createElement('span');
-    line2.style.cssText='display:block;white-space:nowrap;color:#c8ff00;text-shadow:0 0 18px #c8ff00,0 0 40px #9acd00;';
-    wrapLetters('Financial Services',line2,reg2,'#ffffff','#c8ff00');
-    h1.appendChild(line2);
-  }
-  const tl=document.querySelector('.hero-tagline');
-  if(tl){
-    const text=tl.textContent.trim();
-    tl.innerHTML='';tl.style.whiteSpace='nowrap';
-    const reg=[];
-    wrapLetters(text,tl,reg,'#ffe000','#ff8c00');
-  }
+  if(idx===q.ans){ quizScore++; document.getElementById('q-score').textContent=quizScore; }
+  quizQ++;
+  setTimeout(showQuestion,1300);
 }
 
+/* ── LIVE MARKET PRICES ── */
 function refreshLivePrices(){
   var btn=document.getElementById('live-refresh-btn');
-  if(btn){btn.textContent='Refreshing...';btn.disabled=true;}
-  var proxy='https://api.allorigins.win/get?url=';
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pt=(ch/pr*100).toFixed(2);var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';var el=document.getElementById('live-sensex');if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sg+pt+'%</span>';}catch(e){}}).catch(function(){});
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pt=(ch/pr*100).toFixed(2);var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';var el=document.getElementById('live-nifty');if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sg+pt+'%</span>';}catch(e){}}).catch(function(){});
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice;var el=document.getElementById('live-gold');if(el)el.innerHTML='$'+p.toFixed(2);}catch(e){}}).catch(function(){});
-  fetch('https://api.exchangerate-api.com/v4/latest/USD').then(function(r){return r.json();}).then(function(d){try{var rate=d.rates.INR;var el=document.getElementById('live-usd');if(el)el.innerHTML='Rs. '+rate.toFixed(2);}catch(e){}}).catch(function(){});
-  setTimeout(function(){if(btn){btn.textContent='Refresh Prices';btn.disabled=false;}},7000);
+  if(btn){btn.textContent='⏳ Fetching...';btn.disabled=true;}
+  var proxies=['https://api.allorigins.win/get?url=','https://corsproxy.io/?'];
+  function tryFetch(url,cb){
+    var tried=0;
+    function attempt(i){
+      if(i>=proxies.length){cb(null);return;}
+      fetch(proxies[i]+encodeURIComponent(url))
+        .then(function(r){return r.json();})
+        .then(function(d){
+          var raw=d.contents||d;
+          var parsed=typeof raw==='string'?JSON.parse(raw):raw;
+          cb(parsed);
+        })
+        .catch(function(){attempt(i+1);});
+    }
+    attempt(0);
+  }
+  function setEl(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
+  function priceBadge(price,prev,decimals){
+    if(!price) return '<span style="color:#aaa">N/A</span>';
+    var ch=price-prev,pct=(ch/prev*100);
+    var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';
+    return price.toLocaleString('en-IN',{maximumFractionDigits:decimals||0})+' <span style="color:'+col+';font-size:.8em">'+sg+pct.toFixed(2)+'%</span>';
+  }
+  // Sensex
+  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d',function(d){
+    try{var m=d.chart.result[0].meta;setEl('live-sensex',priceBadge(m.regularMarketPrice,m.chartPreviousClose));}catch(e){setEl('live-sensex','<span style="color:#aaa">—</span>');}
+  });
+  // Nifty
+  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d',function(d){
+    try{var m=d.chart.result[0].meta;setEl('live-nifty',priceBadge(m.regularMarketPrice,m.chartPreviousClose));}catch(e){setEl('live-nifty','<span style="color:#aaa">—</span>');}
+  });
+  // Gold
+  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d',function(d){
+    try{var m=d.chart.result[0].meta;setEl('live-gold',priceBadge(m.regularMarketPrice,m.chartPreviousClose,1))' $%oz'');}catch(e){setEl('live-gold','<span style="color:#aaa">—</span>');}
+  });
+  // USD/INR (direct API - no proxy needed)
+  fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    .then(function(r){return r.json();})
+    .then(function(d){setEl('live-usd','₹ '+d.rates.INR.toFixed(2)+' / $1');})
+    .catch(function(){setEl('live-usd','<span style="color:#aaa">—</span>');});
+  setTimeout(function(){if(btn){btn.textContent='🔄 Refresh Prices';btn.disabled=false;}},8000);
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
+/* ── CONTACT FORM ── */
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type=submit]');
+  btn.textContent='Sending...'; btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('form-success').style.display='block';
+    btn.textContent='Send Message →'; btn.disabled=false;
+    e.target.reset();
+    setTimeout(()=>{ document.getElementById('form-success').style.display='none'; },5000);
+  },1000);
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',function(){
   calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
   renderNews('icai');
   loadQuiz('gst', document.querySelector('.qtab'));
-  
-function playCoinSound(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes=[523,659,784,1047];notes.forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type="sine";o.frequency.value=f;var t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
-function setupHeroEffects(){var h1=document.querySelector(".hero-h1");var neon=document.querySelector(".neon-text");var tl=document.querySelector(".hero-tagline");if(h1){h1.style.transition="transform 0.35s ease,text-shadow 0.35s ease";h1.addEventListener("mouseenter",function(){this.style.transform="scale(1.06) translateY(-4px)";this.style.textShadow="0 0 30px rgba(226,255,0,0.5)";playCoinSound();});h1.addEventListener("mouseleave",function(){this.style.transform="";this.style.textShadow="";});}if(neon){neon.style.transition="text-shadow 0.35s ease,transform 0.35s ease";neon.addEventListener("mouseenter",function(){this.style.textShadow="0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)";this.style.transform="scale(1.03)";playCoinSound();});neon.addEventListener("mouseleave",function(){this.style.textShadow="";this.style.transform="";});}if(tl){tl.style.transition="letter-spacing 0.3s ease";tl.addEventListener("mouseenter",function(){this.style.letterSpacing="0.07em";});tl.addEventListener("mouseleave",function(){this.style.letterSpacing="";}); }}
-initLogoFloat();
-
-  initHeroFloat();
-  setupHeroEffects();
 });
