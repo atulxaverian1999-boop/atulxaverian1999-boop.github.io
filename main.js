@@ -144,7 +144,7 @@ function calcIT(){
     var sr=isF?(gross>100000000?0.05:gross>10000000?0.02:0):0.10;
     var bt=gross*br,sc=bt*sr,cs=(bt+sc)*0.04,tot=bt+sc+cs;
     var lbl=isF?'Foreign Company (40%)':'Domestic Company Sec 115BAA (22%)';
-    resEl.innerHTML='<div style="background:rgba(199,125,255,0.12);border:1.5px solid #C77DFF;border-radius:12px;padding:1.2rem;margin-top:.8rem"><div style="color:#C77DFF;font-weight:700;font-size:.95rem;margin-bottom:.8rem">Company Tax: '+lbl+'</div><table style="width:100%;font-size:.84rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:3px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Base Tax @'+Math.round(br*100)+'%</td><td style="text-align:right;color:#FFD93D">'+fmt(bt)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Surcharge @'+Math.round(sr*100)+'%</td><td style="text-align:right;color:#FF9F1C">'+fmt(sc)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(cs)+'</td></tr><tr style="border-top:1px solid #C77DFF44"><td style="color:#fff;font-weight:700;padding:5px 0">Total Tax Liability</td><td style="text-align:right;color:#C77DFF;font-weight:700;font-size:1.1rem">'+fmt(tot)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(tot,gross)+'</td></tr></table><div style="margin-top:.7rem;font-size:.76rem;color:#888">Note: 115BAA rate 22%+10% SC+4% cess. General rate 30%. New Mfg (115BAB) @15%. Consult CA for applicable rate.</div></div>';
+    resEl.innerHTML='<div style="background:rgba(74,74,244,0.1);border:1px solid #4a4af4;border-radius:12px;padding:1.5rem"><h3 style="color:#a0aec0;margin-bottom:1rem;text-align:center">'+lbl+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.5rem;color:#a0aec0">Gross Income</td><td style="text-align:right;color:#e2e8f0;font-weight:600">'+fmt(gross)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Base Tax ('+Math.round(br*100)+'%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(bt)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Surcharge ('+Math.round(sr*100)+'%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(sc)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Health & Ed Cess (4%)</td><td style="text-align:right;color:#e2e8f0">'+fmt(cs)+'</td></tr><tr style="border-top:2px solid #4a4af4"><td style="padding:.8rem .5rem;color:#e2e8f0;font-weight:700;font-size:1.1rem">Total Tax</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.2rem">'+fmt(tot)+'</td></tr><tr><td style="padding:.5rem;color:#a0aec0">Effective Rate</td><td style="text-align:right;color:#f6ad55">'+pct(tot,gross)+'</td></tr></table></div>';
     return;
   }
   var ded=v('it-80c')+v('it-80d')+v('it-hra')+v('it-hl')+v('it-nps')+v('it-other-ded');
@@ -154,15 +154,13 @@ function calcIT(){
   var stdO=50000,tblO=Math.max(0,gross-stdO-ded);
   function txO(ti){if(ti<=250000)return 0;if(ti<=500000)return(ti-250000)*0.05;if(ti<=1000000)return 12500+(ti-500000)*0.20;return 112500+(ti-1000000)*0.30;}
   var tBO=txO(tblO);if(tblO<=500000)tBO=0;
-  function gSC(g,t,n){if(g<=5000000)return 0;if(g<=10000000)return t*0.10;if(g<=20000000)return t*0.15;if(g<=50000000)return t*0.25;return t*(n?0.25:0.37);}
-  var scN=gSC(gross,tBN,1),csN=(tBN+scN)*0.04,totN=tBN+scN+csN;
-  var scO=gSC(gross,tBO,0),csO=(tBO+scO)*0.04,totO=tBO+scO+csO;
+  function gSC(g,t,isN){if(g<=5000000)return 0;if(g<=10000000)return t*0.10;if(g<=20000000)return t*0.15;if(g<=50000000)return t*0.25;return t*(isN?0.25:0.37);}
+  var scN=gSC(gross,tBN,true),csN=(tBN+scN)*0.04,totN=tBN+scN+csN;
+  var scO=gSC(gross,tBO,false),csO=(tBO+scO)*0.04,totO=tBO+scO+csO;
   var better=totN<=totO?'New Regime':'Old Regime',saved=Math.abs(totO-totN);
-  var scR=function(sc){return sc>0?'<tr><td style="color:#aaa;padding:2px 0">Surcharge</td><td style="text-align:right;color:#FF9F1C">'+fmt(sc)+'</td></tr>':'';};
-  var scNote=gross>5000000?'<div style="margin-top:.5rem;padding:.5rem .8rem;background:rgba(255,159,28,0.08);border:1px solid rgba(255,159,28,0.3);border-radius:8px;font-size:.77rem;color:#aaa"><b style="color:#FF9F1C">Surcharge (Individual/HUF):</b> 50L-1Cr:10% | 1Cr-2Cr:15% | 2Cr-5Cr:25% | Above 5Cr:37%(Old)/25%(New)</div>':'';
-  resEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem"><div style="background:rgba(77,150,255,0.1);border:1.5px solid #4D96FF;border-radius:12px;padding:.9rem"><div style="color:#4D96FF;font-weight:700;font-size:.88rem;margin-bottom:.6rem">New Regime (FY 2024-25)</div><table style="width:100%;font-size:.80rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:2px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Std Deduction</td><td style="text-align:right;color:#6BCB77">-'+fmt(stdN)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Taxable</td><td style="text-align:right;color:#fff;font-weight:600">'+fmt(tblN)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Base Tax</td><td style="text-align:right;color:#FFD93D">'+fmt(tBN)+'</td></tr>'+scR(scN)+'<tr><td style="color:#aaa;padding:2px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(csN)+'</td></tr><tr style="border-top:1px solid #4D96FF55"><td style="color:#fff;font-weight:700;padding:4px 0">Total Tax</td><td style="text-align:right;color:#4D96FF;font-weight:700;font-size:.95rem">'+fmt(totN)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(totN,gross)+'</td></tr><tr><td style="color:#aaa">Monthly Tax</td><td style="text-align:right;color:#aaa">'+fmt(totN/12)+'</td></tr></table></div><div style="background:rgba(107,203,119,0.1);border:1.5px solid #6BCB77;border-radius:12px;padding:.9rem"><div style="color:#6BCB77;font-weight:700;font-size:.88rem;margin-bottom:.6rem">Old Regime (FY 2024-25)</div><table style="width:100%;font-size:.80rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:2px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Std Deduction</td><td style="text-align:right;color:#6BCB77">-'+fmt(stdO)+'</td></tr>'+(ded>0?'<tr><td style="color:#aaa;padding:2px 0">Other Deductions</td><td style="text-align:right;color:#6BCB77">-'+fmt(ded)+'</td></tr>':'')+'<tr><td style="color:#aaa;padding:2px 0">Taxable</td><td style="text-align:right;color:#fff;font-weight:600">'+fmt(tblO)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Base Tax</td><td style="text-align:right;color:#FFD93D">'+fmt(tBO)+'</td></tr>'+scR(scO)+'<tr><td style="color:#aaa;padding:2px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(csO)+'</td></tr><tr style="border-top:1px solid #6BCB7755"><td style="color:#fff;font-weight:700;padding:4px 0">Total Tax</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:.95rem">'+fmt(totO)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(totO,gross)+'</td></tr><tr><td style="color:#aaa">Monthly Tax</td><td style="text-align:right;color:#aaa">'+fmt(totO/12)+'</td></tr></table></div></div><div style="text-align:center;margin-top:.7rem;padding:.65rem;background:rgba(226,255,0,0.07);border-radius:8px;border:1px solid rgba(226,255,0,0.25)"><span style="color:#e2ff00;font-weight:700">'+better+' saves you '+fmt(saved)+'</span>'+(gross>5000000?' <span style="color:#FF9F1C;font-size:.8rem">| Surcharge applied</span>':'')+'</div>'+scNote;
+  var scNote=gross>5000000?'<p style="color:#f6ad55;font-size:0.78rem;margin:.4rem 0 0">Surcharge applied (income &gt; Rs. 50L)</p>':''; 
+  resEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem"><div style="background:rgba(74,74,244,0.1);border:2px solid '+(better==='New Regime'?'#6BCB77':'#4a4af4')+';border-radius:12px;padding:1.2rem"><h3 style="color:#a0aec0;margin-bottom:.8rem;text-align:center;font-size:.9rem">NEW REGIME'+(better==='New Regime'?' <span style="color:#6BCB77">BETTER</span>':'')+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Taxable Income</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tblN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Base Tax</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tBN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Surcharge</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(scN)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Cess (4%)</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(csN)+'</td></tr><tr style="border-top:1px solid #4a4af4"><td style="padding:.5rem .4rem;color:#e2e8f0;font-weight:700">Total</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(totN)+'</td></tr></table></div><div style="background:rgba(74,74,244,0.1);border:2px solid '+(better==='Old Regime'?'#6BCB77':'#4a4af4')+';border-radius:12px;padding:1.2rem"><h3 style="color:#a0aec0;margin-bottom:.8rem;text-align:center;font-size:.9rem">OLD REGIME'+(better==='Old Regime'?' <span style="color:#6BCB77">BETTER</span>':'')+'</h3><table style="width:100%;border-collapse:collapse"><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Taxable Income</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tblO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Base Tax</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(tBO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Surcharge</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(scO)+'</td></tr><tr><td style="padding:.4rem;color:#a0aec0;font-size:.85rem">Cess (4%)</td><td style="text-align:right;color:#e2e8f0;font-size:.85rem">'+fmt(csO)+'</td></tr><tr style="border-top:1px solid #4a4af4"><td style="padding:.5rem .4rem;color:#e2e8f0;font-weight:700">Total</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(totO)+'</td></tr></table></div></div><div style="background:rgba(74,74,244,0.15);border-radius:8px;padding:.8rem;text-align:center"><span style="color:#a0aec0">Save </span><span style="color:#6BCB77;font-weight:700;font-size:1.1rem">'+fmt(saved)+'</span><span style="color:#a0aec0"> by choosing </span><span style="color:#f6ad55;font-weight:700">'+better+'</span></div>'+scNote;
 }
-
 function downloadTaxPDF(){
   const d = window._taxData;
   if(!d){ calcIT(); }
@@ -552,7 +550,7 @@ const quizData={
     {q:"Which scheme offers paid internships in top 500 Indian companies (Budget 2024)?",opts:["PM Internship Scheme","Skill India 2.0","Digital India Jobs","MUDRA Internship"],ans:0},
     {q:"LTCG tax on equity was raised in Budget 2024 to?",opts:["10%","12.5%","15%","20%"],ans:1},
   ],
-};
+}
 let quizTopic='gst', quizQ=0, quizScore=0, quizTimer=null, quizTime=30;
 function loadQuiz(topic, btn){
   if(btn){ document.querySelectorAll('.qtab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
@@ -706,45 +704,18 @@ window.addEventListener('DOMContentLoaded',()=>{
   
 function playCoinSound(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes=[523,659,784,1047];notes.forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type="sine";o.frequency.value=f;var t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
 function setupHeroEffects(){var h1=document.querySelector(".hero-h1");var neon=document.querySelector(".neon-text");var tl=document.querySelector(".hero-tagline");if(h1){h1.style.transition="transform 0.35s ease,text-shadow 0.35s ease";h1.addEventListener("mouseenter",function(){this.style.transform="scale(1.06) translateY(-4px)";this.style.textShadow="0 0 30px rgba(226,255,0,0.5)";playCoinSound();});h1.addEventListener("mouseleave",function(){this.style.transform="";this.style.textShadow="";});}if(neon){neon.style.transition="text-shadow 0.35s ease,transform 0.35s ease";neon.addEventListener("mouseenter",function(){this.style.textShadow="0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)";this.style.transform="scale(1.03)";playCoinSound();});neon.addEventListener("mouseleave",function(){this.style.textShadow="";this.style.transform="";});}if(tl){tl.style.transition="letter-spacing 0.3s ease";tl.addEventListener("mouseenter",function(){this.style.letterSpacing="0.07em";});tl.addEventListener("mouseleave",function(){this.style.letterSpacing="";}); }}
-
+initLogoFloat();
 function refreshLivePrices(){
   var btn=document.getElementById('live-refresh-btn');
   if(btn){btn.textContent='Refreshing...';btn.disabled=true;}
   var proxy='https://api.allorigins.win/get?url=';
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d'))
-    .then(function(r){return r.json();}).then(function(d){
-      var m=JSON.parse(d.contents).chart.result[0].meta;
-      var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pct=(ch/pr*100).toFixed(2);
-      var col=ch>=0?'#6BCB77':'#ff6b6b',sign=ch>=0?'+':'';
-      var el=document.getElementById('live-sensex');
-      if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sign+pct+'%</span>';
-    }).catch(function(){});
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d'))
-    .then(function(r){return r.json();}).then(function(d){
-      var m=JSON.parse(d.contents).chart.result[0].meta;
-      var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pct=(ch/pr*100).toFixed(2);
-      var col=ch>=0?'#6BCB77':'#ff6b6b',sign=ch>=0?'+':'';
-      var el=document.getElementById('live-nifty');
-      if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sign+pct+'%</span>';
-    }).catch(function(){});
-  fetch('https://api.exchangerate-api.com/v4/latest/USD')
-    .then(function(r){return r.json();}).then(function(d){
-      var el=document.getElementById('live-usd');
-      if(el)el.innerHTML='Rs. '+d.rates.INR.toFixed(2);
-    }).catch(function(){});
-  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d'))
-    .then(function(r){return r.json();}).then(function(d){
-      var m=JSON.parse(d.contents).chart.result[0].meta;
-      var el=document.getElementById('live-gold');
-      if(el)el.innerHTML='
-  initHeroFloat();
-  setupHeroEffects();
-});
-+Math.round(m.regularMarketPrice).toLocaleString('en-US')+'/oz';
-    }).catch(function(){});
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pt=(ch/pr*100).toFixed(2);var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';var el=document.getElementById('live-sensex');if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sg+pt+'%</span>';}catch(e){}}).catch(function(){});
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pt=(ch/pr*100).toFixed(2);var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';var el=document.getElementById('live-nifty');if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sg+pt+'%</span>';}catch(e){}}).catch(function(){});
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d')).then(function(r){return r.json();}).then(function(d){try{var m=JSON.parse(d.contents).chart.result[0].meta;var p=m.regularMarketPrice;var el=document.getElementById('live-gold');if(el)el.innerHTML='$'+p.toFixed(2);}catch(e){}}).catch(function(){});
+  fetch('https://api.exchangerate-api.com/v4/latest/USD').then(function(r){return r.json();}).then(function(d){try{var rate=d.rates.INR;var el=document.getElementById('live-usd');if(el)el.innerHTML='Rs. '+rate.toFixed(2);}catch(e){}}).catch(function(){});
   setTimeout(function(){if(btn){btn.textContent='Refresh Prices';btn.disabled=false;}},7000);
 }
-initLogoFloat();
+
   initHeroFloat();
   setupHeroEffects();
 });
