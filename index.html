@@ -177,7 +177,15 @@
           <h3 class="calc-title">&#128203; Income Tax Calculator FY 2025-26</h3>
           <div class="it-row" style="margin-bottom:8px">
             <label>Age Group</label>
-            <select id="it-age" onchange="calcIT()" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;background:#fff">
+            <div class="input-row">
+  <label>Filing As</label>
+  <select id="it-entity-type" onchange="calcIT()">
+    <option value="individual">Individual / HUF</option>
+    <option value="company-d">Company – Domestic (Sec 115BAA, 22%)</option>
+    <option value="company-f">Company – Foreign (40%)</option>
+  </select>
+</div>
+<select id="it-age" onchange="calcIT()" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;background:#fff">
               <option value="general">Below 60 (General)</option>
               <option value="senior">60&#8211;80 (Senior Citizen)</option>
               <option value="supersenior">Above 80 (Super Senior)</option>
@@ -380,6 +388,8 @@
       <h2>Live <span class="neon-text">News Feed</span></h2>
       <p class="sec-sub">Latest updates from ICAI, Income Tax Dept, GST Council, MCA & Mutual Funds.</p>
     </div>
+<div class="news-card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #4a4af4;border-radius:12px;padding:1.2rem;margin-bottom:1rem;"><h3 style="color:#a0aec0;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem">&#128202; Live Market Watch</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem"><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">SENSEX</div><div id="live-sensex" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">NIFTY 50</div><div id="live-nifty" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">GOLD ($/oz)</div><div id="live-gold" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">USD / INR</div><div id="live-usd" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div></div><button id="live-refresh-btn" onclick="refreshLivePrices()" style="width:100%;background:linear-gradient(90deg,#4a4af4,#7c3aed);color:#fff;border:none;border-radius:8px;padding:0.55rem 1rem;cursor:pointer;font-size:0.9rem;font-weight:600">&#128260; Refresh Prices</button><div style="color:#4a5568;font-size:0.7rem;margin-top:0.5rem;text-align:center">Data via Yahoo Finance &middot; Click to update</div></div>
+
     <div class="news-tabs">
       <button class="ntab active" onclick="showNews('icai',this)">🏛️ ICAI</button>
       <button class="ntab" onclick="showNews('incometax',this)">📊 Income Tax</button>
@@ -458,7 +468,7 @@
             <button class="qtab" onclick="loadQuiz('income',this)">Income Tax</button>
             <button class="qtab" onclick="loadQuiz('mf',this)">Mutual Funds</button>
             <button class="qtab" onclick="loadQuiz('tds',this)">TDS</button>
-            <button class="qtab" onclick="loadQuiz('accounting',this)">Accounting</button>
+            <button class="qtab" onclick="loadQuiz('accounting',this)">Accounting</button><button class="qtab" onclick="loadQuiz('current',this)">Current Affairs</button>
           </div>
           <div class="quiz-meta">
             <span>Q: <strong id="q-num">1</strong>/5</span>
@@ -555,6 +565,6 @@
   </div>
 </footer>
 
-<script src="main.js?v=20260329C"></script>
+<script src="main.js?v=20260329D"></script>
 </body>
 </html>
