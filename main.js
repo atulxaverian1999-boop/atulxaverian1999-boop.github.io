@@ -128,135 +128,39 @@ function switchRegime(r){
 function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
 
 function calcIT(){
-  const age         = (document.getElementById('it-age')||{value:'general'}).value;
-  const nationality = (document.getElementById('it-nationality')||{value:'resident'}).value;
-  const salary   = +document.getElementById('it-salary')?.value  ||0;
-  const business = +(document.getElementById('it-business')?.value)||0;
-  const rental   = +document.getElementById('it-rental')?.value  ||0;
-  const interest = +(document.getElementById('it-interest')?.value)||0;
-  const stcg111a = +(document.getElementById('it-stcg')?.value)  ||0;
-  const ltcg112a = +(document.getElementById('it-ltcg')?.value)  ||0;
-  const other    = +document.getElementById('it-other')?.value   ||0;
-
-  const gross       = salary + business + rental + interest + stcg111a + ltcg112a + other;
-  const normalGross = gross - stcg111a - ltcg112a;
-
-  let stdDed, totalDed, taxable;
-
-  if(regime === 'old'){
-    const c80 = Math.min(+(document.getElementById('it-80c')?.value)||0, 150000);
-    const d80 = +(document.getElementById('it-80d')?.value)||0;
-    const hra = +(document.getElementById('it-hra')?.value)||0;
-    const hl  = +(document.getElementById('it-hl')?.value)||0;
-    const nps = Math.min(+(document.getElementById('it-nps')?.value)||0, 50000);
-    const otd = +(document.getElementById('it-other-ded')?.value)||0;
-    stdDed   = 50000;
-    totalDed = c80+d80+hra+hl+nps+otd+stdDed;
-    taxable  = Math.max(0, normalGross - totalDed);
-  } else {
-    stdDed   = 75000;
-    totalDed = stdDed;
-    taxable  = Math.max(0, normalGross - stdDed);
+  function v(id){return parseFloat((document.getElementById(id)||{}).value)||0;}
+  function fmt(n){return 'Rs. '+Math.round(n).toLocaleString('en-IN');}
+  function pct(n,d){return d>0?(n/d*100).toFixed(2)+'%':'0%';}
+  var salary=v('it-salary'),business=v('it-business'),rental=v('it-rental');
+  var interest=v('it-interest'),stcg=v('it-stcg'),ltcg=v('it-ltcg'),other=v('it-other');
+  var gross=salary+business+rental+interest+stcg+ltcg+other;
+  var resEl=document.getElementById('it-result');
+  if(gross<=0){resEl.innerHTML='<div style="color:#ff6b6b;text-align:center;padding:1rem">Please enter your income details above.</div>';return;}
+  var entityEl=document.getElementById('it-entity-type');
+  var entity=entityEl?entityEl.value:'individual';
+  if(entity==='company-d'||entity==='company-f'){
+    var isF=entity==='company-f';
+    var br=isF?0.40:0.22;
+    var sr=isF?(gross>100000000?0.05:gross>10000000?0.02:0):0.10;
+    var bt=gross*br,sc=bt*sr,cs=(bt+sc)*0.04,tot=bt+sc+cs;
+    var lbl=isF?'Foreign Company (40%)':'Domestic Company Sec 115BAA (22%)';
+    resEl.innerHTML='<div style="background:rgba(199,125,255,0.12);border:1.5px solid #C77DFF;border-radius:12px;padding:1.2rem;margin-top:.8rem"><div style="color:#C77DFF;font-weight:700;font-size:.95rem;margin-bottom:.8rem">Company Tax: '+lbl+'</div><table style="width:100%;font-size:.84rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:3px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Base Tax @'+Math.round(br*100)+'%</td><td style="text-align:right;color:#FFD93D">'+fmt(bt)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Surcharge @'+Math.round(sr*100)+'%</td><td style="text-align:right;color:#FF9F1C">'+fmt(sc)+'</td></tr><tr><td style="color:#aaa;padding:3px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(cs)+'</td></tr><tr style="border-top:1px solid #C77DFF44"><td style="color:#fff;font-weight:700;padding:5px 0">Total Tax Liability</td><td style="text-align:right;color:#C77DFF;font-weight:700;font-size:1.1rem">'+fmt(tot)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(tot,gross)+'</td></tr></table><div style="margin-top:.7rem;font-size:.76rem;color:#888">Note: 115BAA rate 22%+10% SC+4% cess. General rate 30%. New Mfg (115BAB) @15%. Consult CA for applicable rate.</div></div>';
+    return;
   }
-
-  let normalTax = 0, slabs = [];
-
-  if(regime === 'old'){
-    let brackets, starts;
-    if(age==='supersenior'){
-      brackets=[[500000,0],[500000,0.20],[Infinity,0.30]]; starts=[0,500000,1000000];
-    } else if(age==='senior'){
-      brackets=[[300000,0],[200000,0.05],[500000,0.20],[Infinity,0.30]]; starts=[0,300000,500000,1000000];
-    } else {
-      brackets=[[250000,0],[250000,0.05],[500000,0.20],[Infinity,0.30]]; starts=[0,250000,500000,1000000];
-    }
-    let rem=taxable;
-    brackets.forEach(([lim,rate],i)=>{
-      const chunk=Math.min(rem,lim); if(chunk<=0) return;
-      const t=chunk*rate; normalTax+=t; rem-=chunk;
-      slabs.push(`${fmt(starts[i])}–${i===brackets.length-1?'above':fmt(starts[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
-    });
-  } else {
-    // New Regime FY 2025-26 (Finance Act 2024)
-    const nr=[[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
-    const ns=[0,400000,800000,1200000,1600000,2000000,2400000];
-    let rem=taxable;
-    nr.forEach(([lim,rate],i)=>{
-      const chunk=Math.min(rem,lim); if(chunk<=0) return;
-      const t=chunk*rate; normalTax+=t; rem-=chunk;
-      if(t>0||i===0) slabs.push(`${fmt(ns[i])}–${i===6?'above':fmt(ns[i]+lim)} @ ${rate*100}% = ${fmt(t)}`);
-    });
-  }
-
-  // Rebate u/s 87A (resi$ents only)
-  let rebate87a=0;
-  const rebateLimit = regime==='old' ? 500000 : 1200000;
-  const rebateCap   = regime==='old' ? 12500   : 60000;
-  if(nationality==='resident' && taxable<=rebateLimit){
-    rebate87a=Math.min(normalTax, rebateCap);
-  }
-
-  // Marginal Relief
-  let marginalRelief=0;
-  if(nationality==='resident' && taxable>rebateLimit){
-    const excess=taxable-rebateLimit;
-    const taxAfterRebate=normalTax-rebate87a;
-    if(taxAfterRebate>excess) marginalRelief=taxAfterRebate-excess;
-  }
-
-  const normalTaxFinal = Math.max(0, normalTax - rebate87a - marginalRelief);
-
-  // Special rate taxes
-  const stcgTax = stcg111a * 0.20;  // STCG 111A @ 20% from FY25-26
-  const ltcgFree = 125000; // LTCG exemption ₹1.25L from FY25-26
-  const ltcgTax  = Math.max(0, ltcg112a - ltcgFree) * 0.125; // LTCG @ 12.5%
-
-  const totalBeforeCess = normalTaxFinal + stcgTax + ltcgTax;
-  const cess  = totalBeforeCess * 0.04;
-  const total = totalBeforeCess + cess;
-  const effRate = gross>0 ? (total/gross*100) : 0;
-
-  // Update UI
-  document.getElementById('it-gross').textContent   = fmt(gross);
-  const sdEl=document.getElementById('it-std-ded');
-  if(sdEl) sdEl.textContent = '− '+fmt(stdDed);
-  const odEl=document.getElementById('it-ded');
-  if(odEl){ const od2=totalDed-stdDed; odEl.textContent=(od2>0?'− ':'')+fmt(od2); }
-  document.getElementById('it-taxable').textContent = fmt(taxable);
-  document.getElementById('it-slabs').innerHTML     = slabs.map(s=>`<div class="slab-row">${s}</div>`).join('')||'<div class="slab-row">No tax — zero liability in all slabs</div>';
-  document.getElementById('it-before-cess').textContent = fmt(normalTax);
-
-  const rbRow=document.getElementById('it-rebate-row');
-  const rbEl=document.getElementById('it-rebate');
-  if(rbRow) rbRow.style.display=rebate87a>0?'':'none';
-  if(rbEl)  rbEl.textContent='− '+fmt(rebate87a);
-
-  const mrRow=document.getElementById('it-marginal-row');
-  const mrEl=document.getElementById('it-marginal');
-  if(mrRow) mrRow.style.display=marginalRelief>0?'':'none';
-  if(mrEl)  mrEl.textContent='− '+fmt(marginalRelief);
-
-  // STCG/LTCG rows
-  const stEl=document.getElementById('it-stcg-tax');
-  const ltEl=document.getElementById('it-ltcg-tax');
-  if(stEl){ stEl.parentElement.style.display=stcgTax>0?'':'none'; stEl.textContent=fmt(stcgTax); }
-  if(ltEl){ ltEl.parentElement.style.display=ltcgTax>0?'':'none'; ltEl.textContent=fmt(ltcgTax); }
-
-  document.getElementById('it-cess').textContent    = fmt(cess);
-  document.getElementById('it-total').textContent   = fmt(total);
-  document.getElementById('it-monthly').textContent = fmt(total/12)+'/mo';
-  document.getElementById('it-rate').textContent    = effRate.toFixed(2)+'%';
-
-  const vd=document.getElementById('it-verdict');
-  if(vd){
-    if(total===0) vd.innerHTML='🎉 <strong>Zero Tax!</strong> Fully covered by rebate u/s 87A.';
-    else if(effRate<10) vd.innerHTML='✅ <strong>Low Tax Burden.</strong> Effective rate under 10% — well planned!';
-    else if(effRate<20) vd.innerHTML='📊 <strong>Moderate Tax.</strong> Maximise deductions to reduce liability.';
-    else vd.innerHTML='⚠️ <strong>High Tax.</strong> Consult us for legal tax-saving optimisation.';
-  }
-
-  // Store for PDF
-  window._taxData = {regime, age, nationality, gross, stdDed, totalDed, taxable, slabs, normalTax, rebate87a, marginalRelief, stcgTax, ltcgTax, cess, total, effRate, salary, business, rental, interest, stcg111a, ltcg112a, other};
+  var ded=v('it-80c')+v('it-80d')+v('it-hra')+v('it-hl')+v('it-nps')+v('it-other-ded');
+  var stdN=75000,tblN=Math.max(0,gross-stdN);
+  function txN(ti){if(ti<=300000)return 0;if(ti<=700000)return(ti-300000)*0.05;if(ti<=1000000)return 20000+(ti-700000)*0.10;if(ti<=1200000)return 50000+(ti-1000000)*0.15;if(ti<=1500000)return 80000+(ti-1200000)*0.20;return 140000+(ti-1500000)*0.30;}
+  var tBN=txN(tblN);if(tblN<=700000)tBN=0;
+  var stdO=50000,tblO=Math.max(0,gross-stdO-ded);
+  function txO(ti){if(ti<=250000)return 0;if(ti<=500000)return(ti-250000)*0.05;if(ti<=1000000)return 12500+(ti-500000)*0.20;return 112500+(ti-1000000)*0.30;}
+  var tBO=txO(tblO);if(tblO<=500000)tBO=0;
+  function gSC(g,t,n){if(g<=5000000)return 0;if(g<=10000000)return t*0.10;if(g<=20000000)return t*0.15;if(g<=50000000)return t*0.25;return t*(n?0.25:0.37);}
+  var scN=gSC(gross,tBN,1),csN=(tBN+scN)*0.04,totN=tBN+scN+csN;
+  var scO=gSC(gross,tBO,0),csO=(tBO+scO)*0.04,totO=tBO+scO+csO;
+  var better=totN<=totO?'New Regime':'Old Regime',saved=Math.abs(totO-totN);
+  var scR=function(sc){return sc>0?'<tr><td style="color:#aaa;padding:2px 0">Surcharge</td><td style="text-align:right;color:#FF9F1C">'+fmt(sc)+'</td></tr>':'';};
+  var scNote=gross>5000000?'<div style="margin-top:.5rem;padding:.5rem .8rem;background:rgba(255,159,28,0.08);border:1px solid rgba(255,159,28,0.3);border-radius:8px;font-size:.77rem;color:#aaa"><b style="color:#FF9F1C">Surcharge (Individual/HUF):</b> 50L-1Cr:10% | 1Cr-2Cr:15% | 2Cr-5Cr:25% | Above 5Cr:37%(Old)/25%(New)</div>':'';
+  resEl.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem"><div style="background:rgba(77,150,255,0.1);border:1.5px solid #4D96FF;border-radius:12px;padding:.9rem"><div style="color:#4D96FF;font-weight:700;font-size:.88rem;margin-bottom:.6rem">New Regime (FY 2024-25)</div><table style="width:100%;font-size:.80rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:2px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Std Deduction</td><td style="text-align:right;color:#6BCB77">-'+fmt(stdN)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Taxable</td><td style="text-align:right;color:#fff;font-weight:600">'+fmt(tblN)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Base Tax</td><td style="text-align:right;color:#FFD93D">'+fmt(tBN)+'</td></tr>'+scR(scN)+'<tr><td style="color:#aaa;padding:2px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(csN)+'</td></tr><tr style="border-top:1px solid #4D96FF55"><td style="color:#fff;font-weight:700;padding:4px 0">Total Tax</td><td style="text-align:right;color:#4D96FF;font-weight:700;font-size:.95rem">'+fmt(totN)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(totN,gross)+'</td></tr><tr><td style="color:#aaa">Monthly Tax</td><td style="text-align:right;color:#aaa">'+fmt(totN/12)+'</td></tr></table></div><div style="background:rgba(107,203,119,0.1);border:1.5px solid #6BCB77;border-radius:12px;padding:.9rem"><div style="color:#6BCB77;font-weight:700;font-size:.88rem;margin-bottom:.6rem">Old Regime (FY 2024-25)</div><table style="width:100%;font-size:.80rem;border-collapse:collapse"><tr><td style="color:#aaa;padding:2px 0">Gross Income</td><td style="text-align:right;color:#fff">'+fmt(gross)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Std Deduction</td><td style="text-align:right;color:#6BCB77">-'+fmt(stdO)+'</td></tr>'+(ded>0?'<tr><td style="color:#aaa;padding:2px 0">Other Deductions</td><td style="text-align:right;color:#6BCB77">-'+fmt(ded)+'</td></tr>':'')+'<tr><td style="color:#aaa;padding:2px 0">Taxable</td><td style="text-align:right;color:#fff;font-weight:600">'+fmt(tblO)+'</td></tr><tr><td style="color:#aaa;padding:2px 0">Base Tax</td><td style="text-align:right;color:#FFD93D">'+fmt(tBO)+'</td></tr>'+scR(scO)+'<tr><td style="color:#aaa;padding:2px 0">Cess @4%</td><td style="text-align:right;color:#FF9F1C">'+fmt(csO)+'</td></tr><tr style="border-top:1px solid #6BCB7755"><td style="color:#fff;font-weight:700;padding:4px 0">Total Tax</td><td style="text-align:right;color:#6BCB77;font-weight:700;font-size:.95rem">'+fmt(totO)+'</td></tr><tr><td style="color:#aaa">Effective Rate</td><td style="text-align:right;color:#aaa">'+pct(totO,gross)+'</td></tr><tr><td style="color:#aaa">Monthly Tax</td><td style="text-align:right;color:#aaa">'+fmt(totO/12)+'</td></tr></table></div></div><div style="text-align:center;margin-top:.7rem;padding:.65rem;background:rgba(226,255,0,0.07);border-radius:8px;border:1px solid rgba(226,255,0,0.25)"><span style="color:#e2ff00;font-weight:700">'+better+' saves you '+fmt(saved)+'</span>'+(gross>5000000?' <span style="color:#FF9F1C;font-size:.8rem">| Surcharge applied</span>':'')+'</div>'+scNote;
 }
 
 function downloadTaxPDF(){
@@ -589,35 +493,65 @@ function changeMatrixColor(){
 /* ── FINANCE QUIZ ── */
 const quizData={
   gst:[
-    {q:'GST was launched in India on which date?',opts:['1 April 2017','1 July 2017','1 January 2018','15 August 2017'],ans:1},
-    {q:'Which GST slab applies to essential food items like rice and wheat?',opts:['5%','12%','18%','0% Exempt'],ans:3},
-    {q:'Which return form is filed monthly by regular GST taxpayers?',opts:['GSTR-1','GSTR-3B','GSTR-9','GSTR-4'],ans:1},
-    {q:'Input Tax Credit (ITC) allows businesses to deduct tax paid on?',opts:['Employee salaries','Input goods & services','Office rent','Bank interest'],ans:1},
-    {q:'Which GST rate applies to luxury cars and tobacco products?',opts:['18%','28%','12%','5%'],ans:1},
-    {q:'GSTIN is a unique identification number of how many characters?',opts:['10','12','15','16'],ans:2},
-    {q:'Composition scheme under GST is for businesses with turnover up to?',opts:['50 lakh','1 crore','1.5 crore','2 crore'],ans:2},
-    {q:'Who chairs the GST Council in India?',opts:['RBI Governor','Finance Minister','Prime Minister','SEBI Chairman'],ans:1}
+    {q:"What is the current standard GST rate in India?",opts:["5%","12%","18%","28%"],ans:2},
+    {q:"GST was launched in India on which date?",opts:["1 April 2017","1 July 2017","1 January 2018","15 August 2017"],ans:1},
+    {q:"Under which Constitutional Amendment was GST introduced?",opts:["99th","100th","101st","102nd"],ans:2},
+    {q:"GSTIN is a unique identification number of how many digits?",opts:["10","12","15","16"],ans:2},
+    {q:"Composition Scheme under GST is for businesses with turnover up to?",opts:["50 lakh","75 lakh","1.5 crore","2 crore"],ans:2},
+    {q:"Input Tax Credit CANNOT be claimed on which item?",opts:["Raw materials","Capital goods","Personal consumption goods","Office equipment"],ans:2},
+    {q:"IGST is levied on which type of transactions?",opts:["Intra-state supply","Inter-state supply","Both","Neither"],ans:1},
+    {q:"Which authority resolves disputes between Centre and States under GST?",opts:["GST Council","GSTAT","High Court","CBIC"],ans:1},
   ],
-  income_tax:[
-    {q:'Under Budget 2025, income up to how much is tax-free in New Regime?',opts:['7 lakh','10 lakh','12 lakh','15 lakh'],ans:2},
-    {q:'Section 80C allows deduction up to how much for PPF and ELSS?',opts:['1 lakh','1.5 lakh','2 lakh','50,000'],ans:1},
-    {q:'HRA exemption is available only under which tax regime?',opts:['New Regime','Old Regime','Both','Neither'],ans:1},
-    {q:'Section 87A rebate under New Regime (FY 2025-26) applies up to?',opts:['5 lakh','7 lakh','10 lakh','12 lakh'],ans:3},
-    {q:'Long Term Capital Gains on equity above 1.25L are taxed at?',opts:['10%','12.5%','15%','20%'],ans:1},
-    {q:'TDS on salary is deducted under which section?',opts:['Section 192','Section 194A','Section 194C','Section 195'],ans:0},
-    {q:'Which ITR form is used by salaried individuals with income up to 50 lakh?',opts:['ITR-1','ITR-2','ITR-3','ITR-4'],ans:0},
-    {q:'Advance tax must be paid if tax liability exceeds how much in a year?',opts:['5,000','10,000','15,000','25,000'],ans:1}
+  income:[
+    {q:"Basic exemption limit under New Tax Regime for FY 2024-25?",opts:["Rs. 2.5 lakh","Rs. 3 lakh","Rs. 5 lakh","Rs. 4 lakh"],ans:1},
+    {q:"Standard deduction for salaried under New Regime (Budget 2024)?",opts:["Rs. 40,000","Rs. 50,000","Rs. 75,000","Rs. 1,00,000"],ans:2},
+    {q:"Maximum rebate under Section 87A in Old Regime?",opts:["Rs. 5,000","Rs. 12,500","Rs. 25,000","Rs. 50,000"],ans:1},
+    {q:"Maximum deduction allowed under Section 80C?",opts:["Rs. 50,000","Rs. 1 lakh","Rs. 1.5 lakh","Rs. 2 lakh"],ans:2},
+    {q:"Tax rate for income Rs. 12L-15L under New Regime FY 2024-25?",opts:["10%","15%","20%","25%"],ans:2},
+    {q:"LTCG on listed equity shares above Rs. 1.25 lakh taxed at (Budget 2024)?",opts:["10%","12.5%","15%","20%"],ans:1},
+    {q:"Health and Education Cess rate on income tax?",opts:["2%","3%","4%","5%"],ans:2},
+    {q:"Which ITR form is filed by individual with only salary income?",opts:["ITR-1","ITR-2","ITR-3","ITR-4"],ans:0},
   ],
-  investment:[
-    {q:'Which investment offers guaranteed returns backed by Government of India?',opts:['Mutual Funds','PPF (Public Provident Fund)','Stocks','Cryptocurrency'],ans:1},
-    {q:'SIP stands for Systematic Investment Plan. Its key benefit is?',opts:['Guaranteed returns','Rupee cost averaging','Tax-free returns','Zero risk'],ans:1},
-    {q:'ELSS mutual funds have a mandatory lock-in period of how many years?',opts:['1 year','2 years','3 years','5 years'],ans:2},
-    {q:'Rule of 72: at 8% annual return, money doubles in approximately?',opts:['8 years','9 years','10 years','12 years'],ans:1},
-    {q:'Which ratio measures a mutual fund manager risk-adjusted performance?',opts:['P/E Ratio','Sharpe Ratio','Current Ratio','Debt/Equity Ratio'],ans:1},
-    {q:'SEBI regulates which financial market in India?',opts:['Banking','Insurance','Securities & Capital Markets','Real Estate'],ans:2},
-    {q:'NPS (National Pension System) matures at what default age?',opts:['55 years','58 years','60 years','65 years'],ans:2},
-    {q:'A Chartered Accountant in India is certified by which body?',opts:['SEBI','RBI','ICAI','IRDA'],ans:2}
-  ]
+  mf:[
+    {q:"Full form of NAV in mutual funds?",opts:["Net Annual Value","Net Asset Value","Nominal Asset Value","New Asset Value"],ans:1},
+    {q:"ELSS stands for?",opts:["Equity Linked Savings Scheme","Equity Long-term Saving System","Exchange Listed Security","Equity Liquid Savings Solution"],ans:0},
+    {q:"Minimum lock-in period for ELSS funds?",opts:["1 year","2 years","3 years","5 years"],ans:2},
+    {q:"Which ratio measures risk-adjusted return of a mutual fund?",opts:["P/E Ratio","Sharpe Ratio","Beta","Alpha"],ans:1},
+    {q:"Full form of TER in mutual fund context?",opts:["Total Expense Ratio","Tax Exemption Ratio","Trading Entry Rate","Term Equity Return"],ans:0},
+    {q:"SIP primarily helps investors achieve?",opts:["Lump sum gains","Rupee cost averaging","Tax evasion","Fixed returns"],ans:1},
+    {q:"SEBI categorized MFs by market cap (large/mid/small) in which year?",opts:["2015","2017","2019","2021"],ans:1},
+    {q:"Which fund category has mandatory 3-year lock-in AND gives 80C benefit?",opts:["Index Fund","ELSS","Liquid Fund","Balanced Advantage Fund"],ans:1},
+  ],
+  tds:[
+    {q:"TDS on salary is deducted under which section?",opts:["Section 194A","Section 194C","Section 192","Section 194J"],ans:2},
+    {q:"TDS rate on technical services (Section 194J) from FY 2020-21?",opts:["10%","2%","5%","7.5%"],ans:1},
+    {q:"TDS deducted in March must be deposited by?",opts:["7th April","30th April","31st May","7th May"],ans:1},
+    {q:"Form 26AS is?",opts:["Annual tax credit statement","Wealth tax return","Advance tax challan","TDS certificate for rent"],ans:0},
+    {q:"TDS certificate for salary is issued in?",opts:["Form 16","Form 16A","Form 26Q","Form 24Q"],ans:0},
+    {q:"If PAN is not provided, TDS is deducted at?",opts:["Normal TDS rate","20% or applicable higher rate","Nil","5% flat"],ans:1},
+    {q:"Section 194N covers TDS on?",opts:["Interest on FD","Cash withdrawal from bank","Professional fees","Rent"],ans:1},
+    {q:"Quarterly TDS return for non-salary payments is filed in?",opts:["Form 24Q","Form 26Q","Form 27Q","Form 27EQ"],ans:1},
+  ],
+  accounting:[
+    {q:"Double entry system requires every transaction to have?",opts:["Two debits","Two credits","Equal debit and credit","No credits"],ans:2},
+    {q:"Depreciation under SLM is calculated on?",opts:["Written down value","Original cost","Market value","Book value"],ans:1},
+    {q:"ICAI was established in which year?",opts:["1947","1949","1956","1961"],ans:1},
+    {q:"Goodwill is classified as?",opts:["Current asset","Fictitious asset","Intangible fixed asset","Tangible fixed asset"],ans:2},
+    {q:"Which concept requires consistent application of accounting policies?",opts:["Going concern","Consistency concept","Materiality","Prudence"],ans:1},
+    {q:"Revenue is recognized when (as per AS-9)?",opts:["Cash received","Goods delivered or services rendered","Invoice raised","Order received"],ans:1},
+    {q:"Full form of EBITDA?",opts:["Earnings Before Interest Tax Depreciation and Amortization","Equity Before Income Tax Dividends Assets","Earnings Before Income Tax Dues Assessment","None of the above"],ans:0},
+    {q:"Ind AS is based on which global standards?",opts:["US GAAP","IFRS","ICAI own standards","UK GAAP"],ans:1},
+  ],
+  current:[
+    {q:"Union Budget 2025-26: No income tax payable up to income of?",opts:["Rs. 7 lakh","Rs. 10 lakh","Rs. 12 lakh","Rs. 15 lakh"],ans:2},
+    {q:"India fiscal deficit target for FY 2025-26 is?",opts:["4.5% of GDP","4.4% of GDP","5.1% of GDP","3.5% of GDP"],ans:1},
+    {q:"SEBI T+0 settlement means trades settle on?",opts:["Next working day","Same day","2 days later","Weekly basis"],ans:1},
+    {q:"Which index represents the top 50 companies on NSE?",opts:["SENSEX","NIFTY 50","BSE 100","NIFTY BANK"],ans:1},
+    {q:"Budget 2025: TDS threshold on bank FD interest (194A) raised to?",opts:["Rs. 40,000","Rs. 50,000","Rs. 75,000","Rs. 1,00,000"],ans:1},
+    {q:"RBI cut its repo rate in February 2025 to?",opts:["6.75%","6.50%","6.25%","6.00%"],ans:2},
+    {q:"Which scheme offers paid internships in top 500 Indian companies (Budget 2024)?",opts:["PM Internship Scheme","Skill India 2.0","Digital India Jobs","MUDRA Internship"],ans:0},
+    {q:"LTCG tax on equity was raised in Budget 2024 to?",opts:["10%","12.5%","15%","20%"],ans:1},
+  ],
 };
 let quizTopic='gst', quizQ=0, quizScore=0, quizTimer=null, quizTime=30;
 function loadQuiz(topic, btn){
@@ -772,6 +706,44 @@ window.addEventListener('DOMContentLoaded',()=>{
   
 function playCoinSound(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes=[523,659,784,1047];notes.forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type="sine";o.frequency.value=f;var t=ac.currentTime+i*0.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.28,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
 function setupHeroEffects(){var h1=document.querySelector(".hero-h1");var neon=document.querySelector(".neon-text");var tl=document.querySelector(".hero-tagline");if(h1){h1.style.transition="transform 0.35s ease,text-shadow 0.35s ease";h1.addEventListener("mouseenter",function(){this.style.transform="scale(1.06) translateY(-4px)";this.style.textShadow="0 0 30px rgba(226,255,0,0.5)";playCoinSound();});h1.addEventListener("mouseleave",function(){this.style.transform="";this.style.textShadow="";});}if(neon){neon.style.transition="text-shadow 0.35s ease,transform 0.35s ease";neon.addEventListener("mouseenter",function(){this.style.textShadow="0 0 40px #e2ff00,0 0 80px #e2ff00,0 0 120px rgba(226,255,0,0.5)";this.style.transform="scale(1.03)";playCoinSound();});neon.addEventListener("mouseleave",function(){this.style.textShadow="";this.style.transform="";});}if(tl){tl.style.transition="letter-spacing 0.3s ease";tl.addEventListener("mouseenter",function(){this.style.letterSpacing="0.07em";});tl.addEventListener("mouseleave",function(){this.style.letterSpacing="";}); }}
+
+function refreshLivePrices(){
+  var btn=document.getElementById('live-refresh-btn');
+  if(btn){btn.textContent='Refreshing...';btn.disabled=true;}
+  var proxy='https://api.allorigins.win/get?url=';
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d'))
+    .then(function(r){return r.json();}).then(function(d){
+      var m=JSON.parse(d.contents).chart.result[0].meta;
+      var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pct=(ch/pr*100).toFixed(2);
+      var col=ch>=0?'#6BCB77':'#ff6b6b',sign=ch>=0?'+':'';
+      var el=document.getElementById('live-sensex');
+      if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sign+pct+'%</span>';
+    }).catch(function(){});
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d'))
+    .then(function(r){return r.json();}).then(function(d){
+      var m=JSON.parse(d.contents).chart.result[0].meta;
+      var p=m.regularMarketPrice,pr=m.chartPreviousClose,ch=p-pr,pct=(ch/pr*100).toFixed(2);
+      var col=ch>=0?'#6BCB77':'#ff6b6b',sign=ch>=0?'+':'';
+      var el=document.getElementById('live-nifty');
+      if(el)el.innerHTML=p.toLocaleString('en-IN',{maximumFractionDigits:0})+' <span style="color:'+col+'">'+sign+pct+'%</span>';
+    }).catch(function(){});
+  fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    .then(function(r){return r.json();}).then(function(d){
+      var el=document.getElementById('live-usd');
+      if(el)el.innerHTML='Rs. '+d.rates.INR.toFixed(2);
+    }).catch(function(){});
+  fetch(proxy+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d'))
+    .then(function(r){return r.json();}).then(function(d){
+      var m=JSON.parse(d.contents).chart.result[0].meta;
+      var el=document.getElementById('live-gold');
+      if(el)el.innerHTML='
+  initHeroFloat();
+  setupHeroEffects();
+});
++Math.round(m.regularMarketPrice).toLocaleString('en-US')+'/oz';
+    }).catch(function(){});
+  setTimeout(function(){if(btn){btn.textContent='Refresh Prices';btn.disabled=false;}},7000);
+}
 initLogoFloat();
   initHeroFloat();
   setupHeroEffects();
