@@ -45,17 +45,19 @@
     <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
     <h1 class="hero-h1">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
     <p class="hero-tagline">Bold Moves. <em>Smarter Money.</em> Brighter Future.</p>
-    <p class="hero-sub">Backed by India's finest CA expertise — resolving every financial challenge from its root, delivering world-class tax planning, investment strategy &amp; compliance precision that secures your future.</p>
+    <p class="hero-sub">Expert Tax, Investment & Business Advisory from Powai, Mumbai — empowering individuals and businesses to grow, thrive and prosper.</p>
     <div class="hero-actions">
       <a href="#services" class="btn-neon">Explore Services</a>
       <a href="#calculators" class="btn-ghost">Try Calculators ↓</a>
     </div>
-        <div class="hero-stats">
-      <div class="hs"><span class="hs-n">🔬</span><span class="hs-l">Root-Cause Fix</span></div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-n">15+</span><span class="hs-l">Years Exp.</span></div>
       <div class="hs-div"></div>
-      <div class="hs"><span class="hs-n">🌐</span><span class="hs-l">World-Class CA</span></div>
+      <div class="hs"><span class="hs-n">500+</span><span class="hs-l">Clients</span></div>
       <div class="hs-div"></div>
-      <div class="hs"><span class="hs-n">🛡️</span><span class="hs-l">Full Protection</span></div>
+      <div class="hs"><span class="hs-n">₹100Cr+</span><span class="hs-l">Advised</span></div>
+      <div class="hs-div"></div>
+      <div class="hs"><span class="hs-n">10+</span><span class="hs-l">Services</span></div>
     </div>
   </div>
   <div class="ticker-bar">
@@ -170,85 +172,57 @@
       <button class="ctab" onclick="showCalc('hra-calc',this)">🏠 HRA</button>
     </div>
 
-        <!-- INCOME TAX CALCULATOR (Detailed) -->
+    <!-- INCOME TAX CALCULATOR FY 2025-26 -->
     <div class="cpanel active" id="panel-income-tax">
-      <div class="calc-box">
-        <div class="calc-left">
-          <h3 class="calc-title">&#128203; Income Tax Calculator FY 2025-26</h3>
-          <div class="it-row" style="margin-bottom:8px">
-            <label>Age Group</label>
-            <div class="input-row">
-  <label>Filing As</label>
-  <select id="it-entity-type" onchange="calcIT()">
-    <option value="individual">Individual / HUF</option>
-    <option value="company-d">Company – Domestic (Sec 115BAA, 22%)</option>
-    <option value="company-f">Company – Foreign (40%)</option>
-  </select>
-</div>
-<select id="it-age" onchange="calcIT()" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;background:#fff">
-              <option value="general">Below 60 (General)</option>
-              <option value="senior">60&#8211;80 (Senior Citizen)</option>
-              <option value="supersenior">Above 80 (Super Senior)</option>
-            </select>
-          </div>
-          <div class="it-row" style="margin-bottom:12px">
-            <label>Residential Status</label>
-            <select id="it-nationality" onchange="calcIT()" style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;background:#fff">
-              <option value="resident">Resident Indian</option>
-              <option value="nri">NRI / NOR</option>
-            </select>
-          </div>
-          <div class="regime-toggle">
-            <button class="rtab active" id="regime-old" onclick="switchRegime('old')">Old Regime</button>
-            <button class="rtab" id="regime-new" onclick="switchRegime('new')">New Regime</button>
-          </div>
-          <div class="it-form" id="it-form">
-            <div class="it-section">
-              <div class="it-sec-title">&#128188; Income Sources</div>
-              <div class="it-row"><label>Salary / Pension (&#8377;)</label><input type="number" id="it-salary" value="1000000" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Business / Profession (&#8377;)</label><input type="number" id="it-business" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Rental Income (&#8377;)</label><input type="number" id="it-rental" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Interest Income (&#8377;)</label><input type="number" id="it-interest" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>STCG u/s 111A @20% (&#8377;)</label><input type="number" id="it-stcg" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>LTCG u/s 112A @12.5% (&#8377;)</label><input type="number" id="it-ltcg" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Other Income (&#8377;)</label><input type="number" id="it-other" value="0" oninput="calcIT()"/></div>
+      <div class="calc-box it-box-wide">
+        <div class="calc-left it-left-wide">
+          <h3 class="calc-title">📊 Income Tax Calculator FY 2025-26</h3>
+          <div class="it-section">
+            <div class="it-sec-title">🏢 Filing As</div>
+            <div class="it-row">
+              <select id="it-entity-type" onchange="calcIT()">
+                <option value="individual">Individual / HUF</option>
+                <option value="company-d">Company – Domestic (Sec 115BAA, 22%)</option>
+                <option value="company-f">Company – Foreign (40%)</option>
+              </select>
             </div>
-            <div class="it-section" id="old-deductions">
-              <div class="it-sec-title">&#128737;&#65039; Deductions (Old Regime)</div>
-              <div class="it-row"><label>80C (PF, LIC, ELSS) Max &#8377;1.5L</label><input type="number" id="it-80c" value="150000" max="150000" oninput="calcIT()"/></div>
-              <div class="it-row"><label>80D (Health Insurance)</label><input type="number" id="it-80d" value="25000" oninput="calcIT()"/></div>
-              <div class="it-row"><label>HRA Exemption</label><input type="number" id="it-hra" value="120000" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Home Loan Interest (24b)</label><input type="number" id="it-hl" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>NPS 80CCD(1B) Max &#8377;50K</label><input type="number" id="it-nps" value="0" oninput="calcIT()"/></div>
-              <div class="it-row"><label>Other Deductions</label><input type="number" id="it-other-ded" value="0" oninput="calcIT()"/></div>
+            <div class="it-row" id="it-age-row">
+              <label>Age Group</label>
+              <select id="it-age" onchange="calcIT()">
+                <option value="below60">Below 60 (General)</option>
+                <option value="senior">Senior Citizen (60–80)</option>
+                <option value="supersenior">Super Senior (80+)</option>
+              </select>
             </div>
+          </div>
+          <div class="it-section">
+            <div class="it-sec-title">💼 Income Sources</div>
+            <div class="it-row"><label>Salary Income (₹)</label><input type="number" id="it-salary" value="1000000" oninput="calcIT()"/></div>
+            <div class="it-row"><label>Business / Other Income (₹)</label><input type="number" id="it-other" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>Rental Income (₹)</label><input type="number" id="it-rental" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>Interest Income (₹)</label><input type="number" id="it-interest" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>STCG u/s 111A @20% (₹)</label><input type="number" id="it-stcg" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>LTCG u/s 112A @12.5% (₹)</label><input type="number" id="it-ltcg" value="0" oninput="calcIT()"/></div>
+          </div>
+          <div class="it-section" id="old-deductions">
+            <div class="it-sec-title">🛡️ Deductions (Old Regime only)</div>
+            <div class="it-row"><label>80C (PF, LIC, ELSS etc.) Max ₹1.5L</label><input type="number" id="it-80c" value="150000" max="150000" oninput="calcIT()"/></div>
+            <div class="it-row"><label>80D (Health Insurance)</label><input type="number" id="it-80d" value="25000" oninput="calcIT()"/></div>
+            <div class="it-row"><label>HRA Exemption</label><input type="number" id="it-hra" value="120000" oninput="calcIT()"/></div>
+            <div class="it-row"><label>Home Loan Interest (24b)</label><input type="number" id="it-hl" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>NPS 80CCD(1B) Max ₹50K</label><input type="number" id="it-nps" value="0" oninput="calcIT()"/></div>
+            <div class="it-row"><label>Other Deductions</label><input type="number" id="it-other-ded" value="0" oninput="calcIT()"/></div>
           </div>
         </div>
-        <div class="calc-right">
+        <div class="calc-right it-right-wide">
           <div class="it-result" id="it-result">
-            <div class="itr-title">Your Tax Summary</div>
-            <div class="itr-row"><span>Gross Total Income</span><strong id="it-gross">&#8377;10,00,000</strong></div>
-            <div class="itr-row ded"><span>Standard Deduction</span><strong id="it-std-ded">&#8722; &#8377;75,000</strong></div>
-            <div class="itr-row ded"><span>Other Deductions</span><strong id="it-ded">&#8377;0</strong></div>
-            <div class="itr-row taxable"><span>Taxable Income</span><strong id="it-taxable">&#8377;9,25,000</strong></div>
-            <div class="it-slab-title">Tax Slab Breakdown</div>
-            <div class="it-slabs" id="it-slabs"></div>
-            <div class="itr-row"><span>Tax on Normal Income</span><strong id="it-before-cess">&#8377;0</strong></div>
-            <div class="itr-row" id="it-rebate-row" style="display:none"><span>Rebate u/s 87A</span><strong id="it-rebate" style="color:#4CAF50">&#8722; &#8377;0</strong></div>
-            <div class="itr-row" id="it-marginal-row" style="display:none"><span>Marginal Relief</span><strong id="it-marginal" style="color:#4CAF50">&#8722; &#8377;0</strong></div>
-            <div class="itr-row" style="display:none"><span>STCG Tax @20%</span><strong id="it-stcg-tax">&#8377;0</strong></div>
-            <div class="itr-row" style="display:none"><span>LTCG Tax @12.5%</span><strong id="it-ltcg-tax">&#8377;0</strong></div>
-            <div class="itr-row"><span>H&amp;E Cess (4%)</span><strong id="it-cess">&#8377;0</strong></div>
-            <div class="itr-row total"><span>Total Tax Payable</span><strong id="it-total">&#8377;0</strong></div>
-            <div class="itr-row"><span>Monthly TDS</span><strong id="it-monthly">&#8377;0/mo</strong></div>
-            <div class="itr-row"><span>Effective Tax Rate</span><strong id="it-rate">0.00%</strong></div>
-            <div class="it-verdict" id="it-verdict"></div>
-            <button onclick="downloadTaxPDF()" style="margin-top:12px;width:100%;background:#1a73e8;color:#fff;border:none;padding:10px 0;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">&#128196; Download Tax Summary PDF</button>
+            <div class="itr-title">📊 Enter your income to see both regimes instantly</div>
           </div>
         </div>
       </div>
     </div>
-<!-- GST CALCULATOR -->
+
+    <!-- GST CALCULATOR -->
     <div class="cpanel" id="panel-gst-calc">
       <div class="calc-box">
         <div class="calc-left">
@@ -388,8 +362,6 @@
       <h2>Live <span class="neon-text">News Feed</span></h2>
       <p class="sec-sub">Latest updates from ICAI, Income Tax Dept, GST Council, MCA & Mutual Funds.</p>
     </div>
-<div class="news-card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #4a4af4;border-radius:12px;padding:1.2rem;margin-bottom:1rem;"><h3 style="color:#a0aec0;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.8rem">&#128202; Live Market Watch</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem"><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">SENSEX</div><div id="live-sensex" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">NIFTY 50</div><div id="live-nifty" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">GOLD ($/oz)</div><div id="live-gold" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div><div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem"><div style="color:#a0aec0;font-size:0.75rem">USD / INR</div><div id="live-usd" style="color:#e2e8f0;font-size:1.1rem;font-weight:700">&#8212;</div></div></div><button id="live-refresh-btn" onclick="refreshLivePrices()" style="width:100%;background:linear-gradient(90deg,#4a4af4,#7c3aed);color:#fff;border:none;border-radius:8px;padding:0.55rem 1rem;cursor:pointer;font-size:0.9rem;font-weight:600">&#128260; Refresh Prices</button><div style="color:#4a5568;font-size:0.7rem;margin-top:0.5rem;text-align:center">Data via Yahoo Finance &middot; Click to update</div></div>
-
     <div class="news-tabs">
       <button class="ntab active" onclick="showNews('icai',this)">🏛️ ICAI</button>
       <button class="ntab" onclick="showNews('incometax',this)">📊 Income Tax</button>
@@ -400,6 +372,19 @@
     <div class="news-grid" id="news-grid">
       <!-- Filled by JS -->
     </div>
+    <!-- LIVE MARKET WATCH -->
+    <div class="market-watch-card">
+      <div class="mw-title">📈 Live Market Watch</div>
+      <div class="mw-grid">
+        <div class="mw-tile"><div class="mw-label">SENSEX</div><div class="mw-val" id="live-sensex">—</div></div>
+        <div class="mw-tile"><div class="mw-label">NIFTY 50</div><div class="mw-val" id="live-nifty">—</div></div>
+        <div class="mw-tile"><div class="mw-label">GOLD ($/oz)</div><div class="mw-val" id="live-gold">—</div></div>
+        <div class="mw-tile"><div class="mw-label">USD / INR</div><div class="mw-val" id="live-usd">—</div></div>
+      </div>
+      <button class="btn-refresh-prices" id="live-refresh-btn" onclick="refreshLivePrices()">🔄 Refresh Prices</button>
+      <p class="mw-note">Data via Yahoo Finance &amp; ExchangeRate API · Click to update</p>
+    </div>
+
     <div class="news-disclaimer">
       <p>📌 News links redirect to official websites: <a href="https://icai.org" target="_blank">icai.org</a> · <a href="https://incometax.gov.in" target="_blank">incometax.gov.in</a> · <a href="https://gst.gov.in" target="_blank">gst.gov.in</a> · <a href="https://mca.gov.in" target="_blank">mca.gov.in</a> · <a href="https://amfiindia.com" target="_blank">amfiindia.com</a></p>
     </div>
@@ -467,8 +452,9 @@
             <button class="qtab active" onclick="loadQuiz('gst',this)">GST</button>
             <button class="qtab" onclick="loadQuiz('income',this)">Income Tax</button>
             <button class="qtab" onclick="loadQuiz('mf',this)">Mutual Funds</button>
-            <button class="qtab" onclick="loadQuiz('tds',this)">TDS</button>
-            <button class="qtab" onclick="loadQuiz('accounting',this)">Accounting</button><button class="qtab" onclick="loadQuiz('current',this)">Current Affairs</button>
+            <button class="qtab" onclick="loadQuiz('tds',this)">TDU</button>
+            <button class="qtab" onclick="loadQuiz('accounting',this)">Accounting</button>
+            <button class="qtab" onclick="loadQuiz('current',this)">Current Affairs</button>
           </div>
           <div class="quiz-meta">
             <span>Q: <strong id="q-num">1</strong>/5</span>
@@ -495,19 +481,17 @@
         <div class="cc-card"><span class="cc-ico">📧</span><div><p class="cc-l">Email</p><a href="mailto:atulxaverian1999@gmail.com" class="cc-v">atulxaverian1999@gmail.com</a></div></div>
         <div class="cc-card"><span class="cc-ico">📍</span><div><p class="cc-l">Address</p><p class="cc-v">Powai, Mumbai — 400076<br/>Maharashtra, India</p></div></div>
         <div class="cc-card"><span class="cc-ico">🕐</span><div><p class="cc-l">Hours</p><p class="cc-v">Mon – Sat: 9 AM – 7 PM</p></div></div>
-        
+        <div class="trust-row">
+          <span>✅ SEBI Registered</span><span>✅ CA Certified</span><span>✅ 15+ Years</span>
+        </div>
       </div>
-      <form class="cform" action="https://formsubmit.co/atulxaverian1999@gmail.com" method="POST" onsubmit="handleSubmit(event)">
-      <input type="hidden" name="_subject" value="New Enquiry – A Bagla Financial Services">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://atulbagla.com/?submitted=1">
+      <form class="cform" onsubmit="handleSubmit(event)">
         <div class="form-row">
           <div class="fg"><label>Full Name</label><input type="text" placeholder="Raj Sharma" required/></div>
           <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 98765 43210" required/></div>
         </div>
         <div class="fg"><label>Email</label><input type="email" placeholder="raj@example.com" required/></div>
-        <div class="fg">
+        <div clas="fg">
           <label>Service Interested In</label>
           <select>
             <option>Select service...</option>
@@ -564,7 +548,6 @@
     </div>
   </div>
 </footer>
-
-<script src="main.js?v=20260329E"></script>
+<script src="main.js?v=20260403A"></script>
 </body>
 </html>
