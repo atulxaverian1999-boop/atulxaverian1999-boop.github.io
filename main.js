@@ -806,18 +806,18 @@ function showQuestion(){
   document.getElementById('q-num').textContent=quizQ+1;
   const q=qs[quizQ];
   document.getElementById('quiz-body').innerHTML=`
-    <div class="quiz-question">${q.q}</div>
-    <div class="quiz-options">${q.opts.map((o,i)=>`<button class="qopt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>`;
+    <div class="q-question">${q.q}</div>
+    <div class="q-options">${q.opts.map((o,i)=>`<button class="q-opt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>`;
   quizTime=30; document.getElementById('q-time').textContent=quizTime;
   quizTimer=setInterval(()=>{ quizTime--; document.getElementById('q-time').textContent=quizTime; if(quizTime<=0){clearInterval(quizTimer);answerQ(-1);} },1000);
 }
 function answerQ(idx){
   clearInterval(quizTimer);
   const q=quizData[quizTopic][quizQ];
-  document.querySelectorAll('.qopt').forEach((b,i)=>{
+  document.querySelectorAll('.q-opt').forEach((b,i)=>{
     b.disabled=true;
-    if(i===q.ans) b.style.background='rgba(76,175,80,0.45)';
-    else if(i===idx) b.style.background='rgba(255,82,82,0.45)';
+    if(i===q.ans) b.classList.add('correct');
+    else if(i===idx) b.classList.add('wrong');
   });
   if(idx===q.ans){ quizScore++; document.getElementById('q-score').textContent=quizScore; }
   quizQ++;
@@ -828,47 +828,28 @@ function answerQ(idx){
 function refreshLivePrices(){
   var btn=document.getElementById('live-refresh-btn');
   if(btn){btn.textContent='⏳ Fetching...';btn.disabled=true;}
-  var proxies=['https://api.allorigins.win/get?url=','https://corsproxy.io/?'];
-  function tryFetch(url,cb){
-    var tried=0;
-    function attempt(i){
-      if(i>=proxies.length){cb(null);return;}
-      fetch(proxies[i]+encodeURIComponent(url))
-        .then(function(r){return r.json();})
-        .then(function(d){
-          var raw=d.contents||d;
-          var parsed=typeof raw==='string'?JSON.parse(raw):raw;
-          cb(parsed);
-        })
-        .catch(function(){attempt(i+1);});
-    }
-    attempt(0);
-  }
   function setEl(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
-  function priceBadge(price,prev,decimals){
+  function priceBadge(price,decimals,suffix){
     if(!price) return '<span style="color:#aaa">N/A</span>';
-    var ch=price-prev,pct=(ch/prev*100);
-    var col=ch>=0?'#6BCB77':'#ff6b6b',sg=ch>=0?'+':'';
-    return price.toLocaleString('en-IN',{maximumFractionDigits:decimals||0})+' <span style="color:'+col+';font-size:.8em">'+sg+pct.toFixed(2)+'%</span>';
+    var str=price.toLocaleString('en-US',{maximumFractionDigits:decimals||0});
+    return str+(suffix?' <span style="color:#aaa;font-size:.8em">'+suffix+'</span>':'');
   }
-  // Sensex
-  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EBSESN?interval=1m&range=1d',function(d){
-    try{var m=d.chart.result[0].meta;setEl('live-sensex',priceBadge(m.regularMarketPrice,m.chartPreviousClose));}catch(e){setEl('live-sensex','<span style="color:#aaa">—</span>');}
-  });
-  // Nifty
-  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d',function(d){
-    try{var m=d.chart.result[0].meta;setEl('live-nifty',priceBadge(m.regularMarketPrice,m.chartPreviousClose));}catch(e){setEl('live-nifty','<span style="color:#aaa">—</span>');}
-  });
-  // Gold
-  tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d',function(d){
-    try{var m=d.chart.result[0].meta;setEl('live-gold',priceBadge(m.regularMarketPrice,m.chartPreviousClose,1)+' $/oz');}catch(e){setEl('live-gold','<span style="color:#aaa">—</span>');}
-  });
-  // USD/INR (direct API - no proxy needed)
+  // Gold (XAU)
+  fetch('https://api.gold-api.com/price/XAU')
+    .then(function(r){return r.json();})
+    .then(function(d){setEl('live-gold',priceBadge(d.price,1,'$/oz'));})
+    .catch(function(){setEl('live-gold','<span style="color:#aaa">—</span>');});
+  // Silver (XAG)
+  fetch('https://api.gold-api.com/price/XAG')
+    .then(function(r){return r.json();})
+    .then(function(d){setEl('live-silver',priceBadge(d.price,2,'$/oz'));})
+    .catch(function(){setEl('live-silver','<span style="color:#aaa">—</span>');});
+  // USD/INR
   fetch('https://api.exchangerate-api.com/v4/latest/USD')
     .then(function(r){return r.json();})
     .then(function(d){setEl('live-usd','₹'+d.rates.INR.toFixed(2)+' / $1');})
     .catch(function(){setEl('live-usd','<span style="color:#aaa">—</span>');});
-  setTimeout(function(){if(btn){btn.textContent='🔄 Refresh Prices';btn.disabled=false;}},8000);
+  setTimeout(function(){if(btn){btn.textContent='🔄 Refresh Prices';btn.disabled=false;}},6000);
 }
 
 /* ── CONTACT FORM ── */
@@ -884,9 +865,43 @@ function handleSubmit(e){
   },1000);
 }
 
+/* ── LOGO HOVER SOUND ── */
+function initLogoHover(){
+  var logo=document.querySelector('.logo');
+  if(!logo) return;
+  var AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx) return;
+  var ctx=null;
+  function playChime(){
+    if(!ctx) ctx=new AudioCtx();
+    var osc=ctx.createOscillator();
+    var gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type='sine';
+    osc.frequency.setValueAtTime(880,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320,ctx.currentTime+0.08);
+    gain.gain.setValueAtTime(0.18,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.35);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+0.35);
+  }
+  logo.addEventListener('mouseenter',function(){
+    playChime();
+    logo.style.filter='drop-shadow(0 0 8px rgba(226,255,0,0.8))';
+    logo.style.transform='scale(1.05)';
+    logo.style.transition='transform 0.2s ease, filter 0.2s ease';
+  });
+  logo.addEventListener('mouseleave',function(){
+    logo.style.filter='';
+    logo.style.transform='';
+  });
+}
+
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',function(){
   calcIT(); calcGST(); calcSIP(); calcEMI(); calcHRA();
   renderNews('icai');
   loadQuiz('gst', document.querySelector('.qtab'));
+  refreshLivePrices();
+  initLogoHover();
 });
