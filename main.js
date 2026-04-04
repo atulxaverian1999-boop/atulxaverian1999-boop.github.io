@@ -73,7 +73,7 @@ const svcData = {
   vendor:{icon:'🤝',title:'Vendor Management',desc:'Streamlined vendor payment and compliance processes to avoid TDS defaults, GST mismatches, and audit queries. We handle end-to-end vendor account management.',points:['Vendor Onboarding & KYC Verification','Payment Scheduling & Reconciliation','TDS on Vendor Payments','GSTR-2A Vendor Reconciliation','Vendor Ledger Management','Vendor Compliance Monitoring']},
   einvoice:{icon:'⚡',title:'E-Invoice & E-Way Bill',desc:'Mandatory for businesses above ₹5 Cr turnover. We handle IRN generation, QR codes, e-way bill creation and management in full compliance with GST e-invoicing mandates.',points:['IRN & QR Code Generation','E-Invoice Cancellation & Amendment','E-Way Bill Creation & Extension','Bulk E-Invoice Processing','API Integration Setup & Testing','Compliance Monitoring & Alerts']},
   itc:{icon:'🔄',title:'ITC (Input Tax Credit) Management',desc:'Maximise your eligible Input Tax Credit while staying compliant. We identify ITC leakages, reconcile GSTR-2A/2B with your books, and handle reversals and blocked credits.',points:['Monthly ITC Reconciliation','GSTR-2A vs Books Matching','Blocked Credit (Section 17(5)) Analysis','ITC Reversal Compliance','ITC Optimisation Strategy','Annual ITC Audit & Reporting']},
-  finance:{icon:'💰',title:'Financial Planning & Advisory',desc:'Beyond tax — we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for entrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
+  finance:{icon:'💰',title:'Financial Planning & Advisory',desc:'Beyond tax — we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for euntrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
   mf:{icon:'📈',title:'Mutual Fund Advisory',desc:'Goal-based investment advisory with a focus on long-term wealth creation. We analyse your risk profile, recommend suitable mutual funds, monitor portfolio performance, and rebalance as needed.',points:['Risk Profiling & Goal Mapping','SIP Planning & Direct Fund Selection','Portfolio Review & Rebalancing','Tax-Efficient Investing (ELSS, Debt Funds)','Lump Sum Deployment Strategy','Regular Performance Reporting']}
 };
 
@@ -126,7 +126,7 @@ function _oldSlabTax(taxable, age){
     var t1=Math.min(rem,t1b); tax+=t1*0.05; rem-=t1;
   }
   var t2=Math.min(rem,500000); tax+=t2*0.20; rem-=t2;
-  tax+=Math.max(0,rem)*0.30;
+  tax*=Math.max(0,rem)*0.30;
   return tax;
 }
 
@@ -168,7 +168,7 @@ function _computeSurcharge(totalInc,baseTax,stcgAmt,ltcgAmt,regime,age,stdDed){
   }
   if(scRate===0) return {sc:0,scRate:0,relief:0};
   var sc=baseTax*scRate;
-  // Marginal relief: tax+surcharge on I minus tax+prevSurcharge at threshold ≤ excess income
+  // Marginal relief: tax+surcharge on I minus tax+prevSurcharge at threshold ≥ excess income
   var stcgLtcg=stcgAmt+ltcgAmt;
   var normAtThresh=Math.max(0,threshold-stcgLtcg);
   var baseTaxAtThresh=_baseTaxAfterRebate(normAtThresh,stcgAmt,ltcgAmt,regime,age);
@@ -182,7 +182,7 @@ function _computeSurcharge(totalInc,baseTax,stcgAmt,ltcgAmt,regime,age,stdDed){
 
 /* ── Main IT Calculator ── */
 function calcIT(){
-  var el=function(id){ return document.getElementById(id)||{value:''}; };
+  var el=function(id){ return doument.getElementById(id)||{value:''}; };
   var entity=(el('it-entity-type').value)||'individual';
   var age   =(el('it-age').value)||'below60';
   var salary  =+el('it-salary').value||0;
@@ -526,7 +526,7 @@ const newsData = {
     {title:'Section 87A rebate clarification for special rate income issued',date:'Jul 2024',url:'https://incometax.gov.in',tag:'Rebate'},
     {title:'TDS on Rent: Sec 194-IB threshold remains ₹50,000/month',date:'Apr 2024',url:'https://incometax.gov.in',tag:'TDS'},
     {title:'Faceless appeal scheme extended to all income tax assessments',date:'Feb 2024',url:'https://incometax.gov.in',tag:'Appeal'},
-    {title:'Updated return (ITR-U) window: 2 years from the relevant AY',date:'Jan 2024',url:'https://incometax.gov.in',tag:'Deadline'},
+    {title:'Updated return (ITR-U) WIndow: 2 years from the relevant AY',date:'Jan 2024',url:'https://incometax.gov.in',tag:'Deadline'},
   ],
   gst:[
     {title:'GST Council reduces rate on cancer drugs and medical devices',date:'Jun 2024',url:'https://gst.gov.in',tag:'Rate Change'},
@@ -696,7 +696,7 @@ function startMatrix(){
   const ctx=canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
   const cols=Math.floor(W/16), drops=Array(cols).fill(1);
-  const chars='アイウエオカ�クケコ0123456789GSTITEMRTF₹SIP@#%&';
+  const chars='アイウエオカキクケコ0123456789GSTITEMRTF₹SIP@#%&';
   if(matrixRAF) cancelAnimationFrame(matrixRAF);
   matrixRunning=true;
   function draw(){
@@ -734,8 +734,8 @@ const quizData={
   ],
   income:[
     {q:'Standard deduction for salaried (New Regime, FY 2025-26):',opts:['₹40,000','₹50,000','₹75,000','₹1,00,000'],ans:2},
-    {q:'Section 80C maximum deduction limit:',opts:['₹1,00,000','₹1,25,000','₹1,50,000','₹2,00,000'],ans:2},
-    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2},
+    {q:'Section 80C maximum deduction limit:',opts:['₹1,00,000','₹1,25,000','Ja,50,000','₹2,00,000'],ans:2},
+    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2~},
     {q:'Rebate u/s 87A (New Regime FY 2025-26) — zero tax up to income of:',opts:['₹7,00,000','₹10,00,000','₹12,00,000','₹15,00,000'],ans:2},
     {q:'Form 26AS is related to:',opts:['GST filing','Tax Credit Statement','Bank statement','Company registration'],ans:1},
     {q:'LTCG on equity shares above ₹1.25L taxed at (Budget 2024):',opts:['10%','12.5%','15%','20%'],ans:1},
@@ -861,12 +861,12 @@ function refreshLivePrices(){
   });
   // Gold
   tryFetch('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1m&range=1d',function(d){
-    try{var m=d.chart.result[0].meta;setEl('live-gold',priceBadge(m.regularMarketPrice,m.chartPreviousClose,1))' $%oz'');}catch(e){setEl('live-gold','<span style="color:#aaa">—</span>');}
+    try{var m=d.chart.result[0].meta;setEl('live-gold',priceBadge(m.regularMarketPrice,m.chartPreviousClose,1))' $/oz');}catch(e){setEl('live-gold','<span style="color:#aaa">—</span>');}
   });
   // USD/INR (direct API - no proxy needed)
   fetch('https://api.exchangerate-api.com/v4/latest/USD')
     .then(function(r){return r.json();})
-    .then(function(d){setEl('live-usd','₹ '+d.rates.INR.toFixed(2)+' / $1');})
+    .then(function(d){setEl('live-usd','₹'+d.rates.INR.toFixed(2)+' / $1');})
     .catch(function(){setEl('live-usd','<span style="color:#aaa">—</span>');});
   setTimeout(function(){if(btn){btn.textContent='🔄 Refresh Prices';btn.disabled=false;}},8000);
 }
