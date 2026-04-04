@@ -73,7 +73,7 @@ const svcData = {
   vendor:{icon:'ü§ù',title:'Vendor Management',desc:'Streamlined vendor payment and compliance processes to avoid TDS defaults, GST mismatches, and audit queries. We handle end-to-end vendor account management.',points:['Vendor Onboarding & KYC Verification','Payment Scheduling & Reconciliation','TDS on Vendor Payments','GSTR-2A Vendor Reconciliation','Vendor Ledger Management','Vendor Compliance Monitoring']},
   einvoice:{icon:'‚ö°',title:'E-Invoice & E-Way Bill',desc:'Mandatory for businesses above ‚Çπ5 Cr turnover. We handle IRN generation, QR codes, e-way bill creation and management in full compliance with GST e-invoicing mandates.',points:['IRN & QR Code Generation','E-Invoice Cancellation & Amendment','E-Way Bill Creation & Extension','Bulk E-Invoice Processing','API Integration Setup & Testing','Compliance Monitoring & Alerts']},
   itc:{icon:'üîÑ',title:'ITC (Input Tax Credit) Management',desc:'Maximise your eligible Input Tax Credit while staying compliant. We identify ITC leakages, reconcile GSTR-2A/2B with your books, and handle reversals and blocked credits.',points:['Monthly ITC Reconciliation','GSTR-2A vs Books Matching','Blocked Credit (Section 17(5)) Analysis','ITC Reversal Compliance','ITC Optimisation Strategy','Annual ITC Audit & Reporting']},
-  finance:{icon:'üí∞',title:'Financial Planning & Advisory',desc:'Beyond tax ‚Äî we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for euntrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
+  finance:{icon:'üí∞',title:'Financial Planning & Advisory',desc:'Beyond tax ‚Äî we help you build financial resilience. Cash flow management, working capital planning, loan structuring, and personal financial planning for entrepreneurs and professionals.',points:['Cash Flow Forecasting & Management','Working Capital Optimisation','Business Loan Advisory & Structuring','Personal Financial Planning','Budget Preparation & Variance Analysis','ROI & Profitability Analysis']},
   mf:{icon:'üìà',title:'Mutual Fund Advisory',desc:'Goal-based investment advisory with a focus on long-term wealth creation. We analyse your risk profile, recommend suitable mutual funds, monitor portfolio performance, and rebalance as needed.',points:['Risk Profiling & Goal Mapping','SIP Planning & Direct Fund Selection','Portfolio Review & Rebalancing','Tax-Efficient Investing (ELSS, Debt Funds)','Lump Sum Deployment Strategy','Regular Performance Reporting']}
 };
 
@@ -100,53 +100,7 @@ function closeModal(){
 }
 
 /* ‚îÄ‚îÄ CALCULATOR TABS ‚îÄ‚îÄ */
-function showCalc(id, btn){
-  document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
-  const panel = document.getElementById('panel-'+id);
-  if(panel) panel.classList.add('active');
-  if(btn) btn.classList.add('active');
-  if(id==='income-tax') calcIT();
-  if(id==='gst-calc') calcGST();
-  if(id==='sip-calc') calcSIP();
-  if(id==='emi-calc') calcEMI();
-  if(id==='hra-calc') calcHRA();
-}
-
-/* ‚îÄ‚îÄ INCOME TAX CALCULATOR ‚îÄ‚îÄ */
-function fmt(n){ return '‚Çπ'+Math.round(n).toLocaleString('en-IN'); }
-
-/* ‚îÄ‚îÄ IT Helper: Old Regime Slab Tax ‚îÄ‚îÄ */
-function _oldSlabTax(taxable, age){
-  var ex = age==='supersenior'?500000:(age==='senior'?300000:250000);
-  if(taxable<=ex) return 0;
-  var tax=0,rem=taxable-ex;
-  var t1b = (500000-ex); // bracket to 5L
-  if(age!=='supersenior'){
-    var t1=Math.min(rem,t1b); tax+=t1*0.05; rem-=t1;
-  }
-  var t2=Math.min(rem,500000); tax+=t2*0.20; rem-=t2;
-  tax*=Math.max(0,rem)*0.30;
-  return tax;
-}
-
-/* ‚îÄ‚îÄ IT Helper: New Regime Slab Tax FY 2025-26 ‚îÄ‚îÄ */
-function _newSlabTax(taxable){
-  var s=[[400000,0],[400000,0.05],[400000,0.10],[400000,0.15],[400000,0.20],[400000,0.25],[Infinity,0.30]];
-  var tax=0,rem=taxable;
-  s.forEach(([l,r])=>{ var c=Math.min(rem,l); tax+=c*r; rem-=c; });
-  return tax;
-}
-
-/* ‚îÄ‚îÄ IT Helper: Base Tax + Rebate + Marginal Relief at 12L (returns after-rebate total base tax) ‚îÄ‚îÄ */
-function _baseTaxAfterRebate(normalTaxable,stcgAmt,ltcgAmt,regime,age){
-  var slab = regime==='old'?_oldSlabTax(normalTaxable,age):_newSlabTax(normalTaxable);
-  var stcgT= stcgAmt*0.20;
-  var ltcgT= Math.max(0,ltcgAmt-125000)*0.125;
-  var totalInc=normalTaxable+stcgAmt+ltcgAmt;
-  var rebate=0;
-  if(regime==='old'&&totalInc<=500000) rebate=Math.min(12500,slab);
-  if(regime==='new'&&totalInc<=1200000) rebate=slab;
+function showCalc(id, btn)b˘»(ÄÅëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω…±∞†úπç¡Öπï∞ú§πôΩ…Öç†°¿Ù˘¿πç±ÖÕÕ1•Õ–π…ïµΩŸî†ùÖç—•Ÿîú§§Ï(ÄÅëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω…±∞†úπç—Öàú§πôΩ…Öç†°àÙ˘àπç±ÖÕÕ1•Õ–π…ïµΩŸî†ùÖç—•Ÿîú§§Ï(ÄÅçΩπÕ–Å¡Öπï∞ÄÙÅëΩç’µïπ–πùï—±ïµïπ—	Â%ê†ù¡Öπï∞¥ú≠•ê§Ï(ÄÅ•ò°¡Öπï∞§Å¡Öπï∞πç±ÖÕÕ1•Õ–πÖëê†ùÖç—•Ÿîú§Ï(ÄÅ•ò°â—∏§Åâ—∏πç±ÖÕÕ1•Õ–πÖëê†ùÖç—•Ÿîú§Ï(ÄÅ•ò°•êÙÙÙù•πçΩµîµ—Ö‡ú§ÅçÖ±ç%P†§Ï(ÄÅ•ò°•êÙÙÙùùÕ–µçÖ±åú§ÅçÖ±çMP†§Ï(ÄÅ•ò°•êÙÙÙùÕ•¿µçÖ±åú§ÅçÖ±Ö4ïÇì∞¢ñbÜñC””“vV÷í÷6∆2rí6∆4T‘íÇì∞¢ñbÜñC””“vá&÷6∆2rí6∆4Ö$Çì∞ß–†¢Ú¢)H)Hî‰4Ù‘RDÇ4ƒ5TƒDı")H)H¢¶gVÊ7Fñˆ‚f◊BÜ‚ó≤&WGW&‚~(+ír¥÷FÇÁ&˜VÊBÜ‚íÁFÙ∆ˆ6∆U7G&ñÊrÇvV‚‘î‚rì≤–†¢Ú¢)H)HïBÜV«W#¢ˆ∆B&Vvñ÷R6∆"FÇ)H)H¢¶gVÊ7Fñˆ‚ˆˆ∆E6∆%FÇáFÜ&∆R¬vRó∞¢f"WÇ“vS””“w7WW'6VÊñ˜"sÛS¢ÜvS””“w6VÊñ˜"sÛ3£#Sì∞¢ñbáFÜ&∆S√÷WÇí&WGW&‚∞¢f"FÉ”«&V”◊FÜ&∆R÷WÉ∞¢f"C"“ÉS÷WÇì≤ÚÚ'&6∂WBFÚT¿¢ñbÜvR”“w7WW'6VÊñ˜"ró∞¢f"C‘÷FÇÊ÷ñ‚á&V“«C"ì≤FÇ≥◊C£„S≤&V“”◊C∞¢–¢f"C#‘÷FÇÊ÷ñ‚á&V“√Sì≤FÇ≥◊C"£„#≤&V“”◊C#∞¢FÇ≥‘÷FÇÊ÷ÇÉ«&V“í£„3∞¢&WGW&‚FÉ∞ß–†¢Ú¢)H)HïBÜV«W#¢ÊWr&Vvñ÷R6∆"FÇeí##R”#b)H)H¢¶gVÊ7Fñˆ‚ˆÊWu6∆%FÇáFÜ&∆Ró∞¢f"3’µ≥C√“≈≥C√„U“≈≥C√„“≈≥C√„U“≈≥C√„#“≈≥C√„#U“≈¥ñÊfñÊóGí√„3’”∞¢f"FÉ”«&V”◊FÜ&∆S∞¢2Êf˜$V6ÇÇÖ∂¬«%“ì”Á≤f"3‘÷FÇÊ÷ñ‚á&V“∆¬ì≤FÇ≥÷2ß#≤&V“”÷3≤“ì∞¢&WGW&‚FÉ∞ß–†¢Ú¢)H)HïBÜV«W#¢&6RFÇ≤&V&FR≤÷&vñÊ¬&V∆ñVbB$¬á&WGW&Á2gFW"◊&V&FRF˜F¬&6RFÇí)H)H¢¶gVÊ7Fñˆ‚ˆ&6UFÑgFW%&V&FRÜÊ˜&÷≈FÜ&∆R«7F6t◊B∆«F6t◊B«&Vvñ÷R∆vRó∞¢f"6∆"“&Vvñ÷S””“vˆ∆Bsıˆˆ∆E6∆%FÇÜÊ˜&÷≈FÜ&∆R∆vRì•ˆÊWu6∆%FÇÜÊ˜&÷≈FÜ&∆Rì∞¢f"7F6uC“7F6t◊B£„#∞¢f"«F6uC“÷FÇÊ÷ÇÉ∆«F6t◊B”#Sí£„#S∞¢f"F˜FƒñÊ3÷Ê˜&÷≈FÜ&∆R∑7F6t◊B∂«F6t◊C∞¢f"&V&FS”∞¢ñbá&Vvñ÷S””“vˆ∆BbgF˜FƒñÊ3√”Sí&V&FS‘÷FÇÊ÷ñ‚É#S«6∆"ì∞¢ñbá&Vvñ÷S””“vÊWrrftotalInc<=1200000) rebate=slab;
   var afterRebate=Math.max(0,slab-rebate)+stcgT+ltcgT;
   // Marginal relief at ‚Çπ12L rebate boundary (New Regime only)
   if(regime==='new'&&totalInc>1200000){
@@ -168,7 +122,7 @@ function _computeSurcharge(totalInc,baseTax,stcgAmt,ltcgAmt,regime,age,stdDed){
   }
   if(scRate===0) return {sc:0,scRate:0,relief:0};
   var sc=baseTax*scRate;
-  // Marginal relief: tax+surcharge on I minus tax+prevSurcharge at threshold ‚â• excess income
+  // Marginal relief: tax+surcharge on I minus tax+prevSurcharge at threshold ‚â§ excess income
   var stcgLtcg=stcgAmt+ltcgAmt;
   var normAtThresh=Math.max(0,threshold-stcgLtcg);
   var baseTaxAtThresh=_baseTaxAfterRebate(normAtThresh,stcgAmt,ltcgAmt,regime,age);
@@ -182,7 +136,7 @@ function _computeSurcharge(totalInc,baseTax,stcgAmt,ltcgAmt,regime,age,stdDed){
 
 /* ‚îÄ‚îÄ Main IT Calculator ‚îÄ‚îÄ */
 function calcIT(){
-  var el=function(id){ return doument.getElementById(id)||{value:''}; };
+  var el=function(id){ return document.getElementById(id)||{value:''}; };
   var entity=(el('it-entity-type').value)||'individual';
   var age   =(el('it-age').value)||'below60';
   var salary  =+el('it-salary').value||0;
@@ -320,7 +274,7 @@ function calcIT(){
   var newPanel=panel('new',taxableNew,totalIncNew,grossOrd,stdNew,'Std Deduction (‚Çπ75,000)',newSlabRows,newSlabTax,rebateNew,mr12L,taxNewAfterRebate,scResNew.scRate,scResNew.sc,scResNew.relief,cessNew,totalNew,effNew,newIsBetter);
   var oldPanel=panel('old',taxableOld,totalIncOld,grossOrd,totalDedOld,'Total Deductions (incl. ‚Çπ50K std)',oldSlabRows,oldSlabTax,rebateOld,0,taxOldAfterRebate,scResOld.scRate,scResOld.sc,scResOld.relief,cessOld,totalOld,effOld,!newIsBetter);
 
-  res.innerHTML<`<div class="it-compare-title">üìä FY 2025-26 (AY 2026-27) ‚Äî Both Regimes at a Glance</div>
+  res.innerHTML=`<div class="it-compare-title">üìä FY 2025-26 (AY 2026-27) ‚Äî Both Regimes at a Glance</div>
 <div class="it-compare-wrap">${newIsBetter?newPanel+oldPanel:oldPanel+newPanel}</div>
 <div class="it-disclosure">üìå <b>Disclosures:</b> STCG u/s 111A @20% (Budget 2024). LTCG u/s 112A @12.5% on gains above ‚Çπ1.25L. Rebate u/s 87A ‚Äî Old Regime: max ‚Çπ12,500 if total income ‚â§ ‚Çπ5L; New Regime: full rebate (zero tax) if total income ‚â§ ‚Çπ12L (Budget 2025-26). Surcharge: 10% (&gt;‚Çπ50L), 15% (&gt;‚Çπ1Cr), 25% (&gt;‚Çπ2Cr); New Regime capped at 25% (Old Regime: 37% above ‚Çπ5Cr). Marginal relief applied at all surcharge thresholds &amp; ‚Çπ12L boundary. Standard deduction: ‚Çπ75,000 (New), ‚Çπ50,000 (Old). HUF treated same as Individual. This is an indicative estimate ‚Äî consult a CA for final computation.</div>
 <button class="btn-download-comp" onclick="downloadITcomp()">‚¨á Download Tax Computation</button>`;
@@ -465,7 +419,7 @@ function calcSIP(){
   const lsFV=ls*Math.pow(1+ret,yr), lsInv=ls;
   const totalFV=sipFV+lsFV, totalInv=invested+lsInv;
   const totalRet=totalFV-totalInv, absRet=totalInv>0?(totalRet/totalInv*100):0;
-  const iPct=totalFV>0?(totalInv/totalFV*100):50, rPct=100-iPct;
+  const iPct=totalFV>0?(totalInu/totalFV*100):50, rPct=100-iPct;
   document.getElementById('sip-output').innerHTML=`
     <div class="itr-row"><span>Total Invested</span><strong>${fmt(totalInv)}</strong></div>
     <div class="itr-row"><span>Estimated Returns</span><strong style="color:#4caf50">${fmt(totalRet)}</strong></div>
@@ -526,7 +480,7 @@ const newsData = {
     {title:'Section 87A rebate clarification for special rate income issued',date:'Jul 2024',url:'https://incometax.gov.in',tag:'Rebate'},
     {title:'TDS on Rent: Sec 194-IB threshold remains ‚Çπ50,000/month',date:'Apr 2024',url:'https://incometax.gov.in',tag:'TDS'},
     {title:'Faceless appeal scheme extended to all income tax assessments',date:'Feb 2024',url:'https://incometax.gov.in',tag:'Appeal'},
-    {title:'Updated return (ITR-U) WIndow: 2 years from the relevant AY',date:'Jan 2024',url:'https://incometax.gov.in',tag:'Deadline'},
+    {title:'Updated return (ITR-U) window: 2 years from the relevant AY',date:'Jan 2024',url:'https://incometax.gov.in',tag:'Deadline'},
   ],
   gst:[
     {title:'GST Council reduces rate on cancer drugs and medical devices',date:'Jun 2024',url:'https://gst.gov.in',tag:'Rate Change'},
@@ -696,7 +650,7 @@ function startMatrix(){
   const ctx=canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
   const cols=Math.floor(W/16), drops=Array(cols).fill(1);
-  const chars='„Ç¢„Ç§„Ç¶„Ç®„Ç™„Ç´„Ç≠„ÇØ„Ç±„Ç≥0123456789GSTITEMRTF‚ÇπSIP@#%&';
+  const chars='„Ç¢„Ç§„Ç¶„Ç®„Ç™„Ç´„Å„ÇØ„Ç±„Ç≥0123456789GSTITEMRTF‚ÇπSIP@#%&';
   if(matrixRAF) cancelAnimationFrame(matrixRAF);
   matrixRunning=true;
   function draw(){
@@ -734,8 +688,8 @@ const quizData={
   ],
   income:[
     {q:'Standard deduction for salaried (New Regime, FY 2025-26):',opts:['‚Çπ40,000','‚Çπ50,000','‚Çπ75,000','‚Çπ1,00,000'],ans:2},
-    {q:'Section 80C maximum deduction limit:',opts:['‚Çπ1,00,000','‚Çπ1,25,000','Ja,50,000','‚Çπ2,00,000'],ans:2},
-    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2~},
+    {q:'Section 80C maximum deduction limit:',opts:['‚Çπ1,00,000','‚Çπ1,25,000','‚Çπ1,50,000','‚Çπ2,00,000'],ans:2},
+    {q:'Income Tax in India is administered by:',opts:['RBI','SEBI','CBDT','Finance Ministry'],ans:2},
     {q:'Rebate u/s 87A (New Regime FY 2025-26) ‚Äî zero tax up to income of:',opts:['‚Çπ7,00,000','‚Çπ10,00,000','‚Çπ12,00,000','‚Çπ15,00,000'],ans:2},
     {q:'Form 26AS is related to:',opts:['GST filing','Tax Credit Statement','Bank statement','Company registration'],ans:1},
     {q:'LTCG on equity shares above ‚Çπ1.25L taxed at (Budget 2024):',opts:['10%','12.5%','15%','20%'],ans:1},
