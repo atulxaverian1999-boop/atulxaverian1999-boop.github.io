@@ -38,10 +38,10 @@ a{text-decoration:none;color:inherit}
 /* NAVBAR */
 .navbar{position:sticky;top:0;z-index:100;background:rgba(6,5,3,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:baseline;gap:4px}
+.logo{display:flex;align-items:baseline;gap:4px;transition:transform .2s ease,filter .2s ease;cursor:pointer}.logo:hover{transform:scale(1.05);filter:drop-shadow(0 0 10px rgba(226,255,0,0.75))}.logo:hover .logo-tag{color:var(--neon);opacity:.85}
 .logo-a{font-family:var(--font-h);font-size:1.3rem;font-weight:900;color:var(--neon);text-shadow:0 0 12px rgba(226,255,0,.5)}
 .logo-rest{font-family:var(--font-h);font-size:1.1rem;font-weight:700;color:var(--text)}
-.logo-tag{font-family:var(--font-b);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:10px;align-self:center}
+.logo-tag{font-family:var(--font-b);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:10px;align-self:center;transition:color .2s ease}
 .nav-links{list-style:none;display:flex;gap:28px;align-items:center}
 .nav-links a{font-size:.85rem;font-weight:500;color:var(--muted);transition:color .2s;white-space:nowrap}
 .nav-links a:hover{color:var(--neon)}
@@ -289,7 +289,7 @@ a.cc-v{color:var(--neon)}.a.cc-v:hover{text-decoration:underline}
 /* Market Watch */
 .market-watch-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:22px 24px;margin:32px 0 24px}
 .mw-title{font-weight:700;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;color:var(--neon);margin-bottom:16px}
-.mw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.mw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
 .mw-tile{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
 .mw-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .mw-val{font-size:1rem;font-weight:700;color:#fff;min-height:24px}
