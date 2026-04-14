@@ -20,7 +20,7 @@ html,body{background:#020817;color:#e2e8f0}
 em{color:#60a5fa}
 .btn-neon{position:relative;overflow:hidden;background:linear-gradient(135deg,#1d4ed8,#3b82f6)!important;color:#fff!important;box-shadow:0 0 24px rgba(59,130,246,.45)}
 .btn-neon::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);animation:shimmer 2.8s ease-in-out infinite}
-@keyframes shimmer{0%{left:-100%}60%,100%{left:130%}}
+@keyframes shimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(130%)}}
 .btn-neon:hover{background:linear-gradient(135deg,#1e40af,#1d4ed8)!important;box-shadow:0 0 40px rgba(59,130,246,.8)!important;transform:translateY(-3px)}
 .btn-ghost{border-color:rgba(226,232,240,.2);color:#e2e8f0}.btn-ghost:hover{border-color:#3b82f6;color:#60a5fa}
 .eyebrow{color:#3b82f6;border-color:rgba(59,130,246,.25)}
@@ -69,7 +69,7 @@ em{color:#60a5fa}
 .stagger.revealed>*:nth-child(8){opacity:1;transform:none;transition-delay:.7s}
 .stagger.revealed>*:nth-child(9){opacity:1;transform:none;transition-delay:.8s}
 .stagger.revealed>*:nth-child(10){opacity:1;transform:none;transition-delay:.9s}
-.hero-orb{will-change:transform;position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px);animation:orbFloat 8s ease-in-out infinite}
+.hero-orb{will-change:transform;position:absolute;border-radius:50%;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
 .hero-orb-1{width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,.28),transparent 70%);top:-80px;left:-120px}
 .hero-orb-2{width:320px;height:320px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%);top:60px;right:-80px;animation-delay:-3s}
 .hero-orb-3{width:250px;height:250px;background:radial-gradient(circle,rgba(245,158,11,.16),transparent 70%);bottom:80px;left:50%;animation-delay:-5s}
