@@ -43,21 +43,12 @@
 <section class="hero" id="home">
   <div class="hero-inner">
     <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
-    <h1 class="hero-h1">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
+    <h1 class="hero-h1" id="hero-title">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
     <p class="hero-tagline">Bold Moves. <em>Smarter Money.</em> Brighter Future.</p>
     <p class="hero-sub">Expert Tax, Investment & Business Advisory from Powai, Mumbai — empowering individuals and businesses to grow, thrive and prosper.</p>
     <div class="hero-actions">
       <a href="#services" class="btn-neon">Explore Services</a>
       <a href="#calculators" class="btn-ghost">Try Calculators ↓</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hs"><span class="hs-n">15+</span><span class="hs-l">Years Exp.</span></div>
-      <div class="hs-div"></div>
-      <div class="hs"><span class="hs-n">500+</span><span class="hs-l">Clients</span></div>
-      <div class="hs-div"></div>
-      <div class="hs"><span class="hs-n">₹100Cr+</span><span class="hs-l">Advised</span></div>
-      <div class="hs-div"></div>
-      <div class="hs"><span class="hs-n">10+</span><span class="hs-l">Services</span></div>
     </div>
   </div>
   <div class="ticker-bar">
@@ -537,5 +528,29 @@
 </footer>
 
 <script src="main.js?v=20260404A"></script>
+<script>
+(function(){
+  var el = document.getElementById('hero-title');
+  if(!el) return;
+  el.style.transition = 'transform 0.15s ease, text-shadow 0.15s ease';
+  el.style.display = 'inline-block';
+  el.style.willChange = 'transform';
+  el.addEventListener('mousemove', function(e){
+    var r = el.getBoundingClientRect();
+    var cx = r.left + r.width/2, cy = r.top + r.height/2;
+    var dx = (e.clientX - cx) / (r.width/2);
+    var dy = (e.clientY - cy) / (r.height/2);
+    var tiltX = (-dy * 12).toFixed(2);
+    var tiltY = (dx * 12).toFixed(2);
+    var lift = (1 - Math.abs(dx)*0.4 - Math.abs(dy)*0.4) * 14;
+    el.style.transform = 'perspective(600px) rotateX('+tiltX+'deg) rotateY('+tiltY+'deg) translateY(-'+lift.toFixed(1)+'px) scale(1.04)';
+    el.style.textShadow = '0 '+(lift+8)+'px '+(lift*2+10)+'px rgba(37,99,235,0.35)';
+  });
+  el.addEventListener('mouseleave', function(){
+    el.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+    el.style.textShadow = '';
+  });
+})();
+</script>
 </body>
 </html>
