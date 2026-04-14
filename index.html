@@ -11,16 +11,16 @@
 html,body{background:#020817;color:#e2e8f0}
 .navbar{background:rgba(2,8,23,.95)!important;border-bottom:1px solid rgba(59,130,246,.2)!important;box-shadow:0 4px 24px rgba(2,8,23,.8)}
 .logo-a{color:#3b82f6!important;text-shadow:0 0 12px rgba(59,130,246,.5)}
-.neon-text{background:linear-gradient(90deg,#3b82f6,#8b5cf6,#60a5fa,#3b82f6);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 4s linear infinite}
-@keyframes gradShift{0%{background-position:0%}100%{background-position:300%}}
+.neon-text{background:linear-gradient(90deg,#3b82f6,#8b5cf6,#60a5fa,#3b82f6);background-size:100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
 .hero{background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,.12),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,.1),transparent 50%),#020817}
 .hero-badge{color:#60a5fa;border:1.5px solid rgba(59,130,246,.35);background:rgba(59,130,246,.06)}
 .nbadge-dot{background:#3b82f6;box-shadow:0 0 8px #3b82f6}
 .hero-tagline{color:#f59e0b}
 em{color:#60a5fa}
 .btn-neon{position:relative;overflow:hidden;background:linear-gradient(135deg,#1d4ed8,#3b82f6)!important;color:#fff!important;box-shadow:0 0 24px rgba(59,130,246,.45)}
-.btn-neon::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);animation:shimmer 2.8s ease-in-out infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(130%)}}
+.btn-neon::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg)}
+
 .btn-neon:hover{background:linear-gradient(135deg,#1e40af,#1d4ed8)!important;box-shadow:0 0 40px rgba(59,130,246,.8)!important;transform:translateY(-3px)}
 .btn-ghost{border-color:rgba(226,232,240,.2);color:#e2e8f0}.btn-ghost:hover{border-color:#3b82f6;color:#60a5fa}
 .eyebrow{color:#3b82f6;border-color:rgba(59,130,246,.25)}
@@ -69,11 +69,11 @@ em{color:#60a5fa}
 .stagger.revealed>*:nth-child(8){opacity:1;transform:none;transition-delay:.7s}
 .stagger.revealed>*:nth-child(9){opacity:1;transform:none;transition-delay:.8s}
 .stagger.revealed>*:nth-child(10){opacity:1;transform:none;transition-delay:.9s}
-.hero-orb{will-change:transform;position:absolute;border-radius:50%;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
-.hero-orb-1{width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,.28),transparent 70%);top:-80px;left:-120px}
-.hero-orb-2{width:320px;height:320px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%);top:60px;right:-80px;animation-delay:-3s}
-.hero-orb-3{width:250px;height:250px;background:radial-gradient(circle,rgba(245,158,11,.16),transparent 70%);bottom:80px;left:50%;animation-delay:-5s}
-@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}33%{transform:translateY(-28px) scale(1.06)}66%{transform:translateY(14px) scale(.96)}}
+.hero-orb{will-change:transform;position:absolute;border-radius:50%;pointer-events:none}
+
+
+
+}
 .section-head h2::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:2px;margin:10px auto 0}
 @keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.8)}50%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
 .scanlines{opacity:.25}#bg-canvas{opacity:.2}
@@ -113,9 +113,9 @@ em{color:#60a5fa}
 
 <!-- ══ HERO ══ -->
 <section class="hero" id="home">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-orb hero-orb-3"></div>
+  
+  
+  
   <div class="hero-inner">
     <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
     <h1 class="hero-h1" id="hero-title">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
