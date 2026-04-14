@@ -4,8 +4,82 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>A Bagla Financial Services | Bold Moves. Smarter Money.</title>
-<link rel="stylesheet" href="style.css?v=20260404A"/>
+<link rel="stylesheet" href="style.css?v=20260414C"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style id="abfs-override">
+:root{--neon:#3b82f6;--neon2:#60a5fa;--gold:#f59e0b;--gold-lt:#fcd34d;--dark:#020817;--dark2:#040d1c;--dark3:#071530;--dark4:#0c1e3d;--text:#e2e8f0;--muted:#6b7fa8;--border:rgba(59,130,246,.2)}
+html,body{background:#020817;color:#e2e8f0}
+.navbar{background:rgba(2,8,23,.95)!important;border-bottom:1px solid rgba(59,130,246,.2)!important;box-shadow:0 4px 24px rgba(2,8,23,.8)}
+.logo-a{color:#3b82f6!important;text-shadow:0 0 12px rgba(59,130,246,.5)}
+.neon-text{background:linear-gradient(90deg,#3b82f6,#8b5cf6,#60a5fa,#3b82f6);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 4s linear infinite}
+@keyframes gradShift{0%{background-position:0%}100%{background-position:300%}}
+.hero{background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,.12),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,.1),transparent 50%),#020817}
+.hero-badge{color:#60a5fa;border:1.5px solid rgba(59,130,246,.35);background:rgba(59,130,246,.06)}
+.nbadge-dot{background:#3b82f6;box-shadow:0 0 8px #3b82f6}
+.hero-tagline{color:#f59e0b}
+em{color:#60a5fa}
+.btn-neon{position:relative;overflow:hidden;background:linear-gradient(135deg,#1d4ed8,#3b82f6)!important;color:#fff!important;box-shadow:0 0 24px rgba(59,130,246,.45)}
+.btn-neon::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);animation:shimmer 2.8s ease-in-out infinite}
+@keyframes shimmer{0%{left:-100%}60%,100%{left:130%}}
+.btn-neon:hover{background:linear-gradient(135deg,#1e40af,#1d4ed8)!important;box-shadow:0 0 40px rgba(59,130,246,.8)!important;transform:translateY(-3px)}
+.btn-ghost{border-color:rgba(226,232,240,.2);color:#e2e8f0}.btn-ghost:hover{border-color:#3b82f6;color:#60a5fa}
+.eyebrow{color:#3b82f6;border-color:rgba(59,130,246,.25)}
+.services{background:#040d1c}.svc-card{background:#071530;border-color:rgba(59,130,246,.15);transition:all .35s cubic-bezier(.25,.46,.45,.94)}
+.svc-card:hover{border-color:#3b82f6;transform:translateY(-6px) scale(1.02);box-shadow:0 0 32px rgba(59,130,246,.25),0 12px 40px rgba(0,0,0,.6)}
+.svc-glow{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.2),transparent 70%)}.svc-tag{color:#3b82f6}
+.calculators{background:#020817}.ctab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
+.ctab:hover,.ntab:hover,.qtab:hover,.pgtab:hover{border-color:#3b82f6;color:#60a5fa}
+.ctab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-color:#3b82f6;color:#fff;box-shadow:0 0 18px rgba(59,130,246,.4)}
+.calc-box{background:#071530;border-color:rgba(59,130,246,.15)}.calc-title{color:#3b82f6}
+.it-row input,.it-row select,.fg input,.fg textarea,.fg select,.speed-input{background:#0c1e3d;border-color:rgba(226,232,240,.12);color:#e2e8f0}
+.it-row input:focus,.it-row select:focus,.fg input:focus,.fg textarea:focus,.fg select:focus,.speed-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.it-result{background:#0c1e3d;border-color:rgba(59,130,246,.15)}
+.itr-title,.calc-title,.it-co-title,.it-compare-title,.mw-title{color:#60a5fa!important}
+.taxable-row strong,.final-total strong,.final-total span{color:#60a5fa!important}
+.badge-better{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.it-panel.best-panel{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,.2)}
+.news-section{background:#040d1c}.news-card{background:#071530;border-color:rgba(59,130,246,.12)}
+.news-card:hover{border-color:#3b82f6;box-shadow:0 0 28px rgba(59,130,246,.18);transform:translateY(-5px)}
+.nc-cat,.nc-link{color:#3b82f6}.ntab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
+.ntab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.playground{background:#020817}.pgtab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
+.pgtab.active{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(59,130,246,.1));border-color:#3b82f6;color:#60a5fa}
+.quiz-container,.speed-box{background:#071530;border-color:rgba(59,130,246,.15)}
+.qtab{background:#0c1e3d;border-color:rgba(59,130,246,.15);color:#6b7fa8}.qtab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.q-opt{background:#0c1e3d;border-color:rgba(59,130,246,.15)}.q-opt:hover{border-color:#3b82f6;color:#60a5fa}
+.qr-score,.ss-v{color:#3b82f6}.contact{background:#040d1c}
+.cform,.cc-card{background:#071530;border-color:rgba(59,130,246,.12)}
+.cc-card:hover{border-color:#3b82f6;box-shadow:0 0 16px rgba(59,130,246,.12)}
+.cc-l{color:#6b7fa8}.trust-row span{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#60a5fa}
+.footer{background:#040d1c;border-top:1px solid rgba(59,130,246,.15)}.footer-bottom{border-top:1px solid rgba(59,130,246,.12)}
+.modal-box{background:#071530;border-color:rgba(59,130,246,.2)}.modal-close:hover{color:#3b82f6}
+#modal-content h3{color:#3b82f6}.ticker-bar{background:rgba(4,13,28,.95)!important;border-top:1px solid rgba(59,130,246,.2)!important}
+.market-watch-card{background:rgba(59,130,246,.04);border-color:rgba(59,130,246,.12)}.mw-tile{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.1)}
+.btn-download-comp{background:rgba(59,130,246,.1);border-color:#3b82f6;color:#60a5fa}.btn-download-comp:hover{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .65s cubic-bezier(.25,.46,.45,.94),transform .65s cubic-bezier(.25,.46,.45,.94)}
+.reveal.revealed{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(28px);transition:opacity .5s ease,transform .5s ease}
+.stagger.revealed>*:nth-child(1){opacity:1;transform:none;transition-delay:0s}
+.stagger.revealed>*:nth-child(2){opacity:1;transform:none;transition-delay:.1s}
+.stagger.revealed>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
+.stagger.revealed>*:nth-child(4){opacity:1;transform:none;transition-delay:.3s}
+.stagger.revealed>*:nth-child(5){opacity:1;transform:none;transition-delay:.4s}
+.stagger.revealed>*:nth-child(6){opacity:1;transform:none;transition-delay:.5s}
+.stagger.revealed>*:nth-child(7){opacity:1;transform:none;transition-delay:.6s}
+.stagger.revealed>*:nth-child(8){opacity:1;transform:none;transition-delay:.7s}
+.stagger.revealed>*:nth-child(9){opacity:1;transform:none;transition-delay:.8s}
+.stagger.revealed>*:nth-child(10){opacity:1;transform:none;transition-delay:.9s}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px);animation:orbFloat 8s ease-in-out infinite}
+.hero-orb-1{width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,.28),transparent 70%);top:-80px;left:-120px}
+.hero-orb-2{width:320px;height:320px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%);top:60px;right:-80px;animation-delay:-3s}
+.hero-orb-3{width:250px;height:250px;background:radial-gradient(circle,rgba(245,158,11,.16),transparent 70%);bottom:80px;left:50%;animation-delay:-5s}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}33%{transform:translateY(-28px) scale(1.06)}66%{transform:translateY(14px) scale(.96)}}
+.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:particleDrift linear infinite}
+@keyframes particleDrift{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:.6}100%{transform:translateY(-10vh);opacity:0}}
+.section-head h2::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:2px;margin:10px auto 0}
+@keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.8)}50%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
+.scanlines{opacity:.25}#bg-canvas{opacity:.2}
+</style>
 </head>
 <body>
 <canvas id="bg-canvas"></canvas>
@@ -41,6 +115,9 @@
 
 <!-- ══ HERO ══ -->
 <section class="hero" id="home">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
   <div class="hero-inner">
     <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
     <h1 class="hero-h1" id="hero-title">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
@@ -59,12 +136,12 @@
 <!-- ══ SERVICES ══ -->
 <section class="services section" id="services">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">What We Offer</span>
       <h2>Our <span class="neon-text">Services</span></h2>
       <p class="sec-sub">Comprehensive financial solutions under one roof — built for modern India.</p>
     </div>
-    <div class="svc-grid">
+    <div class="svc-grid stagger">
       <div class="svc-card" onclick="openService('gst')">
         <div class="svc-glow"></div>
         <div class="svc-icon">🧾</div>
@@ -150,7 +227,7 @@
 <!-- ══ CALCULATORS ══ -->
 <section class="calculators section" id="calculators">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Financial Tools</span>
       <h2>Smart <span class="neon-text">Calculators</span></h2>
       <p class="sec-sub">Detailed, accurate tools to plan your finances — completely free.</p>
@@ -348,7 +425,7 @@
 <!-- ══ LIVE NEWS ══ -->
 <section class="news-section section" id="news">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Stay Updated</span>
       <h2>Live <span class="neon-text">News Feed</span></h2>
       <p class="sec-sub">Latest updates from ICAI, Income Tax Dept, GST Council, MCA & Mutual Funds.</p>
@@ -360,7 +437,7 @@
       <button class="ntab" onclick="showNews('mca',this)">🏢 MCA</button>
       <button class="ntab" onclick="showNews('mf',this)">📈 Mutual Funds</button>
     </div>
-    <div class="news-grid" id="news-grid">
+    <div class="news-grid stagger" id="news-grid">
       <!-- Filled by JS -->
     </div>
     <div class="news-disclaimer">
@@ -372,7 +449,7 @@
 <!-- ══ PLAYGROUND ══ -->
 <section class="playground section" id="playground">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">🎮 Game Zone</span>
       <h2>The <span class="neon-text">Playground</span></h2>
       <p class="sec-sub">Take a break — play games, test your speed, try the matrix. All neon-powered.</p>
@@ -450,11 +527,11 @@
 <!-- ══ CONTACT ══ -->
 <section class="contact section" id="contact">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Get In Touch</span>
       <h2>Let's Talk <span class="neon-text">Money</span></h2>
     </div>
-    <div class="contact-wrap">
+    <div class="contact-wrap reveal">
       <div class="contact-left">
         <div class="cc-card"><span class="cc-ico">📧</span><div><p class="cc-l">Email</p><a href="mailto:atulxaverian1999@gmail.com" class="cc-v">atulxaverian1999@gmail.com</a></div></div>
         <div class="cc-card"><span class="cc-ico">📍</span><div><p class="cc-l">Address</p><p class="cc-v">Powai, Mumbai — 400076<br/>Maharashtra, India</p></div></div>
@@ -527,6 +604,34 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  /* Floating particles */
+  var cols=['rgba(59,130,246,.5)','rgba(139,92,246,.4)','rgba(245,158,11,.35)','rgba(96,165,250,.45)'];
+  for(var i=0;i<26;i++){
+    var p=document.createElement('div');p.className='particle';
+    var sz=Math.random()*4+2;
+    p.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'vw;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-duration:'+(Math.random()*18+10)+'s;animation-delay:'+(-Math.random()*20)+'s';
+    document.body.appendChild(p);
+  }
+  /* Scroll reveal */
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal,.stagger').forEach(function(el){io.observe(el);});
+  /* Navbar glow on scroll */
+  var nav=document.getElementById('navbar');
+  window.addEventListener('scroll',function(){nav.style.boxShadow=scrollY>40?'0 4px 32px rgba(59,130,246,.2)':'';},{ passive:true});
+  /* Card spotlight */
+  document.querySelectorAll('.svc-card').forEach(function(c){
+    c.addEventListener('mousemove',function(e){
+      var r=c.getBoundingClientRect(),gl=c.querySelector('.svc-glow');
+      if(gl)gl.style.background='radial-gradient(circle at '+(e.clientX-r.left)+'px '+(e.clientY-r.top)+'px,rgba(59,130,246,.22),transparent 65%)';
+    });
+    c.addEventListener('mouseleave',function(){var gl=c.querySelector('.svc-glow');if(gl)gl.style.background='';});
+  });
+})();
+</script>
 <script src="main.js?v=20260404A"></script>
 <script>
 (function(){
