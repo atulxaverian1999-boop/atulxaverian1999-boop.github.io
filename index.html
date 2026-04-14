@@ -74,8 +74,6 @@ em{color:#60a5fa}
 .hero-orb-2{width:320px;height:320px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%);top:60px;right:-80px;animation-delay:-3s}
 .hero-orb-3{width:250px;height:250px;background:radial-gradient(circle,rgba(245,158,11,.16),transparent 70%);bottom:80px;left:50%;animation-delay:-5s}
 @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}33%{transform:translateY(-28px) scale(1.06)}66%{transform:translateY(14px) scale(.96)}}
-.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:particleDrift linear infinite}
-@keyframes particleDrift{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:.6}100%{transform:translateY(-10vh);opacity:0}}
 .section-head h2::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:2px;margin:10px auto 0}
 @keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.8)}50%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
 .scanlines{opacity:.25}#bg-canvas{opacity:.2}
@@ -607,14 +605,6 @@ em{color:#60a5fa}
 <script>
 (function(){
   /* Floating particles */
-  var cols=['rgba(59,130,246,.5)','rgba(139,92,246,.4)','rgba(245,158,11,.35)','rgba(96,165,250,.45)'];
-  for(var i=0;i<8;i++){
-    var p=document.createElement('div');p.className='particle';
-    var sz=Math.random()*4+2;
-    p.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'vw;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-duration:'+(Math.random()*18+10)+'s;animation-delay:'+(-Math.random()*20)+'s';
-    document.body.appendChild(p);
-  }
-  /* Scroll reveal */
   var io=new IntersectionObserver(function(en){
     en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}});
   },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
