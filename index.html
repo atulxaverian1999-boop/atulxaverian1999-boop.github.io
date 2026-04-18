@@ -4,79 +4,132 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>A Bagla Financial Services | Bold Moves. Smarter Money.</title>
-<link rel="stylesheet" href="style.css?v=20260414C"/>
+<link rel="stylesheet" href="style.css?v=20260414D"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
-<style id="abfs-override">
-:root{--neon:#3b82f6;--neon2:#60a5fa;--gold:#f59e0b;--gold-lt:#fcd34d;--dark:#020817;--dark2:#040d1c;--dark3:#071530;--dark4:#0c1e3d;--text:#e2e8f0;--muted:#6b7fa8;--border:rgba(59,130,246,.2)}
-html,body{background:#020817;color:#e2e8f0}
-.navbar{background:rgba(2,8,23,.95)!important;border-bottom:1px solid rgba(59,130,246,.2)!important;box-shadow:0 4px 24px rgba(2,8,23,.8)}
-.logo-a{color:#3b82f6!important;text-shadow:0 0 12px rgba(59,130,246,.5)}
-.neon-text{background:linear-gradient(90deg,#3b82f6,#8b5cf6,#60a5fa,#3b82f6);background-size:100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-.hero{background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,.12),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,.1),transparent 50%),#020817}
-.hero-badge{color:#60a5fa;border:1.5px solid rgba(59,130,246,.35);background:rgba(59,130,246,.06)}
-.nbadge-dot{background:#3b82f6;box-shadow:0 0 8px #3b82f6}
-.hero-tagline{color:#f59e0b}
-em{color:#60a5fa}
-.btn-neon{position:relative;overflow:hidden;background:linear-gradient(135deg,#1d4ed8,#3b82f6)!important;color:#fff!important;box-shadow:0 0 24px rgba(59,130,246,.45)}
-.btn-neon::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg)}
-
-.btn-neon:hover{background:linear-gradient(135deg,#1e40af,#1d4ed8)!important;box-shadow:0 0 40px rgba(59,130,246,.8)!important;transform:translateY(-3px)}
-.btn-ghost{border-color:rgba(226,232,240,.2);color:#e2e8f0}.btn-ghost:hover{border-color:#3b82f6;color:#60a5fa}
-.eyebrow{color:#3b82f6;border-color:rgba(59,130,246,.25)}
-.services{background:#040d1c}.svc-card{background:#071530;border-color:rgba(59,130,246,.15);transition:all .35s cubic-bezier(.25,.46,.45,.94)}
-.svc-card:hover{border-color:#3b82f6;transform:translateY(-6px) scale(1.02);box-shadow:0 0 32px rgba(59,130,246,.25),0 12px 40px rgba(0,0,0,.6)}
-.svc-glow{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.2),transparent 70%)}.svc-tag{color:#3b82f6}
-.calculators{background:#020817}.ctab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
-.ctab:hover,.ntab:hover,.qtab:hover,.pgtab:hover{border-color:#3b82f6;color:#60a5fa}
-.ctab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-color:#3b82f6;color:#fff;box-shadow:0 0 18px rgba(59,130,246,.4)}
-.calc-box{background:#071530;border-color:rgba(59,130,246,.15)}.calc-title{color:#3b82f6}
-.it-row input,.it-row select,.fg input,.fg textarea,.fg select,.speed-input{background:#0c1e3d;border-color:rgba(226,232,240,.12);color:#e2e8f0}
-.it-row input:focus,.it-row select:focus,.fg input:focus,.fg textarea:focus,.fg select:focus,.speed-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
-.it-result{background:#0c1e3d;border-color:rgba(59,130,246,.15)}
-.itr-title,.calc-title,.it-co-title,.it-compare-title,.mw-title{color:#60a5fa!important}
-.taxable-row strong,.final-total strong,.final-total span{color:#60a5fa!important}
-.badge-better{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
-.it-panel.best-panel{border-color:#3b82f6;box-shadow:0 0 20px rgba(59,130,246,.2)}
-.news-section{background:#040d1c}.news-card{background:#071530;border-color:rgba(59,130,246,.12)}
-.news-card:hover{border-color:#3b82f6;box-shadow:0 0 28px rgba(59,130,246,.18);transform:translateY(-5px)}
-.nc-cat,.nc-link{color:#3b82f6}.ntab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
-.ntab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
-.playground{background:#020817}.pgtab{background:#071530;border-color:rgba(59,130,246,.15);color:#6b7fa8}
-.pgtab.active{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(59,130,246,.1));border-color:#3b82f6;color:#60a5fa}
-.quiz-container,.speed-box{background:#071530;border-color:rgba(59,130,246,.15)}
-.qtab{background:#0c1e3d;border-color:rgba(59,130,246,.15);color:#6b7fa8}.qtab.active{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
-.q-opt{background:#0c1e3d;border-color:rgba(59,130,246,.15)}.q-opt:hover{border-color:#3b82f6;color:#60a5fa}
-.qr-score,.ss-v{color:#3b82f6}.contact{background:#040d1c}
-.cform,.cc-card{background:#071530;border-color:rgba(59,130,246,.12)}
-.cc-card:hover{border-color:#3b82f6;box-shadow:0 0 16px rgba(59,130,246,.12)}
-.cc-l{color:#6b7fa8}.trust-row span{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:#60a5fa}
-.footer{background:#040d1c;border-top:1px solid rgba(59,130,246,.15)}.footer-bottom{border-top:1px solid rgba(59,130,246,.12)}
-.modal-box{background:#071530;border-color:rgba(59,130,246,.2)}.modal-close:hover{color:#3b82f6}
-#modal-content h3{color:#3b82f6}.ticker-bar{background:rgba(4,13,28,.95)!important;border-top:1px solid rgba(59,130,246,.2)!important}
-.market-watch-card{background:rgba(59,130,246,.04);border-color:rgba(59,130,246,.12)}.mw-tile{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.1)}
-.btn-download-comp{background:rgba(59,130,246,.1);border-color:#3b82f6;color:#60a5fa}.btn-download-comp:hover{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff}
-.reveal{opacity:0;transform:translateY(36px);transition:opacity .65s cubic-bezier(.25,.46,.45,.94),transform .65s cubic-bezier(.25,.46,.45,.94)}
+<style id="abfs-light">
+/* ── Light Grey Professional Theme ── */
+:root{--neon:#2563eb;--neon2:#3b82f6;--gold:#d97706;--gold-lt:#f59e0b;--dark:#f5f5f5;--dark2:#efefef;--dark3:#e8e8e8;--dark4:#ffffff;--text:#1e293b;--muted:#64748b;--border:rgba(37,99,235,.15)}
+html,body{background:#f5f5f5!important;color:#1e293b!important}
+.scanlines{display:none!important}
+/* Navbar */
+.navbar{background:rgba(255,255,255,.97)!important;border-bottom:1px solid rgba(37,99,235,.12)!important;backdrop-filter:blur(12px)!important}
+.logo-a,.logo-rest{color:#2563eb!important;-webkit-text-fill-color:#2563eb!important}
+.logo-tag{color:#64748b!important}
+.nav-links a{color:#334155!important}
+.nav-links a:hover{color:#2563eb!important}
+.nav-cta{background:#2563eb!important;color:#fff!important;border-radius:8px!important;padding:8px 18px!important}
+.nav-invoice,.nav-register{background:rgba(37,99,235,.07)!important;border:1px solid rgba(37,99,235,.2)!important;border-radius:6px!important;padding:6px 14px!important;color:#2563eb!important}
+/* Hero */
+.hero{background:linear-gradient(150deg,#eef2ff 0%,#e0e7ff 40%,#f5f5f5 100%)!important}
+.hero-h1{color:#1e293b!important}
+.hero-tagline{color:#b45309!important}
+.hero-sub{color:#475569!important}
+.hero-badge{background:rgba(37,99,235,.09)!important;border:1px solid rgba(37,99,235,.22)!important;color:#2563eb!important}
+.nbadge-dot{background:#2563eb!important}
+.neon-text{background:linear-gradient(90deg,#2563eb,#7c3aed,#2563eb)!important;background-size:100%!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important}
+.btn-neon{background:linear-gradient(135deg,#1d4ed8,#2563eb)!important;color:#fff!important;box-shadow:0 4px 16px rgba(37,99,235,.25)!important}
+.btn-ghost{border:2px solid #2563eb!important;color:#2563eb!important;background:transparent!important}
+/* Ticker */
+.ticker-bar{background:rgba(37,99,235,.07)!important;border-top:1px solid rgba(37,99,235,.12)!important}
+.ticker{color:#334155!important}
+/* Sections */
+.section,.services,.calculators,.news-section,.playground,.contact,.payment-section{background:#f5f5f5!important}
+.section-head h2{color:#1e293b!important}
+.eyebrow{color:#2563eb!important;background:rgba(37,99,235,.08)!important;border:1px solid rgba(37,99,235,.18)!important}
+.sec-sub{color:#64748b!important}
+.section-head h2::after{content:"";display:block;width:56px;height:3px;margin:10px auto 0;background:linear-gradient(90deg,#2563eb,#7c3aed)}
+/* Service cards */
+.svc-card{background:#fff!important;border:1px solid rgba(37,99,235,.1)!important;box-shadow:0 2px 12px rgba(0,0,0,.05)!important;color:#1e293b!important}
+.svc-card:hover{border-color:rgba(37,99,235,.28)!important;box-shadow:0 8px 30px rgba(37,99,235,.1)!important;transform:translateY(-4px)!important}
+.svc-card h3{color:#1e293b!important}
+.svc-card p{color:#475569!important}
+.svc-tag{color:#2563eb!important}
+.svc-icon{font-size:2rem}
+/* Calculators */
+.calc-box{background:#fff!important;border:1px solid rgba(37,99,235,.1)!important;box-shadow:0 2px 16px rgba(0,0,0,.05)!important}
+.it-result,.calc-left,.calc-right{background:#fff!important}
+.calc-title,.itr-title{color:#1e293b!important}
+.it-sec-title{color:#374151!important;background:#f0f4ff!important;border-left:3px solid #2563eb!important}
+.it-row label{color:#374151!important}
+.it-row input,.it-row select{background:#f8faff!important;color:#1e293b!important;border:1px solid #dde2ea!important}
+.ctab,.ntab,.pgtab,.qtab{background:#fff!important;color:#334155!important;border:1px solid rgba(37,99,235,.15)!important}
+.ctab.active,.ntab.active,.pgtab.active,.qtab.active{background:linear-gradient(135deg,#1d4ed8,#2563eb)!important;color:#fff!important;border-color:transparent!important}
+/* News */
+.news-card{background:#fff!important;border:1px solid rgba(37,99,235,.1)!important;color:#1e293b!important}
+.news-card h4{color:#1e293b!important}
+.news-card p{color:#64748b!important}
+/* Playground */
+.pg-info{color:#475569!important;background:#eef2ff!important;border:1px solid rgba(37,99,235,.15)!important}
+.btn-neon-sm{background:#2563eb!important;color:#fff!important}
+/* Contact */
+.cform input,.cform textarea,.cform select{background:#f8faff!important;color:#1e293b!important;border:1px solid #dde2ea!important}
+.cform label{color:#374151!important}
+.cc-card{background:#fff!important;border:1px solid rgba(37,99,235,.1)!important}
+.cc-l{color:#64748b!important}
+.cc-v{color:#1e293b!important}
+.trust-row span{color:#059669!important}
+.form-success{color:#059669!important}
+/* Modal */
+.modal-box{background:#fff!important;color:#1e293b!important;border:1px solid rgba(37,99,235,.1)!important}
+.modal-close{color:#64748b!important}
+/* Footer */
+.footer{background:#1e293b!important;color:#e2e8f0!important}
+.footer-name,.footer-tag{color:#e2e8f0!important}
+.fcol-head{color:#94a3b8!important}
+.fcol a{color:#94a3b8!important}
+.footer-bottom p{color:#64748b!important}
+/* Reveal transitions */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
 .reveal.revealed{opacity:1;transform:none}
-.stagger>*{opacity:0;transform:translateY(28px);transition:opacity .5s ease,transform .5s ease}
-.stagger.revealed>*:nth-child(1){opacity:1;transform:none;transition-delay:0s}
-.stagger.revealed>*:nth-child(2){opacity:1;transform:none;transition-delay:.1s}
-.stagger.revealed>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
-.stagger.revealed>*:nth-child(4){opacity:1;transform:none;transition-delay:.3s}
-.stagger.revealed>*:nth-child(5){opacity:1;transform:none;transition-delay:.4s}
-.stagger.revealed>*:nth-child(6){opacity:1;transform:none;transition-delay:.5s}
-.stagger.revealed>*:nth-child(7){opacity:1;transform:none;transition-delay:.6s}
-.stagger.revealed>*:nth-child(8){opacity:1;transform:none;transition-delay:.7s}
-.stagger.revealed>*:nth-child(9){opacity:1;transform:none;transition-delay:.8s}
-.stagger.revealed>*:nth-child(10){opacity:1;transform:none;transition-delay:.9s}
-.hero-orb{will-change:transform;position:absolute;border-radius:50%;pointer-events:none}
-
-
-
-}
-.section-head h2::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:2px;margin:10px auto 0}
-@keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.8)}50%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
-.scanlines{opacity:.25}#bg-canvas{opacity:.2}
+.stagger>*{opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s ease}
+.stagger.revealed>*:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
+.stagger.revealed>*:nth-child(2){opacity:1;transform:none;transition-delay:.10s}
+.stagger.revealed>*:nth-child(3){opacity:1;transform:none;transition-delay:.15s}
+.stagger.revealed>*:nth-child(4){opacity:1;transform:none;transition-delay:.20s}
+.stagger.revealed>*:nth-child(5){opacity:1;transform:none;transition-delay:.25s}
+.stagger.revealed>*:nth-child(6){opacity:1;transform:none;transition-delay:.30s}
+.stagger.revealed>*:nth-child(7){opacity:1;transform:none;transition-delay:.35s}
+.stagger.revealed>*:nth-child(8){opacity:1;transform:none;transition-delay:.40s}
+.stagger.revealed>*:nth-child(9){opacity:1;transform:none;transition-delay:.45s}
+.stagger.revealed>*:nth-child(10){opacity:1;transform:none;transition-delay:.50s}
+.nav-pay{background:linear-gradient(135deg,#059669,#10b981)!important;color:#fff!important;border-radius:6px!important;padding:6px 14px!important;}
+/* Password modal */
+.pw-modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center}
+.pw-modal-overlay.open{display:flex}
+.pw-modal{background:#fff;border-radius:18px;padding:40px 36px;width:340px;max-width:90vw;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+.pw-modal-icon{font-size:2.8rem;margin-bottom:12px}
+.pw-modal h3{color:#1e293b;margin:0 0 8px;font-size:1.3rem}
+.pw-modal p{color:#64748b;font-size:.9rem;margin:0 0 22px}
+.pw-input{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;color:#1e293b;background:#f8faff;outline:none;box-sizing:border-box;transition:.2s}
+.pw-input:focus{border-color:#2563eb;background:#eef2ff}
+.pw-error{color:#dc2626;font-size:.85rem;margin:8px 0;display:none}
+.pw-btn{width:100%;padding:13px;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin:12px 0 8px;letter-spacing:.5px}
+.pw-cancel{color:#64748b;background:none;border:none;cursor:pointer;font-size:.9rem;text-decoration:underline}
+/* Payment section */
+.payment-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:860px;margin:0 auto}
+@media(max-width:700px){.payment-wrap{grid-template-columns:1fr}}
+.payment-qr-card,.payment-info-card{background:#fff;border-radius:16px;padding:28px;border:1px solid rgba(37,99,235,.1);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.payment-qr-card{text-align:center}
+.qr-header-icon{font-size:2.2rem;margin-bottom:8px}
+.qr-header h3{color:#1e293b;font-size:1.15rem;margin:0 0 4px}
+.qr-header p{color:#64748b;font-size:.85rem;margin:0 0 16px}
+.qr-img-wrap{display:flex;justify-content:center;padding:14px;background:#f8faff;border-radius:12px;border:2px dashed rgba(37,99,235,.2);margin-bottom:14px}
+.qr-img-wrap img{width:180px;height:180px;border-radius:8px}
+.upi-id-box{display:flex;align-items:center;justify-content:center;gap:8px;background:#eef2ff;border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:9px 12px;margin:10px 0;flex-wrap:wrap}
+.upi-label{color:#64748b;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.upi-val{color:#2563eb;font-weight:700;font-size:.93rem}
+.upi-copy{background:#2563eb;color:#fff;border:none;border-radius:6px;padding:5px 11px;cursor:pointer;font-size:.78rem;font-weight:600}
+.payment-apps{display:flex;justify-content:center;gap:10px;margin:10px 0;font-size:.82rem;color:#64748b;flex-wrap:wrap}
+.payment-note{color:#64748b;font-size:.78rem;margin-top:10px;line-height:1.5}
+.payment-info-card h3{color:#1e293b;margin:0 0 16px;font-size:1.15rem;text-align:center}
+.pay-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.pay-item:last-of-type{border-bottom:none}
+.pi-label{color:#64748b;font-size:.88rem}
+.pi-val{color:#1e293b;font-weight:600;font-size:.88rem}
+.payment-steps{margin:16px 0;background:#f8faff;border-radius:10px;padding:14px 16px;text-align:left}
+.payment-steps h4{color:#1e293b;margin:0 0 8px;font-size:.95rem}
+.payment-steps ol{color:#475569;font-size:.85rem;padding-left:16px;margin:0;line-height:2}
+.pay-contact-btn{display:block;margin-top:14px;text-align:center;text-decoration:none;padding:12px;border-radius:10px}
 </style>
 </head>
 <body>
@@ -93,8 +146,9 @@ em{color:#60a5fa}
       <li><a href="#calculators">Calculators</a></li>
       <li><a href="#news">Live News</a></li>
       <li><a href="#playground" class="nav-play">🎮 Playground</a></li>
-      <li><a href="invoice.html" class="nav-invoice">🧾 Invoice</a></li>
-      <li><a href="register.html" class="nav-register">👤 Client Portal</a></li>
+      <li><a href="#" class="nav-invoice" onclick="showPwModal('invoice.html');return false;">🧾 Invoice</a></li>
+      <li><a href="#" class="nav-register" onclick="showPwModal('register.html');return false;">👤 Client Portal</a></li>
+      <li><a href="#payment" class="nav-pay">💳 Pay Online</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
@@ -105,17 +159,14 @@ em{color:#60a5fa}
     <a href="#calculators" onclick="closeMobile()">Calculators</a>
     <a href="#news" onclick="closeMobile()">Live News</a>
     <a href="#playground" onclick="closeMobile()">Playground</a>
-    <a href="invoice.html" onclick="closeMobile()">🧾 Invoice Generator</a>
-    <a href="register.html" onclick="closeMobile()">👤 Client Portal</a>
+    <a href="#" onclick="closeMobile();showPwModal('invoice.html');return false;">🧾 Invoice Generator</a>
+    <a href="#" onclick="closeMobile();showPwModal('register.html');return false;">👤 Client Portal</a>
     <a href="#contact" onclick="closeMobile()">Contact</a>
   </div>
 </nav>
 
 <!-- ══ HERO ══ -->
 <section class="hero" id="home">
-  
-  
-  
   <div class="hero-inner">
     <div class="hero-badge"><span class="nbadge-dot"></span> Mumbai's Premier Financial Consultancy</div>
     <h1 class="hero-h1" id="hero-title">A Bagla<br/><span class="neon-text">Financial Services</span></h1>
@@ -505,7 +556,7 @@ em{color:#60a5fa}
             <button class="qtab active" onclick="loadQuiz('gst',this)">GST</button>
             <button class="qtab" onclick="loadQuiz('income',this)">Income Tax</button>
             <button class="qtab" onclick="loadQuiz('mf',this)">Mutual Funds</button>
-            <button class="qtab" onclick="loadQuiz('tds',this)">TDU</button>
+            <button class="qtab" onclick="loadQuiz('tds',this)">TDS</button>
             <button class="qtab" onclick="loadQuiz('accounting',this)">Accounting</button>
             <button class="qtab" onclick="loadQuiz('current',this)">Current Affairs</button>
           </div>
@@ -564,6 +615,71 @@ em{color:#60a5fa}
 </section>
 
 <!-- ══ FOOTER ══ -->
+
+<!-- ══ PAYMENT ══ -->
+<section class="payment-section section" id="payment">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Quick &amp; Secure</span>
+      <h2>Pay <span class="neon-text">Online</span></h2>
+      <p class="sec-sub">Pay your fees instantly via UPI — safe, simple, and instant confirmation.</p>
+    </div>
+    <div class="payment-wrap">
+      <div class="payment-qr-card reveal">
+        <div class="qr-header">
+          <div class="qr-header-icon">📱</div>
+          <h3>Scan &amp; Pay via UPI</h3>
+          <p>Use GPay, PhonePe, Paytm, BHIM or any UPI app</p>
+        </div>
+        <div class="qr-img-wrap">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3Datulxaverian1999%40okicici%26pn%3DA%2520Bagla%2520Financial%2520Services%26cu%3DINR" alt="UPI QR Code — A Bagla Financial Services" loading="lazy"/>
+        </div>
+        <div class="upi-id-box">
+          <span class="upi-label">UPI ID</span>
+          <span class="upi-val">atulxaverian1999@okicici</span>
+          <button class="upi-copy" onclick="copyUPI()">📋 Copy</button>
+        </div>
+        <div class="payment-apps">
+          <span>🔵 GPay</span><span>🟣 PhonePe</span><span>🔴 Paytm</span><span>🟢 BHIM</span>
+        </div>
+        <p class="payment-note">After payment, share the screenshot at<br/><strong>atulxaverian1999@gmail.com</strong></p>
+      </div>
+      <div class="payment-info-card reveal">
+        <h3>💳 Payment Details</h3>
+        <div class="pay-item"><span class="pi-label">Business Name</span><span class="pi-val">A Bagla Financial Services</span></div>
+        <div class="pay-item"><span class="pi-label">UPI ID</span><span class="pi-val">atulxaverian1999@okicici</span></div>
+        <div class="pay-item"><span class="pi-label">Location</span><span class="pi-val">Powai, Mumbai 400076</span></div>
+        <div class="pay-item"><span class="pi-label">Currency</span><span class="pi-val">₹ Indian Rupee (INR)</span></div>
+        <div class="pay-item"><span class="pi-label">Accepted Apps</span><span class="pi-val">All UPI Apps</span></div>
+        <div class="payment-steps">
+          <h4>📋 How to Pay:</h4>
+          <ol>
+            <li>Open GPay, PhonePe, Paytm or any UPI app</li>
+            <li>Tap "Scan QR" and scan the code, or enter UPI ID</li>
+            <li>Enter the fee amount as discussed</li>
+            <li>Confirm with your UPI PIN</li>
+            <li>Email/WhatsApp the payment screenshot</li>
+          </ol>
+        </div>
+        <a href="mailto:atulxaverian1999@gmail.com?subject=Payment%20Receipt" class="btn-neon pay-contact-btn">📩 Share Payment Receipt</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Password Modal -->
+<div class="pw-modal-overlay" id="pw-modal-overlay" onclick="if(event.target===this)closePwModal()">
+  <div class="pw-modal">
+    <div class="pw-modal-icon">🔐</div>
+    <h3>Owner Access Only</h3>
+    <p>This area is password-protected.<br/>Please enter your password to continue.</p>
+    <input type="password" id="pw-input" class="pw-input" placeholder="Enter password…" onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <div class="pw-error" id="pw-error">❌ Incorrect password. Please try again.</div>
+    <button class="pw-btn" onclick="checkPassword()">🔓 Access</button>
+    <br/><button class="pw-cancel" onclick="closePwModal()">Cancel</button>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container">
     <div class="footer-top">
@@ -602,30 +718,67 @@ em{color:#60a5fa}
   </div>
 </footer>
 
-<script>
-(function(){
-  /* Floating particles */
-  var io=new IntersectionObserver(function(en){
-    en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}});
-  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.reveal,.stagger').forEach(function(el){io.observe(el);});
-  /* Navbar glow on scroll */
-  var nav=document.getElementById('navbar');
-  window.addEventListener('scroll',function(){nav.style.boxShadow=scrollY>40?'0 4px 32px rgba(59,130,246,.2)':'';},{ passive:true});
-  /* Card spotlight */
-  document.querySelectorAll('.svc-card').forEach(function(c){
-    c.addEventListener('mousemove',function(e){
-      var r=c.getBoundingClientRect(),gl=c.querySelector('.svc-glow');
-      if(gl)gl.style.background='radial-gradient(circle at '+(e.clientX-r.left)+'px '+(e.clientY-r.top)+'px,rgba(59,130,246,.22),transparent 65%)';
-    });
-    c.addEventListener('mouseleave',function(){var gl=c.querySelector('.svc-glow');if(gl)gl.style.background='';});
-  });
-})();
-</script>
 <script src="main.js?v=20260404A"></script>
 <script>
+/* ── Password Protection ── */
+var _pwTarget='';
+function showPwModal(target){
+  _pwTarget=target;
+  var o=document.getElementById('pw-modal-overlay');
+  o.classList.add('open');
+  var inp=document.getElementById('pw-input');
+  inp.value='';
+  document.getElementById('pw-error').style.display='none';
+  inp.style.borderColor='';
+  setTimeout(function(){inp.focus();},80);
+}
+function closePwModal(){document.getElementById('pw-modal-overlay').classList.remove('open');}
+function checkPassword(){
+  var val=document.getElementById('pw-input').value;
+  if(val==='Bagla@2025'){
+    closePwModal();
+    window.location.href=_pwTarget;
+  } else {
+    var e=document.getElementById('pw-error');
+    var inp=document.getElementById('pw-input');
+    e.style.display='block';
+    inp.style.borderColor='#dc2626';
+    setTimeout(function(){inp.style.borderColor='';},1600);
+  }
+}
+/* ── UPI Copy ── */
+function copyUPI(){
+  var uid='atulxaverian1999@okicici';
+  navigator.clipboard.writeText(uid).then(function(){
+    var btn=document.querySelector('.upi-copy');
+    var orig=btn.textContent;
+    btn.textContent='✅ Copied!';
+    btn.style.background='#059669';
+    setTimeout(function(){btn.textContent=orig;btn.style.background='';},2200);
+  }).catch(function(){
+    var ta=document.createElement('textarea');
+    ta.value=uid;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+  });
+}
+
+/* ── Scroll Reveal via IntersectionObserver ── */
+(function(){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-scale,.stagger').forEach(function(el){io.observe(el);});
+})();
+
+/* ── Hero title 3D float on mouse ── */
 (function(){
   var el = document.getElementById('hero-title');
+  if(!el) return;
+  el.style.transition = 'transform 0.15s ease, text-shadow 0.15s ease';
+  el.style.display = 'inline-block';
+  el.style.willChange = 'transform';
   if(!el) return;
   el.style.transition = 'transform 0.15s ease, text-shadow 0.15s ease';
   el.style.display = 'inline-block';
@@ -646,6 +799,43 @@ em{color:#60a5fa}
     el.style.textShadow = '';
   });
 })();
+
+/* ── Navbar scroll shadow ── */
+(function(){
+  var nav=document.getElementById('navbar');
+  window.addEventListener('scroll',function(){
+    nav.style.boxShadow=window.scrollY>40?'0 4px 32px rgba(59,130,246,.18)':'';
+  });
+})();
+
+/* ── Service card spotlight (cursor glow follows mouse) ── */
+document.querySelectorAll('.svc-card').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=e.clientX-r.left, y=e.clientY-r.top;
+    card.querySelector('.svc-glow').style.background='radial-gradient(circle at '+x+'px '+y+'px,rgba(59,130,246,.22),transparent 65%)';
+  });
+  card.addEventListener('mouseleave',function(){
+    card.querySelector('.svc-glow').style.background='';
+  });
+});
+
+/* ── Counter animation for any .count-up elements ── */
+function animateCounter(el){
+  var target=parseInt(el.dataset.target||el.innerText.replace(/[^0-9]/g,''));
+  var prefix=el.dataset.prefix||'';
+  var suffix=el.dataset.suffix||'';
+  var start=0, dur=1600, step=16;
+  var timer=setInterval(function(){
+    start+=target/(dur/step);
+    if(start>=target){start=target;clearInterval(timer);}
+    el.innerText=prefix+Math.floor(start).toLocaleString('en-IN')+suffix;
+  },step);
+}
+var cio=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){animateCounter(e.target);cio.unobserve(e.target);}});
+},{threshold:.5});
+document.querySelectorAll('.count-up').forEach(function(el){cio.observe(el);});
 </script>
 </body>
 </html>
