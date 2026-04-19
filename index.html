@@ -67,7 +67,7 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
 .cc-card{background:#fff!important;border:1px solid rgba(37,99,235,.1)!important}
 .cc-l{color:#64748b!important}
 .cc-v{color:#1e293b!important}
-.trust-row span{color:#059669!important}
+.expertise-note p{color:#374151!important;font-size:.97rem;line-height:1.7;font-style:italic;border-left:3px solid #2563eb;padding-left:14px;margin-top:18px}
 .form-success{color:#059669!important}
 /* Modal */
 .modal-box{background:#fff!important;color:#1e293b!important;border:1px solid rgba(37,99,235,.1)!important}
@@ -148,7 +148,6 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
       <li><a href="#playground" class="nav-play">🎮 Playground</a></li>
       <li><a href="#" class="nav-invoice" onclick="showPwModal('invoice.html');return false;">🧾 Invoice</a></li>
       <li><a href="#" class="nav-register" onclick="showPwModal('register.html');return false;">👤 Client Portal</a></li>
-      <li><a href="#payment" class="nav-pay">💳 Pay Online</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
@@ -176,9 +175,6 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
       <a href="#services" class="btn-neon">Explore Services</a>
       <a href="#calculators" class="btn-ghost">Try Calculators ↓</a>
     </div>
-  </div>
-  <div class="ticker-bar">
-    <div class="ticker">📈 NIFTY 50: 22,450 (+1.2%) &nbsp;·&nbsp; 💰 SENSEX: 74,119 (+0.9%) &nbsp;·&nbsp; 🏦 GOLD: ₹72,400/10g &nbsp;·&nbsp; 📊 USD/INR: 83.42 &nbsp;·&nbsp; 💎 SILVER: ₹86,500/kg &nbsp;·&nbsp; 🏢 NIFTY BANK: 48,200 (+0.6%) &nbsp;·&nbsp; 📈 NIFTY 50: 22,450 (+1.2%) &nbsp;·&nbsp; 💰 SENSEX: 74,119 (+0.9%) &nbsp;·&nbsp; 🏦 GOLD: ₹72,400/10g &nbsp;·&nbsp; 📊 USD/INR: 83.42 &nbsp;·&nbsp;</div>
   </div>
 </section>
 
@@ -585,8 +581,8 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
         <div class="cc-card"><span class="cc-ico">📧</span><div><p class="cc-l">Email</p><a href="mailto:atulxaverian1999@gmail.com" class="cc-v">atulxaverian1999@gmail.com</a></div></div>
         <div class="cc-card"><span class="cc-ico">📍</span><div><p class="cc-l">Address</p><p class="cc-v">Powai, Mumbai — 400076<br/>Maharashtra, India</p></div></div>
         <div class="cc-card"><span class="cc-ico">🕐</span><div><p class="cc-l">Hours</p><p class="cc-v">Mon – Sat: 9 AM – 7 PM</p></div></div>
-        <div class="trust-row">
-          <span>✅ SEBI Registered</span><span>✅ CA Certified</span><span>✅ 15+ Years</span>
+        <div class="expertise-note">
+          <p>Our solutions are crafted by seasoned Chartered Accountants and financial professionals who bring decades of hands-on expertise to every engagement — ensuring accuracy, compliance, and strategies that genuinely work for your business.</p>
         </div>
       </div>
       <form class="cform" onsubmit="handleSubmit(event)">
@@ -616,56 +612,6 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
 
 <!-- ══ FOOTER ══ -->
 
-<!-- ══ PAYMENT ══ -->
-<section class="payment-section section" id="payment">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Quick &amp; Secure</span>
-      <h2>Pay <span class="neon-text">Online</span></h2>
-      <p class="sec-sub">Pay your fees instantly via UPI — safe, simple, and instant confirmation.</p>
-    </div>
-    <div class="payment-wrap">
-      <div class="payment-qr-card reveal">
-        <div class="qr-header">
-          <div class="qr-header-icon">📱</div>
-          <h3>Scan &amp; Pay via UPI</h3>
-          <p>Use GPay, PhonePe, Paytm, BHIM or any UPI app</p>
-        </div>
-        <div class="qr-img-wrap">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3Datulxaverian1999%40okicici%26pn%3DA%2520Bagla%2520Financial%2520Services%26cu%3DINR" alt="UPI QR Code — A Bagla Financial Services" loading="lazy"/>
-        </div>
-        <div class="upi-id-box">
-          <span class="upi-label">UPI ID</span>
-          <span class="upi-val">atulxaverian1999@okicici</span>
-          <button class="upi-copy" onclick="copyUPI()">📋 Copy</button>
-        </div>
-        <div class="payment-apps">
-          <span>🔵 GPay</span><span>🟣 PhonePe</span><span>🔴 Paytm</span><span>🟢 BHIM</span>
-        </div>
-        <p class="payment-note">After payment, share the screenshot at<br/><strong>atulxaverian1999@gmail.com</strong></p>
-      </div>
-      <div class="payment-info-card reveal">
-        <h3>💳 Payment Details</h3>
-        <div class="pay-item"><span class="pi-label">Business Name</span><span class="pi-val">A Bagla Financial Services</span></div>
-        <div class="pay-item"><span class="pi-label">UPI ID</span><span class="pi-val">atulxaverian1999@okicici</span></div>
-        <div class="pay-item"><span class="pi-label">Location</span><span class="pi-val">Powai, Mumbai 400076</span></div>
-        <div class="pay-item"><span class="pi-label">Currency</span><span class="pi-val">₹ Indian Rupee (INR)</span></div>
-        <div class="pay-item"><span class="pi-label">Accepted Apps</span><span class="pi-val">All UPI Apps</span></div>
-        <div class="payment-steps">
-          <h4>📋 How to Pay:</h4>
-          <ol>
-            <li>Open GPay, PhonePe, Paytm or any UPI app</li>
-            <li>Tap "Scan QR" and scan the code, or enter UPI ID</li>
-            <li>Enter the fee amount as discussed</li>
-            <li>Confirm with your UPI PIN</li>
-            <li>Email/WhatsApp the payment screenshot</li>
-          </ol>
-        </div>
-        <a href="mailto:atulxaverian1999@gmail.com?subject=Payment%20Receipt" class="btn-neon pay-contact-btn">📩 Share Payment Receipt</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Password Modal -->
 <div class="pw-modal-overlay" id="pw-modal-overlay" onclick="if(event.target===this)closePwModal()">
@@ -675,7 +621,7 @@ html,body{background:#f5f5f5!important;color:#1e293b!important}
     <p>This area is password-protected.<br/>Please enter your password to continue.</p>
     <input type="password" id="pw-input" class="pw-input" placeholder="Enter password…" onkeydown="if(event.key==='Enter')checkPassword()"/>
     <div class="pw-error" id="pw-error">❌ Incorrect password. Please try again.</div>
-    <button class="pw-btn" onclick="checkPassword()">🔓 Access</button>
+    <button class="pw-btn" oncl)ck="checkPassword()">🔓 Access</button>
     <br/><button class="pw-cancel" onclick="closePwModal()">Cancel</button>
   </div>
 </div>
