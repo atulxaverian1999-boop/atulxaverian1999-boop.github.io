@@ -1373,7 +1373,7 @@ dialog{background:var(--card);color:var(--text)}
         <p style="color:var(--muted);font-size:.95rem;margin-bottom:16px">It opens a short Google Form — takes under a minute.</p>
         <a id="gformOpen" class="btn btn-primary" style="width:100%;justify-content:center" href="#" target="_blank" rel="noopener">Open the question form ↗</a>
         <iframe id="gform" title="Ask a question form" hidden style="width:100%;height:820px;border:0;margin-top:16px" loading="lazy"></iframe>
-        <p id="gformFallback" class="disclaimer">Form not set up yet — you can email <a href="mailto:atulxaverian1999@gmail.com">atulxaverian1999@gmail.com</a> meanwhile.</p>
+        <p id="gformFallback" class="disclaimer">Prefer email? Write to <a href="mailto:caatulbagla99@gmail.com">caatulbagla99@gmail.com</a></p>
       </div>
     </div>
   </div>
@@ -1427,7 +1427,7 @@ dialog{background:var(--card);color:var(--text)}
   <h3>Questions you submit</h3>
   <p>The question form is a Google Form. It collects your name, email and question (and phone number only if you choose to give it). This is used only to reply to your question and is not sold or shared. Google's own privacy policy applies to how the form is hosted.</p>
   <h3>Your rights</h3>
-  <p>Under the Digital Personal Data Protection Act, 2023, you can ask for your details to be corrected or deleted by writing to <a href="mailto:atulxaverian1999@gmail.com">atulxaverian1999@gmail.com</a>.</p>
+  <p>Under the Digital Personal Data Protection Act, 2023, you can ask for your details to be corrected or deleted by writing to <a href="mailto:caatulbagla99@gmail.com">caatulbagla99@gmail.com</a>.</p>
   <h3>Cookies</h3>
   <p>This site does not use tracking or advertising cookies.</p>
 </div></dialog>
@@ -1454,7 +1454,7 @@ dialog{background:var(--card);color:var(--text)}
 <script>
 /* ============ SETTINGS — edit this one line ============ */
 const SETTINGS = {
-  googleFormUrl: ''   // paste your Google Form link (ends in /viewform)
+  googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScqBoAPor2wh1bfkhObwpi20wzc79FxpyMjeIXTbQO62IvVAg/viewform'   // paste your Google Form link (ends in /viewform)
 };
 
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -1462,9 +1462,8 @@ if (SETTINGS.googleFormUrl) {
   const gf = SETTINGS.googleFormUrl.split('?')[0];
   document.getElementById('gformOpen').href = gf;
   const fr = document.getElementById('gform'); fr.src = gf + '?embedded=true'; fr.hidden = false;
-  document.getElementById('gformFallback').hidden = true;
 } else {
-  document.getElementById('gformOpen').href = 'mailto:atulxaverian1999@gmail.com?subject=' + encodeURIComponent('Tax question');
+  document.getElementById('gformOpen').href = 'mailto:caatulbagla99@gmail.com?subject=' + encodeURIComponent('Tax question');
   document.getElementById('gformOpen').textContent = 'Email your question ✉️';
   document.getElementById('gformFallback').hidden = true;
 }
