@@ -190,10 +190,10 @@ details p{margin-top:10px;color:var(--muted);font-size:.95rem}
 .contact-bg h2{color:#fff}
 .contact-bg .lede{color:#b9c7d6}
 .contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px}
-.info{display:grid;gap:18px;align-content:start}
-.info-item{display:flex;gap:14px}
+.ask-info{display:grid;gap:22px;align-content:start}
+.info-item{display:flex;gap:16px;align-items:flex-start;font:400 .98rem/1.6 var(--sans);color:rgba(255,255,255,.78)}
 .info-item .ico{flex:none;width:44px;height:44px;border-radius:12px;background:rgba(242,181,68,.15);color:var(--gold);display:grid;place-items:center;font-size:1.15rem}
-.info-item b{color:#fff;display:block}
+.info-item b{color:#fff;display:block;font-weight:700;font-size:1.05rem;margin-bottom:4px}
 .info-item a{color:var(--gold)}
 .form-card{background:var(--card);color:var(--text);border-radius:18px;padding:26px}
 .consent{display:flex;gap:10px;font-size:.82rem;color:var(--muted);margin:6px 0 14px;align-items:flex-start}
@@ -204,7 +204,7 @@ details p{margin-top:10px;color:var(--muted);font-size:.95rem}
 
 /* Footer */
 footer{background:#0a1d30;color:#93a4b6;padding:44px 0 28px;font-size:.88rem}
-.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;margin-bottom:26px}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;margin-bottom:26px}
 footer h4{color:#fff;font:700 .85rem var(--sans);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
 footer a{color:#c9d5e1;text-decoration:none;display:block;padding:3px 0;background:none;border:0;font:inherit;cursor:pointer;text-align:left}
 footer a:hover{color:var(--gold)}
@@ -624,6 +624,26 @@ dialog{background:var(--card);color:var(--text)}
 .brand-name small{white-space:nowrap}
 @media(max-width:420px){.brand-name{font-size:.98rem}.brand-name small{font-size:.58rem;letter-spacing:.06em}.brand-mark{width:34px;height:34px}.menu-btn{padding:7px 11px}}
 @media(max-width:620px){.install-fab{padding:9px 13px;font-size:.84rem}}
+
+/* Act text */
+.actx{margin-top:12px;max-height:75vh;overflow-y:auto;padding-right:6px;font-family:Georgia,'Times New Roman',serif;font-size:.98rem;line-height:1.75;color:var(--text)}
+.act-p{margin:0 0 10px;text-align:justify;hyphens:auto}
+.act-p.lv1{margin-left:22px}.act-p.lv2{margin-left:44px}.act-p.lv3{margin-left:66px}
+.act-p b{color:var(--heading);font-family:var(--sans);font-size:.92em;margin-right:4px}
+.act-p i{font-style:italic;color:var(--accent)}
+.act-tbl{overflow-x:auto;background:var(--paper2);border:1px solid var(--line);border-radius:10px;margin:8px 0 14px}
+.lib-box .act-tbl pre{white-space:pre;max-height:none;border:0;border-radius:0;background:transparent;overflow:visible;font:400 .78rem/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:12px 14px;margin:0;color:var(--text);min-width:min-content}
+.act-src{font-size:.75rem;color:var(--muted);margin-top:8px;font-style:italic}
+@media(max-width:620px){.act-p.lv1{margin-left:12px}.act-p.lv2{margin-left:24px}.act-p.lv3{margin-left:36px}.actx{font-size:.94rem}}
+
+.home-links{padding-top:0!important}
+.ol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ol{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;color:var(--text)}
+.ol:hover{border-color:var(--ink-2)}
+.ol-i{font-size:1.4rem;line-height:1}
+.ol b{display:block;color:var(--heading)}.ol small{display:block;color:var(--muted);font-size:.84rem}.ol em{font-style:normal;font-size:.78rem;color:var(--accent);font-weight:700}
+@media(max-width:1000px){.ol-grid{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr!important}}
+@media(max-width:620px){.ol-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -687,6 +707,7 @@ dialog{background:var(--card);color:var(--text)}
       <div class="hero-ctas">
         <a href="#calculator" class="btn btn-gold" onclick="openCalc('c-it')">Open Advance Calculator →</a>
         <a href="#ask" class="btn btn-ghost">Ask a question</a>
+        <a href="#" class="btn btn-ghost" data-install>📲 Install app</a>
       </div>
     </div>
     <div class="hero-card">
@@ -721,6 +742,13 @@ dialog{background:var(--card);color:var(--text)}
     </div>
   </div>
 </section>
+<section class="page home-links" data-page="home">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Official websites</span><h2>Useful official links</h2></div>
+    <div class="ol-grid"><a class="ol" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener"><span class="ol-i">🧾</span><span><b>Income Tax e-Filing</b><small>File ITR, AIS / 26AS, e-verify, refunds, notices</small><em>incometax.gov.in ↗</em></span></a><a class="ol" href="https://www.incometaxindia.gov.in/" target="_blank" rel="noopener"><span class="ol-i">📚</span><span><b>Income Tax Department</b><small>Acts, Rules, circulars, notifications</small><em>incometaxindia.gov.in ↗</em></span></a><a class="ol" href="https://www.tdscpc.gov.in/" target="_blank" rel="noopener"><span class="ol-i">🏦</span><span><b>TRACES (TDS)</b><small>Form 16 / 16A, TDS defaults, Form 26AS</small><em>tdscpc.gov.in ↗</em></span></a><a class="ol" href="https://www.gst.gov.in/" target="_blank" rel="noopener"><span class="ol-i">🧮</span><span><b>GST Portal</b><small>GST registration, returns, payments</small><em>gst.gov.in ↗</em></span></a><a class="ol" href="https://www.mca.gov.in/" target="_blank" rel="noopener"><span class="ol-i">🏢</span><span><b>MCA</b><small>Company & LLP filings, director KYC</small><em>mca.gov.in ↗</em></span></a><a class="ol" href="https://www.icai.org/" target="_blank" rel="noopener"><span class="ol-i">🎓</span><span><b>ICAI</b><small>Institute of Chartered Accountants of India</small><em>icai.org ↗</em></span></a></div>
+  </div>
+</section>
+
 
 
 <!-- CALCULATOR -->
@@ -1363,7 +1391,7 @@ dialog{background:var(--card);color:var(--text)}
       <p class="lede">Ask about ITR, bookkeeping, GST, TDS or the new Income-tax Act. I read every question and reply by email when I can.</p>
     </div>
     <div class="contact">
-      <div class="info">
+      <div class="ask-info">
         <div class="info-item"><div class="ico">💬</div><div><b>What you can ask</b>Which ITR applies, regime choice, deductions, capital gains, bookkeeping basics, GST &amp; TDS, the new Act.</div></div>
         <div class="info-item"><div class="ico">🔒</div><div><b>Keep it private</b>Please don't share PAN, Aadhaar, bank details or passwords in your question.</div></div>
         <div class="info-item"><div class="ico">ℹ️</div><div><b>General guidance</b>Replies are general information, not professional advice for your specific case.</div></div>
@@ -1394,12 +1422,15 @@ dialog{background:var(--card);color:var(--text)}
         <a href="#calculator">Advance Calculator</a><a href="#itr">ITR guide</a><a href="#new-act">Income-tax Act, 2025</a><a href="#ask">Ask a question</a><a href="#" data-install>📲 Install app</a>
       </div>
       <div>
+        <h4>Official links</h4><a href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener">Income Tax e-Filing ↗</a><a href="https://www.tdscpc.gov.in/" target="_blank" rel="noopener">TRACES (TDS) ↗</a><a href="https://www.gst.gov.in/" target="_blank" rel="noopener">GST Portal ↗</a><a href="https://www.mca.gov.in/" target="_blank" rel="noopener">MCA ↗</a><a href="https://www.icai.org/" target="_blank" rel="noopener">ICAI ↗</a>
+      </div>
+      <div>
         <h4>Legal</h4>
         <a href="#" data-open="dlg-privacy">Privacy policy</a><a href="#" data-open="dlg-terms">Terms of use</a><a href="#" data-open="dlg-disclaimer">Disclaimer</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="yr">2026</span> Atul Bagla. All rights reserved.</span>
+      <span>© <span id="yr">2026</span> Atul Bagla. All rights reserved. <a href="desk.html" title="Owner desk" style="display:inline;color:inherit;text-decoration:none;opacity:.55;margin-left:6px">🔒</a></span>
       <span>General information only — not professional advice for your specific situation.</span>
     </div>
   </div>
@@ -2203,6 +2234,35 @@ function calcGST(){
   [who,biz,cx].forEach(e=>e.addEventListener('input',go)); go();
 })();
 
+/* ============ Act text formatter ============ */
+function fmtAct(raw){
+  const esc4=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const L=raw.replace(/\f/g,'').split('\n');
+  const isTab=l=>/\S {3,}\S/.test(l.trim()) && l.trim().length>25;
+  const ind=l=>l.length-l.trimStart().length;
+  const subStart=l=>/^\s{0,10}\(\d+[A-Z]?\)\s/.test(l) || /^\s{0,10}\d{1,3}\.\s*\(?\d*\)?\s*[A-Z(“]/.test(l) && !/\s{3,}/.test(l.trim());
+  const out=[]; let para=null, tbl=null, prose=0;
+  const flushP=()=>{ if(para){ out.push(para); para=null; } };
+  const flushT=()=>{ if(tbl){ const lines=tbl.filter((l,k,a)=>!(l.trim()===''&&(k===0||a[k-1].trim()===''))); while(lines.length&&!lines[lines.length-1].trim()) lines.pop(); const mi=Math.min(...lines.filter(l=>l.trim()).map(ind)); out.push({t:'tbl',x:lines.map(l=>l.slice(mi)).join('\n')}); tbl=null; } };
+  for(let k=0;k<L.length;k++){
+    const l=L[k], tr=l.trim();
+    if(tbl){
+      if(subStart(l) && !isTab(l)){ flushT(); }
+      else { const longProse=!isTab(l)&&ind(l)<9&&tr.length>55; prose=longProse?prose+1:0; if(prose>=2){ const back=tbl.splice(-1,1); flushT(); para={t:'p',x:back[0].trim()}; prose=0; continue; } tbl.push(l); continue; }
+    }
+    if(tr==='Table' || (isTab(l) && (isTab(L[k+1]||'')||isTab(L[k+2]||'')))){ flushP(); tbl=[l]; prose=0; continue; }
+    if(!tr){ flushP(); continue; }
+    const m=tr.match(/^(\((?:[ivx]{1,5}|[a-z]{1,2}|[A-Z]{1,2}|\d+[A-Z]?)\)|Explanation|Provided|Note\b|\d{1,3}\.)/);
+    if(m || !para){ flushP(); let lv=0; const mk=m?m[1]:'';
+      if(/^\((?:i|ii|iii|iv|v|vi|vii|viii|ix|x|xi|xii|xiii|xiv|xv)\)$/.test(mk)) lv=2; else if(/^\([a-z]{1,2}\)$/.test(mk)) lv=1; else if(/^\([A-Z]{1,2}\)$/.test(mk)) lv=3; else if(/^Explanation|^Provided|^Note/.test(mk)) lv=1;
+      para={t:'p',x:tr,lv}; }
+    else para.x = /-$/.test(para.x) ? para.x+tr : para.x+' '+tr;
+  }
+  flushP(); flushT();
+  return out.map(b=> b.t==='tbl' ? `<div class="act-tbl"><pre>${esc4(b.x)}</pre></div>` :
+    `<p class="act-p lv${b.lv||0}">${esc4(b.x).replace(/^(\d{1,3}\.)(\s)/,'<b>$1</b>$2').replace(/^(\((?:[^)]{1,5})\))/,'<b>$1</b>').replace(/^(Explanation[^—:]*[—:]|Provided)/,'<i>$1</i>')}</p>`).join('');
+}
+
 /* ============ Tax Library ============ */
 const LIB = { loaded:false, loading:false, S:[], T:[], CH:{}, oldIdx:{} };
 function libLoad(cb){
@@ -2258,7 +2318,7 @@ function libTopic(id){
     ${t.ex?`<div class="lib-box ex"><h4>💡 Example</h4><p>${esc3(t.ex)}</p></div>`:''}
     ${t.w&&t.w.length?`<div class="lib-box warn"><h4>⚠️ Watch out</h4><ul>${t.w.map(x=>`<li>${esc3(x)}</li>`).join('')}</ul></div>`:''}
     ${t.amd?`<div class="lib-box amd"><h4>📝 Recent amendment</h4><p>${esc3(t.amd)}</p></div>`:''}
-    ${(t.x||sec)?`<details class="lib-box orig"><summary>📜 Original text of the Act ${t.x?'(relevant extract)':''}</summary><pre>${esc3(t.x||sec.t)}</pre>${sec?`<a class="more" href="#library/s/${sec.n}">Read full section ${sec.n} — ${esc3(sec.h)} →</a>`:''}</details>`:''}
+    ${(t.x||sec)?`<details class="lib-box orig"><summary>📜 Original text of the Act ${t.x?'(relevant extract)':''}</summary><div class="actx">${fmtAct(t.x||sec.t)}</div><p class="act-src">Source: Income-tax Act, 2025 (Act No. 30 of 2025), section ${sec?sec.n:''}. Statutory text — reproducible under s. 52(1)(q), Copyright Act, 1957.</p>${sec?`<a class="more" href="#library/s/${sec.n}">Read full section ${sec.n} — ${esc3(sec.h)} →</a>`:''}</details>`:''}
     ${t.rel&&t.rel.length?`<div class="lib-rel"><h4>Related</h4>${t.rel.map(r=>{const x=LIB.T.find(y=>y.id===r); return x?`<a href="#library/t/${r}">${esc3(x.t)}</a>`:''}).join('')}</div>`:''}
     <p class="disclaimer">Plain-English summary for general understanding — read with the Act, Rules and latest amendments before acting.</p>
   </article>`;
@@ -2273,7 +2333,7 @@ function libSection(n){
     <div class="lib-badges"><span class="tag">Chapter ${s.ch} · ${esc3(LIB.CH[s.ch]||'')}</span>${s.old.length?`<span class="pill2 old">Old (1961 Act): ${esc3(s.old.join(', '))}</span>`:''}</div>
     <h2>Section ${s.n} — ${esc3(s.h)}</h2>
     ${tps.length?`<div class="lib-box ex"><h4>📘 Plain-English explainers for this section</h4><div class="lib-rel" style="margin:0">${tps.map(t=>`<a href="#library/t/${t.id}">${esc3(t.t)}${t.o?` <small>(${esc3(t.o)})</small>`:''}</a>`).join('')}</div></div>`:`<div class="lib-box amd"><h4>Plain-English explainer</h4><p>Coming soon for this section. Meanwhile, here is the original text — use “Ask a question” if you need help understanding it.</p></div>`}
-    <div class="lib-box orig open"><h4>📜 Original text — Income-tax Act, 2025 (as enacted)</h4><pre>${esc3(s.t)}</pre></div>
+    <div class="lib-box orig open"><h4>📜 Original text — Income-tax Act, 2025 (as enacted)</h4><div class="actx">${fmtAct(s.t)}</div><p class="act-src">Source: Income-tax Act, 2025 (Act No. 30 of 2025). Statutory text — reproducible under s. 52(1)(q), Copyright Act, 1957. Check later amendments (e.g. Finance Act, 2026).</p></div>
     <div class="lib-nav">${n>1?`<a href="#library/s/${n-1}">← Section ${n-1}</a>`:'<span></span>'}${n<536?`<a href="#library/s/${n+1}">Section ${n+1} →</a>`:''}</div>
   </article>`;
   libShow('view');
