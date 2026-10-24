@@ -88,6 +88,9 @@ header{position:sticky;top:0;z-index:50;background:var(--headerbg);backdrop-filt
 .nav-links a{text-decoration:none;color:var(--text);font-weight:600;font-size:.93rem}
 .nav-links a:hover{color:var(--accent)}
 .nav-links a.btn-primary,.nav-links a.btn-primary:hover{color:#fff}
+.more-btn{white-space:nowrap}
+@media(max-width:1439px) and (min-width:1220px){.nav-links{gap:18px}}
+.nav-right{display:flex;align-items:center;gap:6px}
 .nav-cta{padding:9px 18px;font-size:.9rem}
 .menu-btn{display:none;background:none;border:0;font-size:1.6rem;color:var(--heading);cursor:pointer}
 
@@ -666,6 +669,270 @@ dialog{background:var(--card);color:var(--text)}
 .ol b{display:block;color:var(--heading)}.ol small{display:block;color:var(--muted);font-size:.84rem}.ol em{font-style:normal;font-size:.78rem;color:var(--accent);font-weight:700}
 @media(max-width:1000px){.ol-grid{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr!important}}
 @media(max-width:620px){.ol-grid{grid-template-columns:1fr}}
+/* ===== Digital book ===== */
+:root{--c-new:#2a6cb0;--c-old:#c4631a;--c-good:#1f7a4d;--c-bad:#b42318}
+html[data-theme="dark"]{--c-new:#4a8bd4;--c-old:#d27a2c;--c-good:#4cb782;--c-bad:#f07167}
+.bk-page{padding:0!important}
+.bk-bar{position:sticky;top:67px;z-index:30;background:var(--headerbg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bk-bar .in{display:flex;align-items:center;gap:8px;max-width:1240px;margin:0 auto;padding:8px 16px}
+.bk-bar button,.bk-bar a.bb{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:7px 12px;font:700 .82rem var(--sans);cursor:pointer;text-decoration:none;white-space:nowrap}
+.bk-bar button:hover{border-color:var(--ink-2)}
+.bk-bar kbd,.sx kbd,.bk-cover kbd{font:700 .7rem var(--sans);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px;background:var(--paper);color:var(--muted)}
+#bkTocBtn{display:none}
+.bk-crumb{flex:1;min-width:0;font-size:.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk-crumb a{color:var(--muted);text-decoration:none}.bk-crumb a:hover{color:var(--accent)}.bk-crumb span{color:var(--heading);font-weight:700}
+#bkMark.on{background:var(--gold);border-color:var(--gold);color:#2a1d05}
+.bk-prog{position:absolute;left:0;bottom:-1px;height:3px;width:0;background:var(--accent);transition:width .1s linear}
+.bk-wrap{display:grid;grid-template-columns:290px minmax(0,1fr);gap:36px;max-width:1240px;margin:0 auto;padding:24px 16px 80px}
+.bk-toc{position:sticky;top:124px;align-self:start;max-height:calc(100vh - 140px);overflow:auto;padding-right:6px;font-size:.88rem;scrollbar-width:thin}
+.tc-cover{display:block;font-weight:800;color:var(--heading);text-decoration:none;padding:8px 10px;border-radius:8px;margin-bottom:6px}
+.tc-part{margin:10px 0 14px}.tc-ph{font:800 .7rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:4px 10px}
+.tc-c{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:8px;color:var(--text);text-decoration:none;font-weight:600;line-height:1.35}
+.tc-n{flex:none;display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:6px;background:var(--paper2);color:var(--heading);font:800 .72rem var(--sans)}
+.tc-c:hover,.tc-cover:hover,.tc-ts a:hover{background:var(--paper2)}
+.tc-c.on,.tc-cover.on,.tc-ts a.on{background:var(--ink);color:#fff}.tc-c.on .tc-n{background:var(--gold);color:#2a1d05}
+.tc-ts{border-left:2px solid var(--line);margin:2px 0 6px 20px;padding-left:6px}
+.tc-ts a{display:flex;gap:8px;padding:5px 8px;border-radius:7px;color:var(--muted);text-decoration:none;font-size:.84rem;line-height:1.35}
+.tc-ts a span{flex:none;font-weight:700;color:var(--accent);min-width:30px}.tc-ts a.on span{color:var(--gold)}
+.bk-main{min-width:0}
+.bk-art{max-width:800px}
+.bk-art h1{font:700 clamp(1.7rem,3.2vw,2.4rem)/1.15 var(--serif);color:var(--heading);margin:4px 0 12px}
+.tp-h{font:700 clamp(1.5rem,2.6vw,2rem)/1.2 var(--serif)!important;margin:10px 0 12px}
+.pill2.lt{background:var(--paper2);color:var(--heading)}
+.ch-head{display:flex;gap:18px;align-items:center;margin-bottom:8px}
+.ch-num{flex:none;display:grid;place-items:center;width:72px;height:72px;border-radius:18px;background:var(--ink);color:var(--gold);font:700 2.2rem var(--serif)}
+.ch-intro{font-size:1.1rem;line-height:1.7;color:var(--text);margin:8px 0 18px}
+.bk-glance{background:var(--warm);border:1px solid #f0d9a6;border-radius:var(--radius);padding:16px 20px;margin:18px 0}
+html[data-theme="dark"] .bk-glance{border-color:#4a3d1c}
+.bk-glance h3,.ch-toc h3{font:800 .78rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:10px}
+html[data-theme="dark"] .bk-glance h3{color:var(--gold)}
+.bk-glance ul{padding-left:20px;display:grid;gap:6px}.bk-glance li{line-height:1.5}
+.ch-toc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:22px 0}
+.ch-toc h3{color:var(--accent)}
+.ch-toc ol{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:2px}
+.ch-toc li{display:flex;align-items:center}
+.ch-toc li a{flex:1;display:flex;gap:12px;padding:10px;border-radius:10px;text-decoration:none;color:var(--text)}
+.ch-toc li a:hover{background:var(--paper2)}
+.ch-toc li a>span{flex:none;font:800 .85rem var(--sans);color:var(--accent);min-width:34px}
+.ch-toc li b{display:block;color:var(--heading)}.ch-toc li small{color:var(--muted);font-size:.84rem;line-height:1.4}
+.btn-ghost2{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--heading);border-radius:999px;padding:11px 18px;font:700 .9rem var(--sans);cursor:pointer;text-decoration:none}
+.btn-ghost2:hover{border-color:var(--ink-2)}.btn-ghost2.sm{padding:8px 14px;font-size:.82rem}
+.bk-pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.bk-pager a{display:block;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);text-decoration:none;color:var(--heading)}
+.bk-pager a:hover{border-color:var(--accent)}
+.bk-pager small{display:block;font:800 .72rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.bk-pager b{font:600 .95rem/1.35 var(--sans)}.bk-pager .nx{text-align:right}
+.bk-pg{text-align:center;color:var(--muted);font-size:.8rem;margin-top:10px}
+.lib-rel a small{color:var(--accent);font-weight:800;margin-right:4px}
+mark{background:#ffe08a;color:#1f2933;border-radius:3px;padding:0 2px}
+html[data-theme="dark"] mark{background:#8a6d12;color:#fff}
+mark.hl{animation:hlp 1.6s ease 2}
+@keyframes hlp{50%{box-shadow:0 0 0 4px rgba(242,181,68,.55)}}
+/* cover */
+.bk-cover{display:grid;grid-template-columns:180px 1fr;gap:30px;align-items:center;margin-bottom:14px}
+.cv-art{width:170px;height:230px;border-radius:6px 16px 16px 6px;background:linear-gradient(135deg,var(--ink),var(--ink-2));box-shadow:inset 10px 0 0 rgba(0,0,0,.25),0 18px 40px rgba(15,42,68,.3);display:grid;place-items:center;position:relative}
+.cv-art span{font:700 3rem var(--serif);color:var(--gold)}
+.cv-art::after{content:"2026-27";position:absolute;bottom:18px;font:800 .72rem var(--sans);letter-spacing:.2em;color:#c6d3e1}
+.bk-cover h1{font:700 clamp(2rem,4vw,3rem)/1.05 var(--serif);color:var(--heading);margin:4px 0 10px}
+.cv-act{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 10px}
+.cv-meta{font-size:.84rem;color:var(--muted)}
+.cv-part{margin:34px 0 0}.cv-part h2{font:700 1.4rem var(--serif);color:var(--heading)}.cv-part h2 span{font:800 .78rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-right:8px}
+.cv-part>p{color:var(--muted);margin:4px 0 12px}
+.cv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.cv-ch{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card);text-decoration:none;color:var(--text);transition:transform .15s,border-color .15s}
+.cv-ch:hover{transform:translateY(-2px);border-color:var(--accent)}
+.cv-n{position:absolute;top:12px;right:14px;font:700 1.6rem var(--serif);color:var(--line)}
+.cv-i{font-size:1.5rem}.cv-ch b{color:var(--heading);font-size:1rem}.cv-ch small{color:var(--muted)}
+/* figures */
+.bk-fig{margin:22px 0;padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+.bk-fig figcaption{font:700 1.02rem var(--serif);color:var(--heading);margin-bottom:14px}
+.fig-k{display:inline-block;font:800 .66rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:6px;padding:2px 7px;margin-right:8px;vertical-align:2px}
+.fig-note{font-size:.8rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.ck{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-weight:900;font-size:.8rem}
+.ck.ok{background:rgba(31,122,77,.14);color:var(--c-good)}.ck.no{background:rgba(180,35,24,.1);color:var(--c-bad)}
+.mx-wrap{overflow-x:auto}
+.mx{width:100%;border-collapse:collapse;font-size:.88rem}
+.mx th{font:800 .72rem var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+.mx td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+.mx tbody tr:hover td{background:var(--paper2)}
+.mx td small{display:block;color:var(--muted);font-size:.76rem}
+.mx.ded td:nth-child(n+2),.mx.ded th:nth-child(n+2),.mx.loss td:nth-child(n+2),.mx.loss th:nth-child(n+2){text-align:center;white-space:nowrap}
+.mx .bad{color:var(--c-bad)}
+.pill3{font:800 .72rem var(--sans);background:var(--paper2);color:var(--heading);border-radius:6px;padding:2px 7px;white-space:nowrap}
+/* waterfall & hbars */
+.wf,.hbars{display:grid;gap:8px}
+.wf-r,.hb{display:grid;grid-template-columns:minmax(120px,38%) 1fr auto;gap:10px;align-items:center;font-size:.88rem}
+.wf-l,.hb>span:first-child{color:var(--text)}
+.wf-t,.hb-t{height:14px;background:var(--paper2);border-radius:4px;overflow:hidden}
+.wf-t i,.hb-t i{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--ink-2)}
+.wf-r.minus .wf-t i{background:repeating-linear-gradient(135deg,var(--muted) 0 3px,transparent 3px 6px);opacity:.7}
+.wf-r.total{font-weight:800}.wf-r.total .wf-l{color:var(--heading)}
+.wf.new .wf-r:not(.minus) .wf-t i{background:var(--c-new)}.wf.old .wf-r:not(.minus) .wf-t i{background:var(--c-old)}
+.wf-r.neg .wf-t i{background:var(--c-bad)!important}
+.wf-r b,.hb b{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.hb.win .hb-t i{background:var(--c-good)}.hb.win b em{font-style:normal;color:var(--c-good);font-size:.78rem}
+.hb.bad .hb-t i{background:var(--c-bad)}
+.hbars.sm{margin-top:14px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.bk-sw{white-space:nowrap;font:800 .78rem var(--sans);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.bk-sw::before,.lg::before{content:"";width:12px;height:12px;border-radius:3px;display:inline-block}
+.bk-sw.new::before,.lg.new::before{background:var(--c-new)}.bk-sw.old::before,.lg.old::before{background:var(--c-old)}
+.wf-out{font-size:.86rem;color:var(--muted);margin-top:8px}.wf-out b{color:var(--heading)}
+/* flow & decision tree & steps */
+.flow{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.fl-heads{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.fl-heads span{background:var(--paper2);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-weight:700;font-size:.86rem;color:var(--heading)}
+.fl-ar{font-size:.8rem;color:var(--muted);padding:4px 0}
+.fl-b{background:var(--ink);color:#fff;border-radius:12px;padding:10px 22px;font:700 .98rem var(--sans);min-width:240px}
+.fl-end{background:var(--gold);color:#2a1d05}.fl-end small{font-weight:600;opacity:.75}
+.dtree{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:q}
+.dtree li{counter-increment:q;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+.dtree .q{position:relative;padding-left:34px;line-height:1.45}
+.dtree .q::before{content:counter(q);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:800 .8rem var(--sans)}
+.dtree .q small{display:block;color:var(--muted);font-size:.78rem;margin-top:4px}
+.dtree .a{display:grid;gap:6px;font-size:.84rem;text-align:right}
+.dtree .y{color:var(--c-good)}.dtree .n{color:var(--muted)}
+.bk-steps{list-style:none;padding:0;margin:0;display:grid;gap:0}
+.bk-steps li{display:flex;gap:14px;position:relative;padding-bottom:16px}
+.bk-steps li::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.bk-steps li:last-child::before{display:none}
+.st-i{flex:none;width:40px;height:40px;border-radius:12px;background:var(--paper2);display:grid;place-items:center;font-size:1.1rem}
+.bk-steps b{color:var(--heading)}.bk-steps p{color:var(--muted);font-size:.88rem;line-height:1.45}
+.side-note{background:var(--paper2);border-radius:10px;padding:10px 14px;font-size:.88rem;margin-top:4px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--paper)}
+.tile span{display:block;font:800 .72rem var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.tile b{display:block;font:700 2rem var(--serif);color:var(--heading);margin:4px 0}
+.tile small{display:block;color:var(--text);font-size:.84rem}.tile em{display:block;font-style:normal;color:var(--muted);font-size:.78rem;margin-top:6px}
+/* timeline */
+.tl{display:grid;gap:10px}
+.tl-ax{display:flex;justify-content:space-between;margin-left:calc(min(40%,300px) + 12px);font-size:.72rem;color:var(--muted);font-weight:700}
+.tl-r{display:grid;grid-template-columns:min(40%,300px) 1fr;gap:12px;align-items:center}
+.tl-l{font-size:.86rem;color:var(--text)}
+.tl-bar{display:flex;height:34px;border-radius:8px;overflow:hidden;font:700 .74rem var(--sans);gap:2px}
+.tl-bar span{display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-bar .st{background:rgba(196,99,26,.16);color:var(--c-old);border-left:4px solid var(--c-old)}
+.tl-bar .lt{flex:1;background:rgba(42,108,176,.14);color:var(--c-new);border-left:4px solid var(--c-new)}
+html[data-theme="dark"] .tl-bar .st{background:rgba(210,122,44,.18)}html[data-theme="dark"] .tl-bar .lt{background:rgba(74,139,212,.18)}
+/* slabs */
+.slabs{position:relative;padding-bottom:26px;overflow:hidden}
+.sl-row{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;margin-bottom:30px}
+.sl-k{font:800 .74rem var(--sans);text-transform:uppercase;display:flex;align-items:center;gap:4px}
+.sl-k.new{color:var(--c-new)}.sl-k.old{color:var(--c-old)}
+.sl-bar{position:relative;display:flex;height:38px;gap:2px}
+.sg{display:grid;place-items:center;border-radius:4px;font-size:.74rem;color:#fff;min-width:0}
+.sg b{font-weight:800;white-space:nowrap;overflow:hidden}
+.sg.n{background:var(--c-new)}.sg.o{background:var(--c-old)}
+.sg.r0{background:var(--paper2)!important;color:var(--muted)}
+.sg.n.r5,.sg.o.r5{opacity:.45}.sg.n.r10{opacity:.55}.sg.n.r15{opacity:.65}.sg.n.r20,.sg.o.r20{opacity:.75}.sg.n.r25{opacity:.87}
+.sl-mark{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2px dashed var(--heading)}
+.sl-mark em{position:absolute;top:100%;left:4px;max-width:44vw;white-space:normal!important;line-height:1.2;font:700 .7rem var(--sans);font-style:normal;color:var(--heading);white-space:nowrap;margin-top:2px}
+.sl-ax{position:relative;height:16px;margin-left:54px}
+.sl-ax span{position:absolute;transform:translateX(-50%);font-size:.7rem;color:var(--muted);font-weight:700}.sl-ax span:last-child{transform:translateX(-100%)}
+/* line chart */
+.lc{position:relative}
+.lc-leg{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.lg{display:inline-flex;align-items:center;gap:6px}
+.lc svg{width:100%;height:auto;display:block;overflow:visible}
+.lc .gr{stroke:var(--line);stroke-width:1}
+.lc svg{max-width:620px;margin:0 auto}
+.lc .ax{fill:var(--muted);font:600 9px var(--sans)}
+@media(max-width:640px){.lc .ax{font-size:15px}.lc .dl{font-size:16px}}
+.lc .ln{fill:none;stroke-width:2;stroke-linejoin:round}.lc .ln.new{stroke:var(--c-new)}.lc .ln.old{stroke:var(--c-old)}
+.lc .dot{stroke:var(--card);stroke-width:2}.lc .dot.new{fill:var(--c-new)}.lc .dot.old{fill:var(--c-old)}
+.lc .dl{font:800 10px var(--sans);fill:var(--text)}
+.lc .xh{stroke:var(--muted);stroke-dasharray:3 3}
+.lc .hit{fill:transparent;cursor:crosshair}
+.lc-tip{position:absolute;top:28px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:10px;padding:8px 12px;font-size:.78rem;display:grid;gap:2px;pointer-events:none;box-shadow:var(--shadow);min-width:150px}
+.lc-tip em{font-style:normal;color:var(--gold);font-weight:700}
+.lc-tbl{margin-top:10px;padding:10px 14px}
+/* calendar */
+.cal-leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.cal{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cal-m{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--paper);min-height:90px}
+.cal-m h6{font:800 .9rem var(--sans);color:var(--heading);margin:0 0 6px}.cal-m h6 small{color:var(--muted);font-weight:600}
+.cal-m.every{grid-column:1/-1;min-height:0}
+.ce{display:block;font-size:.78rem;line-height:1.35;padding:5px 7px;border-radius:7px;margin-top:5px;border-left:3px solid}
+.cal-leg .ce{display:inline-block;margin:0}
+.ce b{font-weight:800}
+.ce.ev-adv{background:rgba(31,122,77,.1);border-color:var(--c-good)}
+.ce.ev-itr{background:rgba(42,108,176,.1);border-color:var(--c-new)}
+.ce.ev-tds{background:rgba(196,99,26,.1);border-color:var(--c-old)}
+.ce.ev-none{color:var(--muted);border-color:var(--line)}
+/* appendix */
+.act-ch{padding:12px 16px}.act-ch summary{align-items:center;gap:10px}
+.fd-q{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font:600 1rem var(--sans);margin-bottom:12px;background:var(--card);color:var(--text)}
+.fd td a{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+.gl-az{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;position:sticky;top:124px;background:var(--paper);padding:6px 0;z-index:2}
+.gl-az a{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);text-decoration:none;font-weight:800;color:var(--heading)}
+.gl{display:grid;gap:8px;margin:0}
+.gl>div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);scroll-margin-top:180px}
+.gl dt{font:700 1rem var(--serif);color:var(--heading)}.gl dd{margin:4px 0 0;color:var(--text);font-size:.92rem;line-height:1.5}
+.gl dd a{color:var(--accent);font-weight:700;text-decoration:none;font-size:.84rem;white-space:nowrap}
+.qc-idx{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.qc-idx a{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:.84rem;font-weight:600;text-decoration:none;color:var(--heading)}
+.qc-idx small{color:var(--accent);font-weight:800}
+.bm-list li{gap:8px}.bm-x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:1rem;padding:8px}
+.toc-scrim{display:none}
+/* search overlay */
+.sx{position:fixed;inset:0;z-index:200;background:rgba(10,20,30,.55);backdrop-filter:blur(3px);display:flex;justify-content:center;align-items:flex-start;padding:9vh 16px 16px}
+.sx[hidden]{display:none}
+body.sx-on{overflow:hidden}
+.sx-box{width:min(680px,100%);max-height:80vh;display:flex;flex-direction:column;background:var(--card);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden;animation:sxIn .16s ease-out}
+@keyframes sxIn{from{transform:translateY(-8px);opacity:0}}
+.sx-in{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sx-in input{flex:1;border:0;outline:none;background:transparent;font:600 1.1rem var(--sans);color:var(--text);min-width:0}
+.sx-x{border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:7px;padding:3px 8px;font:700 .74rem var(--sans);cursor:pointer}
+.sx-res{overflow:auto;padding:6px 8px 10px}
+.sx-g{font:800 .7rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:12px 10px 4px}
+.sx-i{display:flex;gap:12px;align-items:flex-start;padding:10px;border-radius:10px;text-decoration:none;color:var(--text)}
+.sx-i.on{background:var(--paper2);box-shadow:inset 3px 0 0 var(--accent)}
+.sx-ic{flex:none;width:28px;text-align:center;font-size:1.1rem}
+.sx-tx{flex:1;min-width:0}.sx-tx b{display:block;color:var(--heading);font-size:.95rem}.sx-tx small{display:block;color:var(--muted);font-size:.8rem;line-height:1.45;margin-top:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.sx-go{color:var(--muted);opacity:0}.sx-i.on .sx-go{opacity:1}
+.sx-hint{padding:14px 10px;color:var(--muted);font-size:.88rem}.sx-hint b{display:block;margin-bottom:8px}
+.sx-hint button{border:1px solid var(--line);background:var(--paper);color:var(--heading);border-radius:999px;padding:6px 12px;margin:0 6px 6px 0;font:600 .82rem var(--sans);cursor:pointer}
+.sx-empty{padding:24px 12px;color:var(--muted);text-align:center}
+.sx-foot{display:flex;gap:16px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line);font-size:.74rem;color:var(--muted)}
+.sx-foot kbd{margin-right:2px}
+/* responsive */
+@media(max-width:1000px){
+ .bk-wrap{grid-template-columns:1fr;gap:0}
+ #bkTocBtn{display:inline-flex}
+ .bk-toc{position:fixed;top:0;left:0;bottom:0;width:min(330px,86vw);max-height:none;background:var(--card);z-index:120;padding:16px;transform:translateX(-105%);transition:transform .2s;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ body.toc-open .bk-toc{transform:none}
+ body.toc-open .toc-scrim{display:block;position:fixed;inset:0;background:rgba(10,20,30,.45);z-index:110}
+ .gl-az{top:116px}
+}
+@media(max-width:640px){
+ .bk-bar .in{padding:6px 12px;gap:6px}.bk-bar .lbl{display:none}.bk-crumb{display:none}.bk-bar .sp{flex:1}
+ .bk-wrap{padding:16px 16px 70px}
+ .bk-cover{grid-template-columns:1fr}.cv-art{width:120px;height:160px}.cv-art span{font-size:2.2rem}
+ .ch-num{width:54px;height:54px;font-size:1.6rem;border-radius:14px}
+ .two-col,.tiles{grid-template-columns:1fr}
+ .cal{grid-template-columns:1fr 1fr}
+ .wf-r,.hb{grid-template-columns:1fr auto;grid-template-areas:"l v" "t t";row-gap:4px}
+ .wf-l,.hb>span:first-child{grid-area:l}.wf-t,.hb-t{grid-area:t}.wf-r b,.hb b{grid-area:v}
+ .tl-r{grid-template-columns:1fr}.tl-ax{margin-left:0}
+ .dtree li{grid-template-columns:1fr}.dtree .a{text-align:left;padding-left:34px}
+ .bk-pager{grid-template-columns:1fr}.bk-pager .nx{text-align:left}
+ .sl-ax span:nth-child(even){display:none}
+ .sx{padding:0}.sx-box{max-height:100vh;height:100%;border-radius:0}
+ .facts-grid{grid-template-columns:1fr}
+}
+/* print */
+@media print{
+ body.bk-print *{visibility:visible!important}
+ body.bk-print header,body.bk-print .bk-bar,body.bk-print .bk-toc,body.bk-print footer,body.bk-print .install-fab,body.bk-print .bk-pager,body.bk-print .bk-pg,body.bk-print .wa-float,body.bk-print .page:not(.bk-page),body.bk-print .sx,body.bk-print .ch-toc .btn-ghost2{display:none!important}
+ body.bk-print .bk-wrap{display:block;padding:0}
+ body.bk-print .bk-fig,body.bk-print .lib-box,body.bk-print .bk-glance{break-inside:avoid}
+ body.bk-print details>*{display:block}
+ body.bk-print .pr-topic{break-before:page}
+}
+@media(prefers-reduced-motion:reduce){.cv-ch,.bk-toc,.sx-box{transition:none;animation:none}}
+html[data-motion="reduce"] mark.hl{animation:none}
+
 </style>
 </head>
 <body>
@@ -693,7 +960,7 @@ dialog{background:var(--card);color:var(--text)}
         </ul></li>
       <li><a href="#ask" data-route="ask" class="btn btn-primary nav-cta">Ask a question</a></li>
     </ul>
-    <div class="nav-right"><button class="set-btn" id="setBtn" aria-label="Display settings" title="Display settings">⚙️</button>
+    <div class="nav-right"><button class="set-btn sx-btn" data-open-search aria-label="Search (press S)" title="Search — press S">🔍</button><button class="set-btn" id="setBtn" aria-label="Display settings" title="Display settings">⚙️</button>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span class="mb-ico">☰</span> Menu</button></div>
   </div>
 </header>
@@ -1146,31 +1413,18 @@ dialog{background:var(--card);color:var(--text)}
 
 
 <!-- DOCUMENTS -->
-<section id="library" class="page lib-page" data-page="library">
-  <div class="lib-hero">
-    <div class="wrap">
-      <span class="eyebrow" style="color:var(--gold)">Tax Library · Income-tax Act, 2025</span>
-      <h2>Look up any section — in plain English</h2>
-      <p>Type a section number (old or new), a topic or a question. Every one of the Act’s 536 sections is here, with plain-language explainers for every major direct-tax topic.</p>
-      <div class="lib-search">
-        <span>🔎</span>
-        <input id="libQ" type="search" placeholder="Try: 194A, TDS on rent, return due date, 80C, updated return…" autocomplete="off" aria-label="Search the tax library">
-      </div>
-      <div class="lib-chips" id="libChips">
-        <button data-q="hra">HRA</button><button data-q="capital gains">Capital gains</button><button data-q="80c">80C / deductions</button><button data-q="house property">House property</button><button data-q="presumptive">44AD / 44ADA</button><button data-q="gift">Gifts</button><button data-q="194A">194A interest</button><button data-q="return due date">Return due dates</button><button data-q="194-IA">Property TDS</button><button data-q="rent tds">TDS on rent</button><button data-q="advance tax">Advance tax</button><button data-q="updated return">ITR-U</button><button data-q="15G">15G / 15H</button><button data-q="TCS foreign remittance">TCS on LRS</button>
-      </div>
-    </div>
-  </div>
-  <div class="wrap lib-body">
-    <div id="libLoading" class="empty">Loading the library…</div>
-    <div id="libHome" hidden>
-      <div class="lib-cats" id="libCats"></div>
-      <h3 class="lib-h3">Browse the Act by chapter</h3>
-      <div class="lib-chapters" id="libChapters"></div>
-      <p class="note">Plain-English explainers are being added topic by topic — TDS / TCS and return deadlines are ready. Every section already has its original text, searchable by old or new number.</p>
-    </div>
-    <div id="libResults" hidden></div>
-    <div id="libView" hidden></div>
+<section id="library" class="page bk-page" data-page="library">
+  <div class="bk-bar"><div class="in">
+    <button id="bkTocBtn" aria-label="Open contents">☰ <span class="lbl">Contents</span></button>
+    <a class="bb" href="#library" aria-label="Book cover">📖 <span class="lbl">Book</span></a>
+    <div class="bk-crumb" id="bkCrumb"></div><span class="sp"></span>
+    <button data-open-search aria-label="Search the book (press S)">🔍 <span class="lbl">Search</span> <kbd class="lbl">S</kbd></button>
+    <button id="bkMark" hidden aria-label="Bookmark this page" title="Bookmark this page">🔖</button>
+    <button id="bkPrint" aria-label="Print this page" title="Print / save as PDF">🖨</button>
+  </div><div class="bk-prog" id="bkProg"></div></div>
+  <div class="bk-wrap">
+    <aside class="bk-toc" id="bkToc" aria-label="Book contents"></aside><div class="toc-scrim"></div>
+    <div class="bk-main" id="bkMain"><div id="libLoading" class="empty">Opening the book…</div></div>
   </div>
 </section>
 
@@ -2295,88 +2549,519 @@ function libLoad(cb){
   sc.onload=()=>{ const d=window.LIBDATA; LIB.CH=d.ch; LIB.T=d.topics;
     LIB.S=d.s.map(([n,h,ch,old,t])=>({n,h,ch,old,t}));
     LIB.S.forEach(s=>s.old.forEach(o=>{ const k=libNorm(o); (LIB.oldIdx[k]=LIB.oldIdx[k]||[]).push(s.n); }));
-    LIB.loaded=true; document.getElementById('libLoading').hidden=true; LIB.q.forEach(f=>f()); };
-  sc.onerror=()=>{ document.getElementById('libLoading').textContent='Could not load the library file (library-data.js). Make sure it is uploaded next to index.html.'; };
+    LIB.loaded=true; const _ll=document.getElementById('libLoading'); if(_ll) _ll.hidden=true; LIB.q.forEach(f=>f()); };
+  sc.onerror=()=>{ LIB.loading=false; const _ll=document.getElementById('libLoading'); if(_ll) _ll.textContent='Could not load the library file (library-data.js). Make sure it is uploaded next to index.html.'; };
   document.head.appendChild(sc);
 }
 const libNorm = s => String(s).toLowerCase().replace(/[\s\-–.]/g,'').replace(/^(section|sec|s|us|u\/s)(?=\d)/,'');
 const esc3 = t => String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-function libHome(){
-  const cats=[...new Set(LIB.T.map(t=>t.cat))];
-  document.getElementById('libCats').innerHTML = cats.map(c=>`<div class="lib-cat"><h3>${c}</h3><div class="lib-tlist">${LIB.T.filter(t=>t.cat===c).map(t=>`<a href="#library/t/${t.id}"><span>${esc3(t.t)}</span><small>${esc3(t.o||'')}${t.o?' → ':''}${esc3(t.s)}</small></a>`).join('')}</div></div>`).join('');
-  const chs=Object.keys(LIB.CH);
-  document.getElementById('libChapters').innerHTML = chs.map(c=>{ const ss=LIB.S.filter(s=>s.ch===c); return `<details class="lib-ch"><summary><span class="fb">Ch ${c}</span> ${LIB.CH[c]} <small>ss. ${ss[0]?.n}–${ss[ss.length-1]?.n}</small></summary><div class="lib-slist">${ss.map(s=>`<a href="#library/s/${s.n}"><b>${s.n}</b> ${esc3(s.h)}${s.old.length?` <small>old ${s.old.slice(0,4).join(', ')}${s.old.length>4?'…':''}</small>`:''}</a>`).join('')}</div></details>`; }).join('');
+/* ===== Digital book: structure & editorial content ===== */
+const BOOK = {
+ title:'Income Tax, Made Simple',
+ sub:'A plain-English digital book on Indian direct tax · Tax year 2026-27 · Income-tax Act, 2025',
+ parts:[
+  {id:'A',t:'Basics',d:'What “tax year” means, who is resident, and how your tax is built up.'},
+  {id:'B',t:'The five heads of income',d:'Salary, house property, business, capital gains and other sources — one chapter each.'},
+  {id:'C',t:'Working out the tax',d:'Deductions, losses, clubbing, slab rates, rebate and relief.'},
+  {id:'D',t:'Compliance',d:'TDS, TCS, advance tax, returns, assessment, appeals and penalties.'}
+ ],
+ chapters:[
+  {id:'basics',p:'A',t:'Tax year, residence & PAN',ic:'🗓️',
+   intro:'Before any calculation, three questions decide everything else: which year’s income are we taxing, are you a resident, and is your PAN in order? This chapter answers all three.',
+   glance:['From 1 April 2026 the new Act uses one term — “tax year” (1 April to 31 March) — in place of previous year / assessment year.','Residents are taxed on world income; non-residents only on Indian income.','182 days in India makes you resident; the 60-day test has twists for visiting Indians.','Agricultural income is exempt but can raise the rate on your other income.','An inoperative PAN means higher TDS and no refunds.'],
+   chart:['residence'],topics:['tax-year','residence','agri-income','pan-aadhaar']},
+  {id:'compute',p:'A',t:'How your tax is worked out',ic:'🧮',
+   intro:'Every return follows the same road: put each income under its head, add them up, take deductions, apply the rates, and then subtract what is already paid. Once you see the road, the rest of the book is just detail.',
+   glance:['Five heads: salary, house property, business/profession, capital gains, other sources.','Gross total income − deductions = total income.','Slab rates apply to normal income; capital gains and winnings have their own special rates.','Rebate, surcharge and 4% cess come after the slab tax.','TDS, TCS and advance tax are credits — the balance is payable or refundable.','The new regime is the default; the old regime is an option.'],
+   chart:['flow'],topics:['heads-of-income','regime-choice']},
+  {id:'salary',p:'B',t:'Salary',ic:'💼',
+   intro:'Salary is the most common income in India and the one most people over-pay on, usually because an exemption or declaration was missed. Here is everything your employer gives you, what is exempt, and what is taxed.',
+   glance:['Salary is taxed on due or receipt, whichever is earlier — including arrears and advance salary.','Standard deduction: ₹75,000 (new regime) / ₹50,000 (old).','HRA exemption = least of three amounts — old regime only.','Gratuity (₹20 lakh), leave encashment (₹25 lakh), VRS (₹5 lakh) exemptions work in both regimes.','Perquisites like ESOPs, cars and vouchers above ₹5,000 are taxable.','Arrears pushing you into a higher slab? Claim relief through Form 10E.'],
+   chart:['salaryWf','hraBars'],topics:['salary-overview','standard-deduction','hra','salary-exemptions','perquisites','relief-89']},
+  {id:'house',p:'B',t:'House property',ic:'🏠',
+   intro:'If you own a building, its rent — or even its notional rent — is income. The good news: a flat 30% deduction and home-loan interest bring the taxable figure down sharply.',
+   glance:['Gross annual value − municipal tax = net annual value.','Flat 30% deduction for repairs, with no bills needed.','Interest on a home loan is deductible; self-occupied cap ₹2 lakh (old regime only).','Up to two self-occupied houses have nil annual value.','Loss can reduce other income only up to ₹2 lakh, and only under the old regime.'],
+   chart:['hpWf'],topics:['hp-overview','hp-self-occupied','hp-interest','hp-loss']},
+  {id:'business',p:'B',t:'Business & profession',ic:'🏪',
+   intro:'Freelancers, shop owners, consultants and traders all land here. You can either keep books and claim actual expenses, or use the simple presumptive scheme and declare a fixed percentage.',
+   glance:['Profit = receipts − expenses incurred wholly for business.','Presumptive: 6%/8% of turnover (44AD) or 50% of receipts (44ADA) — no books, no audit.','Tax audit above ₹1 crore turnover (₹10 crore if almost all digital) or ₹50 lakh for professionals.','Missed TDS on an expense? 30% of it is disallowed.','Cash payments above ₹10,000 a day are not allowed as expenses.','F&O is business income; intraday equity is speculative.'],
+   chart:['presumptive'],topics:['pgbp-overview','presumptive','books-audit','depreciation','disallowances','fno-intraday']},
+  {id:'capital',p:'B',t:'Capital gains',ic:'📈',
+   intro:'Sold shares, mutual funds, gold or property? The profit is a capital gain. How long you held the asset decides whether it is short-term or long-term — and the rate.',
+   glance:['Listed shares & equity MFs: long-term after 12 months; most other assets after 24 months.','Equity STCG 20%; equity LTCG 12.5% above ₹1.25 lakh a year.','Other LTCG 12.5% without indexation (property bought before 23-07-2024 can choose 20% with indexation).','Debt MFs bought after 1-4-2023 are always taxed at slab rate.','Reinvesting in a house or 54EC bonds can wipe out LTCG on property.'],
+   chart:['cgTimeline'],topics:['cg-overview','cg-equity','cg-property','cg-exemptions','cg-debt-gold']},
+  {id:'other',p:'B',t:'Income from other sources',ic:'🎁',
+   intro:'Interest, dividend, gifts, lottery wins — anything that is not salary, rent, business or capital gain is taxed here, mostly at your slab rate.',
+   glance:['FD and savings interest are fully taxable at slab rates (accrual basis).','Dividends are taxable; TDS 10% above ₹10,000 per company.','Gifts above ₹50,000 a year from non-relatives are fully taxable.','Gifts from relatives, on marriage or by inheritance are always exempt.','Lottery / game show / online gaming winnings: flat 30%, no deductions.'],
+   chart:['giftMatrix'],topics:['ios-overview','gifts','winnings']},
+  {id:'deductions',p:'C',t:'Deductions',ic:'🧾',
+   intro:'Deductions are the old regime’s main attraction — PF, insurance, health cover, donations and more. Under the new regime most of them disappear, so knowing which survive is half the regime decision.',
+   glance:['₹1.5 lakh for PF, PPF, LIC, ELSS, tuition, home-loan principal (old regime).','Extra ₹50,000 for your own NPS (old regime); employer NPS allowed in both.','Health insurance: ₹25,000 + ₹25,000 for parents (₹50,000 each for seniors).','Donations: 50% or 100%, some capped at 10% of income; no cash above ₹2,000.','New regime keeps only standard deduction, employer NPS and a few special ones.'],
+   chart:['dedMatrix'],topics:['deductions-overview','deduction-80c','nps-80ccd','deduction-80d','donations-80g','rent-80gg','deduction-80tta','education-loan']},
+  {id:'losses',p:'C',t:'Losses, clubbing & unexplained income',ic:'⚖️',
+   intro:'Losses can save tax in later years — if you file on time. Income parked in a spouse’s or child’s name may come back to you. And money you cannot explain is taxed at nearly 78%.',
+   glance:['Short-term capital loss sets off against any capital gain; long-term loss only against LTCG.','Business loss: any head except salary; carry forward 8 years.','File your return on time to carry losses forward.','Income from gifts to spouse/daughter-in-law and minor child’s income is clubbed with you.','Unexplained cash, credits or assets: 60% tax + 25% surcharge + cess.'],
+   chart:['lossMatrix'],topics:['loss-setoff','clubbing','unexplained-income']},
+  {id:'rates',p:'C',t:'Tax rates, rebate & relief',ic:'📊',
+   intro:'The new regime makes income up to ₹12 lakh tax-free (₹12.75 lakh for salaried people). This chapter shows the slabs side by side, how the rebate works, and when the old regime still wins.',
+   glance:['New regime slabs step up by 5% every ₹4 lakh, reaching 30% above ₹24 lakh.','Rebate up to ₹60,000 makes taxable income up to ₹12 lakh tax-free (new regime).','Old regime: 5% / 20% / 30% with higher exemption for seniors.','Surcharge from ₹50 lakh; capped at 25% in the new regime; 4% cess always.','Companies pay 22% / 25% / 30%; foreign tax paid can be credited under DTAA.'],
+   chart:['slabs','taxCurve'],topics:['slab-rates','rebate-87a','mat-company','dtaa-relief']},
+  {id:'tds-income',p:'D',t:'TDS on your income',ic:'🏦',
+   intro:'TDS is tax cut by the payer before the money reaches you — on salary, interest, dividend, winnings and more. Know the thresholds so you can plan, file 15G/15H when eligible, and claim every rupee in your return.',
+   glance:['Salary: employer deducts at your slab rate each month.','Bank interest: 10% above ₹50,000 a year (₹1 lakh for seniors).','Dividend and MF income: 10% above ₹10,000.','Winnings: 30% above ₹10,000.','No tax payable? File Form 15G (below 60) or 15H (seniors) to stop TDS.','TDS shows in Form 26AS / AIS — always match it before filing.'],
+   chart:['tdsTable1'],topics:['tds-basics','tds-salary','tds-193','tds-194','tds-194a','tds-194k','tds-194b','tds-194ba','tds-194bb','tds-194da','tds-194n','tds-194p','tds-15g','tds-195']},
+  {id:'tds-business',p:'D',t:'TDS & TCS for businesses & property',ic:'🏗️',
+   intro:'If you pay contractors, professionals, rent or buy property, you may have to deduct TDS yourself. This chapter covers every payment-side section, the certificates and deposit dates, and TCS.',
+   glance:['Contractors 1%/2%; professional fees 10%; technical fees 2%.','Rent: 10% (building) / 2% (machinery); individuals paying > ₹50,000/month deduct 2%.','Buying property ≥ ₹50 lakh: buyer deducts 1% — no TAN needed.','Deposit TDS by the 7th of next month (30 April for March).','Missed TDS = interest, penalty and 30% expense disallowance.','TCS applies on foreign remittances, tour packages and certain sales.'],
+   chart:['tdsTable2'],topics:['tds-194c','tds-194j','tds-194h','tds-194d','tds-194g','tds-194i','tds-194ib','tds-194ia','tds-194ic','tds-194la','tds-194m','tds-194o','tds-194q','tds-194r','tds-194s','tds-194t','tds-certificates','tcs-basics']},
+  {id:'returns',p:'D',t:'Advance tax, returns & deadlines',ic:'📅',
+   intro:'Tax is paid through the year and the return closes the loop. Miss a date and interest and fees follow. Here is the full calendar with what to do and when.',
+   glance:['Advance tax if tax due ≥ ₹10,000: 15% / 45% / 75% / 100% by 15 Jun, Sep, Dec, Mar.','Returns: 31 July (salaried), 31 August (business without audit), 31 October (audit).','Belated return by 31 December with late fee up to ₹5,000.','Revised return now allowed within 12 months from the end of the tax year.','Missed everything? An updated return (ITR-U) is possible for up to 4 years with extra tax.'],
+   chart:['calendar'],topics:['advance-tax','return-due-dates','belated-revised','updated-return','late-fee-interest']},
+  {id:'assessment',p:'D',t:'Assessment, notices & appeals',ic:'📨',
+   intro:'After you file, the department processes the return — and sometimes asks questions. This chapter walks through every stage, the time limits, and how to respond or appeal.',
+   glance:['Every return is processed by CPC; you get an intimation with refund or demand.','Some returns are picked for scrutiny — all faceless and online.','Old years can be reopened: 3 years normally, up to 5 years for ₹50 lakh+ escaped income.','Obvious mistakes in an order can be rectified within 4 years.','Appeal to CIT(A) within 30 days, then ITAT within 2 months.','Refunds carry 0.5% interest a month.'],
+   chart:['assessFlow'],topics:['processing-143-1','scrutiny','reassessment','rectification','appeals','refunds']},
+  {id:'penalties',p:'D',t:'Penalties, cash rules & AIS',ic:'🚨',
+   intro:'Most penalties are avoidable once you know the rules. This chapter covers the big ones, the cash limits that trip up honest people, and the AIS — what the department already knows about you.',
+   glance:['Under-reporting: 50% of tax; misreporting: 200%.','Pay the demand and skip appeal → immunity from under-reporting penalty.','No cash loans ≥ ₹20,000; no cash receipts ≥ ₹2 lakh from one person.','Penalty for cash rule breaches equals the amount.','AIS shows banks, MFs, property, rent and more — check it before every return.'],
+   chart:['penaltyBars'],topics:['penalties','cash-rules','sft-ais']}
+ ]
+};
+
+const GLOSSARY = [
+ ['Tax year','The financial year (1 April – 31 March) in which income is earned. Replaces “previous year” and “assessment year” from 2026-27.','tax-year'],
+ ['Previous year / Assessment year','Old (1961 Act) terms: year of earning and the following year of filing. Still used for years up to 2025-26.','tax-year'],
+ ['Resident','Someone in India for 182+ days, or 60+ days with 365 days in the last 4 years (with exceptions). Taxed on world income.','residence'],
+ ['RNOR','Resident but Not Ordinarily Resident — a resident who is taxed mostly like a non-resident.','residence'],
+ ['Non-resident (NRI)','Anyone who is not resident. Taxed only on income earned or received in India.','residence'],
+ ['PAN','Permanent Account Number — your 10-character tax ID. Must be linked to Aadhaar.','pan-aadhaar'],
+ ['Heads of income','The five buckets: salary, house property, business/profession, capital gains, other sources.','heads-of-income'],
+ ['Gross total income (GTI)','Total of all five heads after set-off of losses, before deductions.','heads-of-income'],
+ ['Total income','GTI minus deductions — the figure tax is calculated on.','heads-of-income'],
+ ['Slab rate','Tax rate that rises in steps as income crosses each band.','slab-rates'],
+ ['New regime','Default tax regime with lower slab rates and very few deductions (s.202).','regime-choice'],
+ ['Old regime','Optional regime with higher rates but deductions like 80C, 80D and HRA.','regime-choice'],
+ ['Rebate','Tax reduction that makes income up to ₹12 lakh tax-free in the new regime (s.156, old 87A).','rebate-87a'],
+ ['Marginal relief','Rule that tax just above a threshold can’t exceed the extra income over that threshold.','rebate-87a'],
+ ['Surcharge','Extra tax on high incomes: 10% above ₹50 lakh up to 37% above ₹5 crore (25% cap in new regime).','slab-rates'],
+ ['Cess','4% Health & Education Cess on tax plus surcharge.','slab-rates'],
+ ['Standard deduction','Flat deduction for salary and pension: ₹75,000 new / ₹50,000 old.','standard-deduction'],
+ ['HRA','House Rent Allowance — partly exempt for tenants in the old regime.','hra'],
+ ['Perquisite','A benefit in kind from an employer (car, house, ESOP) valued and taxed as salary.','perquisites'],
+ ['Form 10E','Form to claim relief when salary arrears are taxed in a higher slab.','relief-89'],
+ ['Annual value','Rent a property can fetch (or actually fetches), the starting point for house property income.','hp-overview'],
+ ['Presumptive taxation','Declaring a fixed % of turnover as profit (44AD / 44ADA / 44AE) instead of keeping books.','presumptive'],
+ ['Tax audit','Audit of books by a CA when turnover or receipts cross limits (s.63, old 44AB).','books-audit'],
+ ['Depreciation','Annual write-off of business asset cost on written-down value.','depreciation'],
+ ['WDV','Written-down value — cost of a block of assets minus depreciation already claimed.','depreciation'],
+ ['Capital asset','Property of any kind held — shares, land, gold — except stock-in-trade, personal effects and rural agri land.','cg-overview'],
+ ['STCG / LTCG','Short-term / long-term capital gain, decided by the holding period.','cg-overview'],
+ ['Indexation','Raising the cost of an asset for inflation using the Cost Inflation Index. Now only an option for some property.','cg-property'],
+ ['CII','Cost Inflation Index — 384 for 2026-27.','cg-property'],
+ ['Grandfathering','Using the 31-01-2018 market value as cost for shares held on that date.','cg-equity'],
+ ['STT','Securities Transaction Tax paid on stock-exchange trades; needed for the 20%/12.5% equity rates.','cg-equity'],
+ ['54EC bonds','Specified bonds (NHAI, REC etc.) where LTCG on land/building up to ₹50 lakh can be parked tax-free.','cg-exemptions'],
+ ['Set-off','Adjusting a loss against income in the same year.','loss-setoff'],
+ ['Carry forward','Taking an unadjusted loss to future years (usually up to 8).','loss-setoff'],
+ ['Clubbing','Adding someone else’s income (spouse, minor child) to yours.','clubbing'],
+ ['Section 80C (now s.123)','The ₹1.5 lakh deduction for PF, PPF, LIC, ELSS, tuition etc.','deduction-80c'],
+ ['80D (now s.126)','Deduction for health insurance premium and check-ups.','deduction-80d'],
+ ['TDS','Tax Deducted at Source — tax cut by the payer and credited to your PAN.','tds-basics'],
+ ['TCS','Tax Collected at Source — tax collected by the seller on certain sales and remittances.','tcs-basics'],
+ ['TAN','Tax deduction Account Number — needed by most deductors to deposit TDS.','tds-basics'],
+ ['Form 15G / 15H','Declarations to receive interest without TDS when your final tax is nil (15H for 60+).','tds-15g'],
+ ['Form 16 / 16A','TDS certificates for salary / other payments.','tds-certificates'],
+ ['Form 26AS','Statement of TDS, TCS, advance and self-assessment tax credited to your PAN.','sft-ais'],
+ ['AIS / TIS','Annual Information Statement / Taxpayer Information Summary — all financial transactions reported about you.','sft-ais'],
+ ['Advance tax','Tax paid in instalments during the year if the total due is ₹10,000 or more.','advance-tax'],
+ ['Self-assessment tax','Balance tax paid before filing the return.','advance-tax'],
+ ['Belated return','Return filed after the due date (by 31 December).','belated-revised'],
+ ['Revised return','A corrected return filed after the original one.','belated-revised'],
+ ['Updated return (ITR-U)','A return to add missed income up to 4 years later, with extra tax of 25%–70%.','updated-return'],
+ ['Intimation','The CPC’s processing result of your return (old s.143(1)).','processing-143-1'],
+ ['CPC','Centralised Processing Centre, Bengaluru — processes all returns.','processing-143-1'],
+ ['Scrutiny','Detailed examination of a return by an Assessing Officer.','scrutiny'],
+ ['Faceless assessment','Online assessment with no face-to-face contact with officers.','scrutiny'],
+ ['Reassessment','Reopening an old year when income escaped tax.','reassessment'],
+ ['Rectification','Correction of a mistake apparent from the record (old s.154).','rectification'],
+ ['CIT(A)','Commissioner of Income-tax (Appeals) — first appeal authority.','appeals'],
+ ['ITAT','Income Tax Appellate Tribunal — second appeal; last fact-finding body.','appeals'],
+ ['Demand','Tax the department says you owe after processing or assessment.','processing-143-1'],
+ ['Under-reporting / Misreporting','Showing less income than assessed (50% penalty) / doing it by false claims (200%).','penalties'],
+ ['DTAA','Double Taxation Avoidance Agreement — treaty to avoid tax on the same income in two countries.','dtaa-relief'],
+ ['MAT','Minimum Alternate Tax on book profits of companies.','mat-company'],
+ ['VDA','Virtual Digital Asset — crypto and NFTs; taxed at 30% flat.','fno-intraday'],
+ ['Specified person','A payer obliged to deduct TDS — usually businesses and audited individuals.','tds-basics']
+];
+
+/* ===== Book charts & diagrams (HTML + inline SVG, theme-aware via CSS vars) ===== */
+const bkInr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const bkLakh = n => '₹' + (n/1e5).toLocaleString('en-IN',{maximumFractionDigits:2}) + 'L';
+const OK = '<span class="ck ok" title="Allowed">✓</span>', NO = '<span class="ck no" title="Not allowed">✕</span>';
+const fig = (id,title,body,note) => `<figure class="bk-fig" id="fig-${id}"><figcaption><span class="fig-k">Chart</span>${title}</figcaption>${body}${note?`<p class="fig-note">${note}</p>`:''}</figure>`;
+
+function waterfall(rows, cls){
+  const max = Math.max(...rows.map(r=>Math.abs(r[1])));
+  return `<div class="wf ${cls||''}">${rows.map(([l,v,k])=>`<div class="wf-r ${k}" title="${l}: ${bkInr(v)}"><span class="wf-l">${k==='minus'?'− ':''}${l}</span><span class="wf-t"><i style="width:${Math.max(2,Math.abs(v)/max*100)}%"></i></span><b>${v<0?'−'+bkInr(-v):bkInr(v)}</b></div>`).join('')}</div>`;
 }
-function libSearch(q){
-  q=q.trim(); const res=document.getElementById('libResults');
-  if(!q){ res.hidden=true; return; }
-  const n=libNorm(q), words=q.toLowerCase().split(/\s+/).filter(w=>w.length>1);
-  const topics=[], secs=new Map();
-  LIB.T.forEach(t=>{ let sc=0; const hay=(t.t+' '+t.a+' '+t.o+' '+t.s).toLowerCase();
-    if((t.o||'').split(/[ ,]+/).some(o=>libNorm(o)===n)) sc+=100; if(libNorm(t.s).includes(n) && /\d/.test(n)) sc+=20;
-    words.forEach(w=>{ if(hay.includes(w)) sc+=10; if(t.t.toLowerCase().includes(w)) sc+=5; });
-    if(sc>=Math.max(10,words.length*8)) topics.push([sc,t]); });
-  topics.sort((a,b)=>b[0]-a[0]);
-  const add=(s,sc,why)=>{ const p=secs.get(s.n); if(!p||p[0]<sc) secs.set(s.n,[sc,s,why]); };
-  if(/^\d{1,3}$/.test(n) && +n>=1 && +n<=536) add(LIB.S[+n-1],100,'New section');
-  (LIB.oldIdx[n]||[]).forEach(k=>add(LIB.S[k-1],90,`Old section ${q.toUpperCase()}`));
-  LIB.S.forEach(s=>{ const h=s.h.toLowerCase(); let sc=0; words.forEach(w=>{ if(h.includes(w)) sc+=12; }); if(sc>=words.length*10 && sc) add(s,sc,''); });
-  if(secs.size<6 && words.length){ LIB.S.forEach(s=>{ const t=s.t.toLowerCase(); if(words.every(w=>t.includes(w))){ const i=t.indexOf(words[0]); add(s,5,'…'+esc3(s.t.slice(Math.max(0,i-60),i+110).replace(/\s+/g,' '))+'…'); } }); }
-  const sl=[...secs.values()].sort((a,b)=>b[0]-a[0]).slice(0,25);
-  res.innerHTML = `${topics.length?`<h3 class="lib-h3">Plain-English explainers</h3><div class="lib-rgrid">${topics.slice(0,8).map(([_,t])=>`<a class="lib-rcard" href="#library/t/${t.id}"><span class="tag">${esc3(t.cat)}</span><b>${esc3(t.t)}</b><p>${esc3(t.one)}</p><small>${t.o?'Old '+esc3(t.o)+' → ':''}${esc3(t.s)}</small></a>`).join('')}</div>`:''}
-    ${sl.length?`<h3 class="lib-h3">Sections of the Act</h3><div class="lib-slist flat">${sl.map(([_,s,why])=>`<a href="#library/s/${s.n}"><b>${s.n}</b> ${esc3(s.h)}${s.old.length?` <small>old ${s.old.slice(0,5).join(', ')}${s.old.length>5?'…':''}</small>`:''}${why?`<em>${why}</em>`:''}</a>`).join('')}</div>`:''}
-    ${!topics.length&&!sl.length?`<div class="empty">Nothing found for “${esc3(q)}”. Try a section number (e.g. 393 or 194A) or a simpler word.</div>`:''}`;
-  res.hidden=false;
+
+/* tax engine (resident individual < 60, FY 2026-27) */
+function bkSlabTax(ti, regime){
+  const b = regime==='new' ? [[4e5,0],[8e5,.05],[12e5,.10],[16e5,.15],[20e5,.20],[24e5,.25],[Infinity,.30]]
+                           : [[2.5e5,0],[5e5,.05],[10e5,.20],[Infinity,.30]];
+  let t=0,prev=0; for(const [lim,r] of b){ if(ti>prev){ t+=(Math.min(ti,lim)-prev)*r; } prev=lim; }
+  if(regime==='new'){ if(ti<=12e5) t=0; else t=Math.min(t, ti-12e5); }
+  else if(ti<=5e5) t=0;
+  return t*1.04;
 }
-function libTopic(id){
-  const t=LIB.T.find(x=>x.id===id); if(!t) return libShow('home');
-  const v=document.getElementById('libView'); const sec=t.sec?LIB.S[t.sec-1]:null;
-  v.innerHTML=`<a class="back" href="#library">← Library</a>
-  <article class="lib-art">
-    <div class="lib-badges"><span class="tag">${esc3(t.cat)}</span><span class="pill2">New: ${esc3(t.s)}</span>${t.o?`<span class="pill2 old">Old: ${esc3(t.o)}</span>`:''}</div>
-    <h2>${esc3(t.t)}</h2>
+function taxFor(gross, regime){ const ti=Math.max(0, gross-(regime==='new'?75000:50000+200000)); return bkSlabTax(ti,regime); }
+
+const CHARTS = {
+ residence:{t:'Am I resident? — the decision path', r:()=>fig('residence','Am I resident? — the decision path',`
+  <ol class="dtree">
+   <li><div class="q">In India for <b>182 days or more</b> in the tax year?</div><div class="a"><span class="y">Yes → <b>Resident</b></span><span class="n">No ↓</span></div></li>
+   <li><div class="q"><b>60 days or more</b> this year <i>and</i> <b>365 days</b> in the 4 earlier years?<small>Indian citizen / PIO visiting with Indian income &gt; ₹15 lakh: 120 days. Leaving India for a job or as crew: this test does not apply.</small></div><div class="a"><span class="y">Yes → <b>Resident</b></span><span class="n">No ↓</span></div></li>
+   <li><div class="q">Indian citizen with Indian income <b>&gt; ₹15 lakh</b>, not taxable in any other country?</div><div class="a"><span class="y">Yes → <b>Deemed resident (RNOR)</b></span><span class="n">No → <b>Non-resident</b></span></div></li>
+   <li class="last"><div class="q">Resident — but NR in <b>9 of last 10 years</b>, or in India <b>≤ 729 days in last 7</b>?</div><div class="a"><span class="y">Yes → <b>RNOR</b> (Indian income only, mostly)</span><span class="n">No → <b>Resident &amp; ordinarily resident</b> (world income)</span></div></li>
+  </ol>`,'Simplified — see section 6 for every condition.')},
+ flow:{t:'From income to tax payable', r:()=>fig('flow','From income to tax payable — the road every return follows',`
+  <div class="flow">
+   <div class="fl-heads"><span>💼 Salary</span><span>🏠 House property</span><span>🏪 Business</span><span>📈 Capital gains</span><span>🎁 Other sources</span></div>
+   <div class="fl-ar">↓ add up, set off losses</div>
+   <div class="fl-b">Gross total income</div><div class="fl-ar">↓ minus deductions (old regime: 80C, 80D… · new: employer NPS etc.)</div>
+   <div class="fl-b">Total income</div><div class="fl-ar">↓ apply slab rates · special rates for capital gains &amp; winnings</div>
+   <div class="fl-b">Tax on total income</div><div class="fl-ar">↓ − rebate (up to ₹60,000) · + surcharge · + 4% cess</div>
+   <div class="fl-b">Total tax liability</div><div class="fl-ar">↓ − TDS − TCS − advance tax − relief</div>
+   <div class="fl-b fl-end">Tax payable <small>or</small> Refund</div>
+  </div>`)},
+ salaryWf:{t:'Salary to taxable income — both regimes', r:()=>fig('salaryWf','Salary of ₹11.9 lakh — what is taxed under each regime',`
+  <div class="two-col"><div><h5 class="bk-sw new">New regime</h5>${waterfall([['Gross salary',1190000,'start'],['Standard deduction',75000,'minus'],['Taxable salary',1115000,'total']],'new')}<p class="wf-out">Tax: <b>₹0</b> (below ₹12 lakh — rebate)</p></div>
+  <div><h5 class="bk-sw old">Old regime</h5>${waterfall([['Gross salary',1190000,'start'],['HRA exempt',180000,'minus'],['Standard deduction',50000,'minus'],['Professional tax',2500,'minus'],['Taxable salary',957500,'total']],'old')}<p class="wf-out">Before 80C/80D. Tax on ₹9.575L: <b>${bkInr(bkSlabTax(957500,'old'))}</b></p></div></div>`,'Example: Basic+DA ₹6L, HRA ₹2.4L (Pune, rent ₹20k/month), special allowance ₹3L, bonus ₹50k.')},
+ hraBars:{t:'HRA exemption — least of three', r:()=>{ const v=[['HRA received',240000],['Rent − 10% of salary',180000],['50% of salary (big city)',300000]]; const mn=Math.min(...v.map(x=>x[1])); const mx=Math.max(...v.map(x=>x[1]));
+  return fig('hraBars','HRA exemption = the least of three amounts',`<div class="hbars">${v.map(([l,x])=>`<div class="hb ${x===mn?'win':''}" title="${l}: ${bkInr(x)}"><span>${l}</span><span class="hb-t"><i style="width:${x/mx*100}%"></i></span><b>${bkInr(x)}${x===mn?' <em>✓ exempt</em>':''}</b></div>`).join('')}</div>`,'Same example: exempt ₹1.8 lakh, taxable HRA ₹60,000. Old regime only.'); }},
+ hpWf:{t:'House property income — step by step', r:()=>fig('hpWf','Let-out flat: rent ₹25,000 a month',waterfall([['Annual rent (GAV)',300000,'start'],['Municipal tax paid',10000,'minus'],['Net annual value',290000,'total'],['30% standard deduction',87000,'minus'],['Home-loan interest',250000,'minus'],['Income / (loss)',-47000,'total neg']]),'A loss of ₹47,000: set off against salary under the old regime (up to ₹2 lakh); carried forward under the new.')},
+ presumptive:{t:'Presumptive schemes at a glance', r:()=>fig('presumptive','Presumptive schemes — declare a fixed share as profit',`<div class="tiles">
+   <div class="tile"><span>44AD · Business</span><b>6%</b><small>of digital turnover (8% on cash)</small><em>Turnover ≤ ₹2 cr (₹3 cr if cash ≤ 5%)</em></div>
+   <div class="tile"><span>44ADA · Professionals</span><b>50%</b><small>of gross receipts</small><em>Receipts ≤ ₹50 L (₹75 L if cash ≤ 5%)</em></div>
+   <div class="tile"><span>44AE · Goods carriages</span><b>₹7,500</b><small>per vehicle per month</small><em>Up to 10 vehicles · heavy: ₹1,000/tonne</em></div></div>
+   <div class="hbars sm">${[['Turnover ₹1.5 cr (digital)',15000000],['Presumptive profit @6%',900000],['Tax-free threshold (new regime)',1200000]].map(([l,x],i)=>`<div class="hb ${i===1?'win':''}"><span>${l}</span><span class="hb-t"><i style="width:${x/15000000*100}%"></i></span><b>${bkInr(x)}</b></div>`).join('')}</div>`,'No books, no audit — but you can’t declare lower profit without books and audit.')},
+ cgTimeline:{t:'Capital gains — holding period & rates', r:()=>{ const rows=[['Listed shares, equity MFs (with STT)',12,'20%','12.5% above ₹1.25 L'],['Listed bonds, gold ETFs, units of REIT/InvIT',12,'Slab','12.5%'],['Property, physical gold, unlisted & foreign shares',24,'Slab','12.5% (property pre-23-7-24: or 20% indexed)'],['Debt MFs (bought from 1-4-2023), unlisted bonds',null,'Slab — always short-term','—']];
+  return fig('cgTimeline','Short-term or long-term? Holding period and tax rate',`<div class="tl">
+   <div class="tl-ax"><span>0</span><span>12 months</span><span>24 months</span><span>36 months</span></div>
+   ${rows.map(([l,m,s,lt])=>`<div class="tl-r"><div class="tl-l">${l}</div><div class="tl-bar">${m?`<span class="st" style="width:${m/36*100}%">Short · ${s}</span><span class="lt">Long · ${lt}</span>`:`<span class="st" style="width:100%">${s}</span>`}</div></div>`).join('')}</div>`,'Rates for resident individuals, tax year 2026-27. Plus surcharge (capped 15% on equity gains) and 4% cess.'); }},
+ giftMatrix:{t:'Is this gift taxable?', r:()=>fig('giftMatrix','Is this gift taxable?',`<table class="mx"><thead><tr><th>Gift from / on</th><th>Taxable?</th></tr></thead><tbody>
+   ${[['Parents, spouse, siblings, children & other “relatives”','No — any amount'],['On your marriage (from anyone)','No'],['Under a will / inheritance','No'],['Friends & others — total up to ₹50,000 in the year','No'],['Friends & others — total above ₹50,000','<b class="bad">Yes — the whole amount</b>'],['Property / shares received free from a non-relative','<b class="bad">Yes — if value &gt; ₹50,000</b>'],['Employer gifts / vouchers above ₹5,000','<b class="bad">Yes — as salary perquisite</b>']].map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</tbody></table>`)},
+ dedMatrix:{t:'Which deductions survive in which regime', r:()=>fig('dedMatrix','Which deductions are allowed in which regime',`<table class="mx ded"><thead><tr><th>Deduction / exemption</th><th>New regime</th><th>Old regime</th></tr></thead><tbody>
+   ${[['Standard deduction (salary / pension)','₹75,000','₹50,000'],['Employer NPS contribution — s.124(2) (old 80CCD(2))',OK+' 14%',OK+' 10%'],['Gratuity, leave encashment, VRS limits',OK,OK],['Interest on let-out property loan',OK,OK],['Agniveer fund, new-employee cost (s.125, s.146)',OK,OK],['₹1.5 lakh — PF, PPF, LIC, ELSS (s.123, old 80C)',NO,OK],['Own NPS extra ₹50,000 (old 80CCD(1B))',NO,OK],['HRA & LTA',NO,OK],['Home-loan interest — self-occupied (₹2 L)',NO,OK],['Health insurance (s.126, old 80D)',NO,OK],['Education-loan interest (s.129, old 80E)',NO,OK],['Donations (s.133, old 80G)',NO,OK],['Rent without HRA (s.134, old 80GG)',NO,OK],['Savings / senior interest (s.153, old 80TTA/TTB)',NO,OK],['Professional tax',NO,OK],['Disability (s.154, old 80U) & dependants (old 80DD)',NO,OK]].map(([a,b,c])=>`<tr><td>${a}</td><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody></table>`,'✓ allowed · ✕ not allowed. Use the Advance Calculator to see which regime wins for you.')},
+ lossMatrix:{t:'Which loss can be set off against which income', r:()=>{ const heads=['Salary','House prop.','Business','Specul.','STCG','LTCG','Other src.']; const rows=[['House property loss','1111111','8 yrs','Max ₹2 L against other heads; old regime only'],['Business loss (non-speculative)','0111111','8 yrs','Not against salary'],['Speculation loss (intraday)','0001000','4 yrs',''],['Short-term capital loss','0000110','8 yrs',''],['Long-term capital loss','0000010','8 yrs',''],['Lottery, VDA (crypto), online gaming','0000000','—','Never set off']];
+  return fig('lossMatrix','Loss set-off map',`<div class="mx-wrap"><table class="mx loss"><thead><tr><th>Loss ↓ / Income →</th>${heads.map(h=>`<th>${h}</th>`).join('')}<th>Carry fwd</th></tr></thead><tbody>${rows.map(([l,m,cf,n])=>`<tr><td>${l}${n?`<small>${n}</small>`:''}</td>${[...m].map(x=>`<td>${x==='1'?OK:NO}</td>`).join('')}<td><b>${cf}</b></td></tr>`).join('')}</tbody></table></div>`,'Carry-forward needs the return to be filed by the due date (except house property loss and unabsorbed depreciation).'); }},
+ slabs:{t:'Slab rates — new vs old regime', r:()=>{ const W=30; const seg=(a,b,r,cls)=>`<span class="sg ${cls} r${Math.round(r)}" style="width:${(Math.min(b,W)-a)/W*100}%" title="₹${a}L–${b===99?'above':'₹'+b+'L'}: ${r}%"><b>${r}%</b></span>`;
+  const nw=[[0,4,0],[4,8,5],[8,12,10],[12,16,15],[16,20,20],[20,24,25],[24,30,30]], od=[[0,2.5,0],[2.5,5,5],[5,10,20],[10,30,30]];
+  return fig('slabs','Slab rates on taxable income — new vs old regime',`<div class="slabs">
+   <div class="sl-row"><span class="sl-k new">New</span><div class="sl-bar">${nw.map(x=>seg(...x,'n')).join('')}<i class="sl-mark" style="left:${12/W*100}%"><em>₹12 L — zero tax up to here (rebate)</em></i></div></div>
+   <div class="sl-row"><span class="sl-k old">Old</span><div class="sl-bar">${od.map(x=>seg(...x,'o')).join('')}<i class="sl-mark" style="left:${5/W*100}%"><em>₹5 L rebate</em></i></div></div>
+   <div class="sl-ax">${[0,4,8,12,16,20,24,30].map(v=>`<span style="left:${v/W*100}%">${v}L${v===30?'+':''}</span>`).join('')}</div></div>`,'Taxable income (after deductions). Old-regime exemption is ₹3 L for 60–79 and ₹5 L for 80+. Add surcharge above ₹50 L and 4% cess.'); }},
+ taxCurve:{t:'Tax payable by salary — new vs old', r:()=>{ const W=420,H=250,L=52,R=12,T=14,B=34; const xs=[]; for(let s=5e5;s<=50e5;s+=25e3) xs.push(s);
+  const ny=xs.map(s=>taxFor(s,'new')), oy=xs.map(s=>taxFor(s,'old')); const ymax=Math.ceil(Math.max(...oy,...ny)/2e5)*2e5;
+  const X=s=>L+(s-5e5)/(45e5)*(W-L-R), Y=v=>T+(1-v/ymax)*(H-T-B);
+  const path=a=>a.map((v,i)=>(i?'L':'M')+X(xs[i]).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+  const yt=[]; for(let v=0;v<=ymax;v+=ymax/5) yt.push(v);
+  const data=JSON.stringify(xs.map((s,i)=>[s,Math.round(ny[i]),Math.round(oy[i])]));
+  const rowsT=[5,8,10,12,12.75,15,20,25,30,40,50].map(l=>{const s=l*1e5;return `<tr><td>${bkLakh(s)}</td><td>${bkInr(taxFor(s,'new'))}</td><td>${bkInr(taxFor(s,'old'))}</td></tr>`}).join('');
+  return fig('taxCurve','Tax payable on salary from ₹5 lakh to ₹50 lakh',`<div class="lc" data-pts='${data}'>
+   <div class="lc-leg"><span class="lg new">New regime</span><span class="lg old">Old regime (with ₹2 L deductions)</span></div>
+   <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart of tax payable under new and old regime">
+    ${yt.map(v=>`<line class="gr" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${L-6}" y="${Y(v)+4}" text-anchor="end">${v?(v/1e5)+'L':'0'}</text>`).join('')}
+    ${[5,10,20,30,40,50].map(l=>`<text class="ax" x="${X(l*1e5)}" y="${H-12}" text-anchor="middle">₹${l}L</text>`).join('')}
+    <line class="xh" x1="0" x2="0" y1="${T}" y2="${H-B}" style="display:none"/>
+    <path class="ln old" d="${path(oy)}"/><path class="ln new" d="${path(ny)}"/>
+    <circle class="dot old" r="4" style="display:none"/><circle class="dot new" r="4" style="display:none"/>
+    <text class="dl new" x="${X(50e5)-4}" y="${Y(ny[ny.length-1])+16}" text-anchor="end">New</text><text class="dl old" x="${X(50e5)-4}" y="${Y(oy[oy.length-1])-8}" text-anchor="end">Old</text>
+    <rect class="hit" x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" data-l="${L}" data-w="${W-L-R}" data-vw="${W}"/>
+   </svg>
+   <div class="lc-tip" hidden></div>
+   <details class="lc-tbl"><summary>Show as table</summary><table class="mx"><thead><tr><th>Salary</th><th>New regime</th><th>Old regime</th></tr></thead><tbody>${rowsT}</tbody></table></details></div>`,'Resident below 60, salary income only. New: ₹75k standard deduction. Old: ₹50k standard deduction + ₹2 lakh other deductions (80C + 80D). Includes rebate, marginal relief and 4% cess; no surcharge up to ₹50 L.'); }},
+ tdsTable1:{t:'TDS on your income — rates & thresholds', r:()=>fig('tdsTable1','TDS on your income — at a glance',tdsTbl([['Salary','192','Basic exemption','Slab rate'],['Bank / PO interest','194A','₹50,000 (₹1 L for 60+)','10%'],['Other interest','194A','₹10,000','10%'],['Interest on securities','193','₹10,000','10%'],['Dividend','194','₹10,000','10%'],['Mutual fund income (IDCW)','194K','₹10,000','10%'],['Lottery / game show','194B','₹10,000 per win','30%'],['Online games','194BA','Nil','30% of net winnings'],['Insurance maturity (taxable part)','194DA','₹1,00,000','2%'],['Cash withdrawal','194N','₹1 crore','2% above limit'],['Payments to non-residents','195','—','Rates in force / DTAA']]),'All now under section 393 of the 2025 Act (old section numbers shown). No PAN → higher rate.')},
+ tdsTable2:{t:'TDS for businesses & property — rates & thresholds', r:()=>fig('tdsTable2','TDS you deduct — business, rent & property',tdsTbl([['Contractors','194C','₹30,000 / ₹1 L a year','1% indiv./HUF · 2% others'],['Professional fees, royalty, director','194J','₹50,000 (director: nil)','10%'],['Technical fees, call centres','194J','₹50,000','2%'],['Commission & brokerage','194H','₹20,000','2%'],['Rent — land, building, furniture','194-I','₹50,000 a month','10%'],['Rent — plant & machinery','194-I','₹50,000 a month','2%'],['Rent paid by individuals','194-IB','₹50,000 a month','2%'],['Buying property','194-IA','₹50 lakh','1%'],['Purchase of goods','194Q','Above ₹50 L per seller','0.1%'],['E-commerce sales','194-O','—','0.1%'],['Business perquisites','194R','₹20,000','10%'],['Crypto / VDA','194S','—','1%'],['Partner remuneration & interest','194T','₹20,000','10%'],['Contract / fees by individuals','194M','₹50 lakh','2%']]),'Deposit by the 7th of the next month (30 April for March). Quarterly returns: 31 Jul, 31 Oct, 31 Jan, 31 May.')},
+ calendar:{t:'Tax calendar — tax year 2026-27', r:()=>{ const M=[['Apr','2026',[['30','TDS for March deposited','tds']]],['May','2026',[['31','Q4 TDS return','tds']]],['Jun','2026',[['15','Advance tax — 15%','adv'],['15','Form 16 from employer','tds']]],['Jul','2026',[['31','ITR — salaried, investors (no audit, no business)','itr'],['31','Q1 TDS return','tds']]],['Aug','2026',[['31','ITR — business / profession without audit','itr']]],['Sep','2026',[['15','Advance tax — 45%','adv'],['30','Tax audit report','itr']]],['Oct','2026',[['31','ITR — audit cases & companies','itr'],['31','Q2 TDS return','tds']]],['Nov','2026',[['30','ITR — transfer pricing cases','itr']]],['Dec','2026',[['15','Advance tax — 75%','adv'],['31','Belated return for 2025-26','itr']]],['Jan','2027',[['31','Q3 TDS return','tds']]],['Feb','2027',[]],['Mar','2027',[['15','Advance tax — 100% (presumptive: whole)','adv'],['31','Revised / belated return for 2025-26 (12-month window)','itr'],['31','Last date for 80C / tax-saving investments','adv']]]];
+  const ic={adv:'💰',itr:'📄',tds:'🏦'};
+  return fig('calendar','Tax calendar — dates that matter in 2026-27',`<div class="cal-leg"><span class="ce ev-adv">💰 Advance tax &amp; payments</span><span class="ce ev-itr">📄 Returns</span><span class="ce ev-tds">🏦 TDS</span></div><div class="cal">${M.map(([m,y,ev])=>`<div class="cal-m"><h6>${m} <small>${y}</small></h6>${ev.length?ev.map(([d,t,k])=>`<div class="ce ev-${k}"><b>${d}</b> ${ic[k]} ${t}</div>`).join(''):'<div class="ce ev-none">No major dates</div>'}</div>`).join('')}<div class="cal-m every"><h6>Every month</h6><div class="ce ev-tds"><b>7th</b> 🏦 Deposit TDS / TCS of previous month</div></div></div>`,'Return dates are for income of tax year 2025-26 filed in 2026, as amended by Finance Act 2026. Dates move to the next working day if extended by CBDT — always check the portal.'); }},
+ assessFlow:{t:'After you file — processing, scrutiny & appeals', r:()=>fig('assessFlow','After you file — what can happen, and the time limits',`<ol class="bk-steps">
+   ${[['📄','Return filed','Verify within 30 days (e-verify), or it is treated as not filed.'],['🖥️','Processing by CPC','Intimation within 9 months from end of the year of filing: refund, demand or no change.'],['🔎','Scrutiny notice (some cases)','Within 3 months from end of the year of filing. Faceless, online replies.'],['📝','Assessment order','Normally within 12 months from end of the year of filing.'],['🛠️','Rectification','Obvious mistakes: within 4 years from end of the year of the order.'],['⚖️','Appeal to CIT(A)','Within 30 days of the order (Form 35). Pay ~20% of disputed demand for stay.'],['🏛️','ITAT → High Court → Supreme Court','ITAT within 2 months; High Court within 120 days (law questions only).']].map(([i,t,d])=>`<li><span class="st-i">${i}</span><div><b>${t}</b><p>${d}</p></div></li>`).join('')}
+  </ol><div class="side-note">↺ <b>Reopening (reassessment):</b> up to 3 years — or 5 years if escaped income is ₹50 lakh or more — always after a show-cause notice.</div>`)},
+ penaltyBars:{t:'Penalties at a glance', r:()=>fig('penaltyBars','Penalties — how much can it cost?',`<div class="hbars">${[['Under-reporting income',50],['Misreporting (false claims)',200]].map(([l,p])=>`<div class="hb ${p>100?'bad':''}"><span>${l}</span><span class="hb-t"><i style="width:${p/2}%"></i></span><b>${p}% of tax</b></div>`).join('')}</div>
+   <table class="mx"><thead><tr><th>Default</th><th>Cost</th></tr></thead><tbody>${[['Late return','₹5,000 (₹1,000 if income ≤ ₹5 L) + 1%/month interest'],['No tax audit','0.5% of turnover, max ₹1.5 lakh'],['TDS not deducted','Penalty = TDS amount + interest'],['Late TDS return','₹200/day fee (max TDS amount)'],['Cash loan ≥ ₹20,000 / cash receipt ≥ ₹2 lakh','100% of the amount'],['Unexplained income','60% tax + 25% surcharge + cess (≈78%) + 10% penalty']].map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</tbody></table>`,'Paying tax + interest and not appealing gives immunity from the under-reporting penalty (s.440).')}
+};
+function tdsTbl(rows){ return `<div class="mx-wrap"><table class="mx tds"><thead><tr><th>Payment</th><th>Old sec.</th><th>Threshold</th><th>Rate</th></tr></thead><tbody>${rows.map(([a,b,c,d])=>`<tr><td>${a}</td><td><span class="pill3">${b}</span></td><td>${c}</td><td><b>${d}</b></td></tr>`).join('')}</tbody></table></div>`; }
+
+/* line chart hover */
+function bookWireCharts(root){
+  root.querySelectorAll('.lc').forEach(lc=>{
+    const pts=JSON.parse(lc.dataset.pts), svg=lc.querySelector('svg'), hit=lc.querySelector('.hit'), tip=lc.querySelector('.lc-tip');
+    const xh=svg.querySelector('.xh'), dn=svg.querySelector('.dot.new'), dO=svg.querySelector('.dot.old');
+    const L=+hit.dataset.l, Wd=+hit.dataset.w, VW=+hit.dataset.vw;
+    const ys=[...svg.querySelectorAll('.ln')]; // paths: old, new
+    function at(clientX){
+      const r=svg.getBoundingClientRect(); const vx=(clientX-r.left)/r.width*VW; let i=Math.round((vx-L)/Wd*(pts.length-1)); i=Math.max(0,Math.min(pts.length-1,i));
+      const [s,n,o]=pts[i]; const x=L+i/(pts.length-1)*Wd;
+      const segN=ys[1].getPointAtLength? null:null;
+      const yOf=(path,v)=>{ const d=path.getAttribute('d').split(/[ML]/).filter(Boolean)[i].trim().split(' '); return +d[1]; };
+      xh.setAttribute('x1',x); xh.setAttribute('x2',x); xh.style.display='';
+      dn.setAttribute('cx',x); dn.setAttribute('cy',yOf(ys[1])); dn.style.display='';
+      dO.setAttribute('cx',x); dO.setAttribute('cy',yOf(ys[0])); dO.style.display='';
+      const diff=o-n; tip.hidden=false;
+      tip.innerHTML=`<b>Salary ${bkLakh(s)}</b><span class="lg new">New ${bkInr(n)}</span><span class="lg old">Old ${bkInr(o)}</span><em>${diff>0?'New saves '+bkInr(diff):diff<0?'Old saves '+bkInr(-diff):'Same tax'}</em>`;
+      const px=(x/VW)*r.width; tip.style.left=Math.min(Math.max(px,70),r.width-70)+'px';
+    }
+    const off=()=>{ xh.style.display='none'; dn.style.display='none'; dO.style.display='none'; tip.hidden=true; };
+    hit.addEventListener('pointermove',e=>at(e.clientX)); hit.addEventListener('pointerdown',e=>at(e.clientX)); hit.addEventListener('pointerleave',off);
+  });
+}
+
+/* ===== Digital book reader ===== */
+const BK = { pages:[], chOf:{}, topicIdx:{}, hl:null };
+function bkSafe(f,d){ try{ return f(); }catch(_){ return d; } }
+function bkGet(k,d){ return bkSafe(()=>JSON.parse(localStorage.getItem(k)||'null')??d, d); }
+function bkSet(k,v){ bkSafe(()=>localStorage.setItem(k,JSON.stringify(v))); }
+function bkInit(){
+  if(BK.pages.length) return;
+  BOOK.chapters.forEach((c,i)=>{ c.n=i+1; BK.pages.push({r:'c/'+c.id,ch:c}); c.topics.forEach((tid,j)=>{ const t=LIB.T.find(x=>x.id===tid); if(!t) return; BK.chOf[tid]=c; BK.topicIdx[tid]=j+1; BK.pages.push({r:'t/'+tid,ch:c,t}); }); });
+}
+const bkT = id => LIB.T.find(x=>x.id===id);
+const bkNum = id => { const c=BK.chOf[id]; return c? c.n+'.'+BK.topicIdx[id] : ''; };
+
+function bkToc(cur){
+  const curCh = cur && cur.ch ? cur.ch.id : null;
+  const parts = BOOK.parts.map(p=>`<div class="tc-part"><div class="tc-ph">Part ${p.id} · ${p.t}</div>${BOOK.chapters.filter(c=>c.p===p.id).map(c=>`
+    <div class="tc-ch ${c.id===curCh?'open':''}"><a class="tc-c ${cur&&cur.r==='c/'+c.id?'on':''}" href="#library/c/${c.id}"><span class="tc-n">${c.n}</span>${esc3(c.t)}</a>
+    ${c.id===curCh?`<div class="tc-ts">${c.topics.map(tid=>{const t=bkT(tid); return t?`<a class="${cur.r==='t/'+tid?'on':''}" href="#library/t/${tid}"><span>${bkNum(tid)}</span>${esc3(t.t)}</a>`:''}).join('')}</div>`:''}</div>`).join('')}</div>`).join('');
+  const ap=[['act','📜 The Act — all 536 sections'],['finder','🔁 Old → new section finder'],['glossary','🔤 Glossary'],['charts','📊 Quick-reference charts'],['saved','🔖 My bookmarks']];
+  return `<a class="tc-cover ${cur&&cur.r===''?'on':''}" href="#library">📖 Cover &amp; contents</a>${parts}<div class="tc-part"><div class="tc-ph">Appendix</div>${ap.map(([k,l])=>`<a class="tc-c ${cur&&cur.r===k?'on':''}" href="#library/${k}">${l}</a>`).join('')}</div>`;
+}
+function bkShell(cur, html, crumb){
+  document.getElementById('bkToc').innerHTML = bkToc(cur);
+  const m=document.getElementById('bkMain'); m.innerHTML=html;
+  document.getElementById('bkCrumb').innerHTML = crumb||'';
+  const marks=bkGet('ab_book_marks',[]); const bm=document.getElementById('bkMark');
+  bm.hidden = !(cur && cur.r && (cur.r.startsWith('t/')||cur.r.startsWith('c/')||cur.r.startsWith('s/')));
+  bm.classList.toggle('on', !!(cur&&marks.some(x=>x.r===cur.r))); bm.dataset.r = cur?cur.r:''; bm.dataset.t = cur&&cur.title||'';
+  if(cur && cur.r && cur.r!=='saved') bkSet('ab_book_last',{r:cur.r,t:cur.title||''});
+  bookWireCharts(m); document.body.classList.remove('toc-open');
+  const _on=document.querySelector('#bkToc .tc-c.on,#bkToc .tc-ts a.on,#bkToc .tc-cover.on'); if(_on){ const tc=document.getElementById('bkToc'); const r=_on.getBoundingClientRect(), tr=tc.getBoundingClientRect(); if(r.top<tr.top||r.bottom>tr.bottom) tc.scrollTop+= r.top-tr.top-80; }
+  if(BK.hl){ const w=BK.hl; BK.hl=null; setTimeout(()=>bkHighlight(m,w),30); }
+}
+function bkPager(i){
+  const p=BK.pages[i-1], n=BK.pages[i+1];
+  const lab=x=> x.t? `${bkNum(x.t.id)} ${esc3(x.t.t)}` : `Chapter ${x.ch.n} · ${esc3(x.ch.t)}`;
+  return `<nav class="bk-pager">${p?`<a class="pv" href="#library/${p.r}"><small>← Previous</small><b>${lab(p)}</b></a>`:'<span></span>'}${n?`<a class="nx" href="#library/${n.r}"><small>Next →</small><b>${lab(n)}</b></a>`:`<a class="nx" href="#library/act"><small>Next →</small><b>Appendix · The Act</b></a>`}</nav><p class="bk-pg">Page ${i+1} of ${BK.pages.length}</p>`;
+}
+function bkCover(){
+  const last=bkGet('ab_book_last',null);
+  const html=`<div class="bk-cover">
+    <div class="cv-art" aria-hidden="true"><span>AB</span></div>
+    <div><span class="eyebrow">Digital book · Tax year 2026-27</span><h1>${BOOK.title}</h1><p class="lede">${BOOK.sub}</p>
+    <div class="cv-act"><a class="btn btn-primary" href="#library/c/${BOOK.chapters[0].id}">Start reading →</a>${last&&last.r?`<a class="btn btn-ghost2" href="#library/${last.r}">↺ Continue: ${esc3(last.t||'where you left off')}</a>`:''}<button class="btn btn-ghost2" data-open-search>🔍 Search the book <kbd>S</kbd></button></div>
+    <p class="cv-meta">15 chapters · 91 topics · 536 sections of the Act · ${GLOSSARY.length} glossary terms · ${Object.keys(CHARTS).length} charts</p></div></div>
+    ${BOOK.parts.map(p=>`<section class="cv-part"><h2><span>Part ${p.id}</span> ${p.t}</h2><p>${p.d}</p><div class="cv-grid">${BOOK.chapters.filter(c=>c.p===p.id).map(c=>`<a class="cv-ch" href="#library/c/${c.id}"><span class="cv-n">${c.n}</span><span class="cv-i">${c.ic}</span><b>${esc3(c.t)}</b><small>${c.topics.length} topics</small></a>`).join('')}</div></section>`).join('')}
+    <section class="cv-part"><h2><span>Appendix</span> Reference</h2><div class="cv-grid">${[['act','📜','The Act — all 536 sections','Original text, chapter-wise'],['finder','🔁','Old → new section finder','80C → 123, 194A → 393…'],['glossary','🔤','Glossary',GLOSSARY.length+' terms in plain English'],['charts','📊','Quick-reference charts',Object.keys(CHARTS).length+' charts & diagrams']].map(([k,i,t,s])=>`<a class="cv-ch ap" href="#library/${k}"><span class="cv-i">${i}</span><b>${t}</b><small>${s}</small></a>`).join('')}</div></section>
+    ${CHARTS.flow.r()}`;
+  bkShell({r:'',title:'Cover'},html,'');
+}
+function bkChapter(id){
+  const c=BOOK.chapters.find(x=>x.id===id); if(!c) return bkCover();
+  const i=BK.pages.findIndex(p=>p.r==='c/'+id); const part=BOOK.parts.find(p=>p.id===c.p);
+  const html=`<article class="bk-art bk-chap">
+    <div class="ch-head"><span class="ch-num">${c.n}</span><div><span class="eyebrow">Part ${part.id} · ${part.t} · Chapter ${c.n}</span><h1>${c.ic} ${esc3(c.t)}</h1></div></div>
+    <p class="ch-intro">${c.intro}</p>
+    <div class="bk-glance"><h3>At a glance</h3><ul>${c.glance.map(g=>`<li>${g}</li>`).join('')}</ul></div>
+    ${c.chart.map(k=>CHARTS[k]?CHARTS[k].r():'').join('')}
+    <div class="ch-toc"><h3>In this chapter</h3><ol>${c.topics.map(tid=>{const t=bkT(tid); return t?`<li><a href="#library/t/${tid}"><span>${bkNum(tid)}</span><div><b>${esc3(t.t)}</b><small>${esc3(t.one)}</small></div></a></li>`:''}).join('')}</ol>
+    <button class="btn btn-ghost2 sm" data-print-ch="${c.id}">🖨 Print / save this chapter as PDF</button></div>
+    ${bkPager(i)}</article>`;
+  bkShell({r:'c/'+id,ch:c,title:'Ch '+c.n+' · '+c.t},html,`<a href="#library">Book</a> › <span>Ch ${c.n} · ${esc3(c.t)}</span>`);
+}
+function bkTopicHTML(t, full){
+  const sec=t.sec?LIB.S[t.sec-1]:null;
+  return `<div class="lib-badges"><span class="pill2">${bkNum(t.id)}</span><span class="pill2 lt">New: ${esc3(t.s)}</span>${t.o?`<span class="pill2 old">Old: ${esc3(t.o)}</span>`:''}</div>
+    <h2 class="tp-h">${esc3(t.t)}</h2>
     <p class="lib-one">${esc3(t.one)}</p>
     ${t.f&&t.f.length?`<div class="lib-box facts"><h4>Key facts</h4><div class="facts-grid">${t.f.map(([k,val])=>`<div><span>${esc3(k)}</span><b>${esc3(val)}</b></div>`).join('')}</div></div>`:''}
     ${t.ex?`<div class="lib-box ex"><h4>💡 Example</h4><p>${esc3(t.ex)}</p></div>`:''}
     ${t.w&&t.w.length?`<div class="lib-box warn"><h4>⚠️ Watch out</h4><ul>${t.w.map(x=>`<li>${esc3(x)}</li>`).join('')}</ul></div>`:''}
     ${t.amd?`<div class="lib-box amd"><h4>📝 Recent amendment</h4><p>${esc3(t.amd)}</p></div>`:''}
-    ${(t.x||sec)?`<details class="lib-box orig"><summary>📜 Original text of the Act ${t.x?'(relevant extract)':''}</summary><div class="actx">${fmtAct(t.x||sec.t)}</div><p class="act-src">Source: Income-tax Act, 2025 (Act No. 30 of 2025), section ${sec?sec.n:''}. Statutory text — reproducible under s. 52(1)(q), Copyright Act, 1957.</p>${sec?`<a class="more" href="#library/s/${sec.n}">Read full section ${sec.n} — ${esc3(sec.h)} →</a>`:''}</details>`:''}
-    ${t.rel&&t.rel.length?`<div class="lib-rel"><h4>Related</h4>${t.rel.map(r=>{const x=LIB.T.find(y=>y.id===r); return x?`<a href="#library/t/${r}">${esc3(x.t)}</a>`:''}).join('')}</div>`:''}
+    ${(t.x||sec)?`<details class="lib-box orig" ${full?'open':''}><summary>📜 Original text of the Act ${t.x?'(relevant extract)':'— section '+sec.n}</summary><div class="actx">${fmtAct(t.x||sec.t)}</div><p class="act-src">Source: Income-tax Act, 2025 (Act No. 30 of 2025)${sec?', section '+sec.n:''}. Statutory text — reproducible under s. 52(1)(q), Copyright Act, 1957.</p>${sec&&!full?`<a class="more" href="#library/s/${sec.n}">Read full section ${sec.n} — ${esc3(sec.h)} →</a>`:''}</details>`:''}`;
+}
+function bkTopic(id){
+  const t=bkT(id); if(!t||!BK.chOf[id]) return bkCover();
+  const c=BK.chOf[id], i=BK.pages.findIndex(p=>p.r==='t/'+id);
+  const html=`<article class="bk-art">${bkTopicHTML(t)}
+    ${t.rel&&t.rel.length?`<div class="lib-rel"><h4>Related in this book</h4>${t.rel.map(r=>{const x=bkT(r); return x&&BK.chOf[r]?`<a href="#library/t/${r}"><small>${bkNum(r)}</small> ${esc3(x.t)}</a>`:''}).join('')}</div>`:''}
     <p class="disclaimer">Plain-English summary for general understanding — read with the Act, Rules and latest amendments before acting.</p>
-  </article>`;
-  libShow('view');
+    ${bkPager(i)}</article>`;
+  bkShell({r:'t/'+id,ch:c,title:bkNum(id)+' '+t.t},html,`<a href="#library">Book</a> › <a href="#library/c/${c.id}">Ch ${c.n} · ${esc3(c.t)}</a> › <span>${bkNum(id)}</span>`);
 }
-function libSection(n){
-  n=+n; const s=LIB.S[n-1]; if(!s) return libShow('home');
-  const tps=LIB.T.filter(t=>t.sec===n);
-  const v=document.getElementById('libView');
-  v.innerHTML=`<a class="back" href="#library">← Library</a>
-  <article class="lib-art">
-    <div class="lib-badges"><span class="tag">Chapter ${s.ch} · ${esc3(LIB.CH[s.ch]||'')}</span>${s.old.length?`<span class="pill2 old">Old (1961 Act): ${esc3(s.old.join(', '))}</span>`:''}</div>
-    <h2>Section ${s.n} — ${esc3(s.h)}</h2>
-    ${tps.length?`<div class="lib-box ex"><h4>📘 Plain-English explainers for this section</h4><div class="lib-rel" style="margin:0">${tps.map(t=>`<a href="#library/t/${t.id}">${esc3(t.t)}${t.o?` <small>(${esc3(t.o)})</small>`:''}</a>`).join('')}</div></div>`:`<div class="lib-box amd"><h4>Plain-English explainer</h4><p>Coming soon for this section. Meanwhile, here is the original text — use “Ask a question” if you need help understanding it.</p></div>`}
+function bkPrintChapter(id){
+  const c=BOOK.chapters.find(x=>x.id===id); if(!c) return;
+  const m=document.getElementById('bkMain');
+  m.innerHTML=`<article class="bk-art bk-chap"><div class="ch-head"><span class="ch-num">${c.n}</span><div><span class="eyebrow">${BOOK.title} · Chapter ${c.n}</span><h1>${c.ic} ${esc3(c.t)}</h1></div></div><p class="ch-intro">${c.intro}</p><div class="bk-glance"><h3>At a glance</h3><ul>${c.glance.map(g=>`<li>${g}</li>`).join('')}</ul></div>${c.chart.map(k=>CHARTS[k].r()).join('')}
+   ${c.topics.map(tid=>{const t=bkT(tid); return t?`<section class="pr-topic">${bkTopicHTML(t,true)}</section>`:''}).join('')}<p class="disclaimer">From atulbagla.com — plain-English summary for general understanding.</p></article>`;
+  const done=()=>{ window.removeEventListener('afterprint',done); document.body.classList.remove('bk-print'); bkRoute(location.hash.slice(1).split('/')); };
+  window.addEventListener('afterprint',done); document.body.classList.add('bk-print'); setTimeout(()=>window.print(),250);
+}
+function bkSection(n){
+  n=+n; const s=LIB.S[n-1]; if(!s) return bkAct();
+  const tps=LIB.T.filter(t=>t.sec===n && BK.chOf[t.id]);
+  const html=`<article class="bk-art">
+    <div class="lib-badges"><span class="tag">Act · Chapter ${s.ch} · ${esc3(LIB.CH[s.ch]||'')}</span>${s.old.length?`<span class="pill2 old">Old (1961 Act): ${esc3(s.old.join(', '))}</span>`:''}</div>
+    <h2 class="tp-h">Section ${s.n} — ${esc3(s.h)}</h2>
+    ${tps.length?`<div class="lib-box ex"><h4>📘 Read the plain-English explanation</h4><div class="lib-rel" style="margin:0">${tps.map(t=>`<a href="#library/t/${t.id}"><small>${bkNum(t.id)}</small> ${esc3(t.t)}</a>`).join('')}</div></div>`:''}
     <div class="lib-box orig open"><h4>📜 Original text — Income-tax Act, 2025 (as enacted)</h4><div class="actx">${fmtAct(s.t)}</div><p class="act-src">Source: Income-tax Act, 2025 (Act No. 30 of 2025). Statutory text — reproducible under s. 52(1)(q), Copyright Act, 1957. Check later amendments (e.g. Finance Act, 2026).</p></div>
-    <div class="lib-nav">${n>1?`<a href="#library/s/${n-1}">← Section ${n-1}</a>`:'<span></span>'}${n<536?`<a href="#library/s/${n+1}">Section ${n+1} →</a>`:''}</div>
-  </article>`;
-  libShow('view');
+    <nav class="bk-pager">${n>1?`<a class="pv" href="#library/s/${n-1}"><small>← Previous</small><b>Section ${n-1} — ${esc3(LIB.S[n-2].h)}</b></a>`:'<span></span>'}${n<LIB.S.length?`<a class="nx" href="#library/s/${n+1}"><small>Next →</small><b>Section ${n+1} — ${esc3(LIB.S[n].h)}</b></a>`:''}</nav></article>`;
+  bkShell({r:'s/'+n,title:'Section '+n+' — '+s.h},html,`<a href="#library">Book</a> › <a href="#library/act">The Act</a> › <span>Section ${n}</span>`);
 }
-function libShow(which){
-  document.getElementById('libHome').hidden = which!=='home';
-  document.getElementById('libView').hidden = which!=='view';
-  if(which!=='home') document.getElementById('libResults').hidden=true;
-  else if(document.getElementById('libQ').value.trim()) document.getElementById('libResults').hidden=false;
+function bkAct(){
+  const chs=Object.keys(LIB.CH);
+  const html=`<article class="bk-art"><span class="eyebrow">Appendix A</span><h1>The Income-tax Act, 2025</h1><p class="ch-intro">All 536 sections, chapter by chapter, with their old 1961-Act numbers. Tap a chapter to open it.</p>
+    ${chs.map(c=>{ const ss=LIB.S.filter(s=>s.ch===c); return `<details class="lib-ch act-ch"><summary><span class="tc-n">${c}</span> ${LIB.CH[c]} <small>ss. ${ss[0]?.n}–${ss[ss.length-1]?.n}</small></summary><div class="lib-slist">${ss.map(s=>`<a href="#library/s/${s.n}"><b>${s.n}</b> ${esc3(s.h)}${s.old.length?` <small>old ${esc3(s.old.slice(0,4).join(', '))}${s.old.length>4?'…':''}</small>`:''}</a>`).join('')}</div></details>`; }).join('')}</article>`;
+  bkShell({r:'act',title:'The Act'},html,`<a href="#library">Book</a> › <span>The Act</span>`);
+}
+function bkFinder(){
+  const rows=[]; LIB.S.forEach(s=>{ if(/repeal/i.test(s.h)) return; s.old.forEach(o=>rows.push([o,s.n,s.h])); });
+  const key=o=>{ const m=String(o).match(/^(\d+)(.*)$/); return m? [ +m[1], m[2] ] : [9999,o]; };
+  rows.sort((a,b)=>{ const x=key(a[0]),y=key(b[0]); return x[0]-y[0] || String(x[1]).localeCompare(String(y[1])); });
+  const html=`<article class="bk-art"><span class="eyebrow">Appendix B</span><h1>Old → new section finder</h1><p class="ch-intro">Know the 1961-Act number? Find its home in the 2025 Act.</p>
+    <input id="fdQ" class="fd-q" type="search" placeholder="Type an old section — e.g. 80C, 194J, 139, 54EC" aria-label="Filter old sections">
+    <div class="mx-wrap"><table class="mx fd"><thead><tr><th>Old (1961)</th><th>New (2025)</th><th>Heading</th></tr></thead><tbody>${rows.map(([o,n,h])=>`<tr data-k="${libNorm(o)}"><td><b>${esc3(o)}</b></td><td><a href="#library/s/${n}">Section ${n}</a></td><td>${esc3(h)}</td></tr>`).join('')}</tbody></table></div></article>`;
+  bkShell({r:'finder',title:'Old → new finder'},html,`<a href="#library">Book</a> › <span>Section finder</span>`);
+  const q=document.getElementById('fdQ'); q.addEventListener('input',()=>{ const k=libNorm(q.value); document.querySelectorAll('.fd tbody tr').forEach(tr=>tr.hidden=!!k && !tr.dataset.k.startsWith(k)); });
+}
+function bkGlossary(){
+  const g=[...GLOSSARY].sort((a,b)=>a[0].localeCompare(b[0]));
+  const letters=[...new Set(g.map(x=>x[0][0].toUpperCase()))];
+  const html=`<article class="bk-art"><span class="eyebrow">Appendix C</span><h1>Glossary</h1><p class="ch-intro">Tax words in plain English. Tap “Read more” to jump to the chapter.</p>
+   <div class="gl-az">${letters.map(l=>`<a href="#" data-gl="${l}">${l}</a>`).join('')}</div>
+   <dl class="gl">${g.map(([t,d,l])=>`<div id="g-${libNorm(t)}" data-l="${t[0].toUpperCase()}"><dt>${esc3(t)}</dt><dd>${esc3(d)} ${l&&BK.chOf[l]?`<a href="#library/t/${l}">Read more · ${bkNum(l)} →</a>`:''}</dd></div>`).join('')}</dl></article>`;
+  bkShell({r:'glossary',title:'Glossary'},html,`<a href="#library">Book</a> › <span>Glossary</span>`);
+  document.querySelectorAll('[data-gl]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const el=document.querySelector(`.gl [data-l="${a.dataset.gl}"]`); el&&el.scrollIntoView({behavior:'smooth',block:'start'}); }));
+}
+function bkCharts(){
+  const html=`<article class="bk-art"><span class="eyebrow">Appendix D</span><h1>Quick-reference charts</h1><p class="ch-intro">Every chart and diagram in the book on one page — handy to print.</p>
+   <div class="qc-idx">${Object.entries(CHARTS).map(([k,v])=>{ const c=BOOK.chapters.find(x=>x.chart.includes(k)); return `<a href="#" data-fig="${k}">${esc3(v.t)}${c?` <small>Ch ${c.n}</small>`:''}</a>`; }).join('')}</div>
+   ${Object.values(CHARTS).map(v=>v.r()).join('')}</article>`;
+  bkShell({r:'charts',title:'Charts'},html,`<a href="#library">Book</a> › <span>Charts</span>`);
+  document.querySelectorAll('[data-fig]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); document.getElementById('fig-'+a.dataset.fig).scrollIntoView({behavior:'smooth',block:'start'}); }));
+}
+function bkSaved(){
+  const marks=bkGet('ab_book_marks',[]);
+  const html=`<article class="bk-art"><span class="eyebrow">Appendix E</span><h1>My bookmarks</h1><p class="ch-intro">Pages you bookmarked with 🔖. Saved on this device only.</p>
+   ${marks.length?`<div class="ch-toc"><ol class="bm-list">${marks.map((m,i)=>`<li><a href="#library/${m.r}"><span>🔖</span><div><b>${esc3(m.t||m.r)}</b></div></a><button class="bm-x" data-i="${i}" aria-label="Remove bookmark">✕</button></li>`).join('')}</ol></div>`:'<div class="empty">No bookmarks yet. Open any page and tap 🔖 in the book bar.</div>'}</article>`;
+  bkShell({r:'saved',title:'Bookmarks'},html,`<a href="#library">Book</a> › <span>Bookmarks</span>`);
+  document.querySelectorAll('.bm-x').forEach(b=>b.addEventListener('click',()=>{ const m=bkGet('ab_book_marks',[]); m.splice(+b.dataset.i,1); bkSet('ab_book_marks',m); bkSaved(); }));
+}
+function bkHighlight(root, words){
+  const art=root.querySelector('.bk-art')||root; const re=new RegExp('('+words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi');
+  const walker=document.createTreeWalker(art,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode.closest('script,style,mark,.bk-pager,svg')?NodeFilter.FILTER_REJECT:(re.test(n.nodeValue)?(re.lastIndex=0,NodeFilter.FILTER_ACCEPT):NodeFilter.FILTER_SKIP)});
+  const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+  let first=null; nodes.slice(0,200).forEach(n=>{ const f=document.createDocumentFragment(); n.nodeValue.split(re).forEach((part,i)=>{ if(i%2){ const m=document.createElement('mark'); m.className='hl'; m.textContent=part; f.appendChild(m); first=first||m; } else if(part) f.appendChild(document.createTextNode(part)); }); n.parentNode.replaceChild(f,n); });
+  if(first){ const d=first.closest('details'); if(d) d.open=true; first.scrollIntoView({block:'center'}); }
 }
 function libRoute(parts){
-  libLoad(()=>{
-    if(!document.getElementById('libCats').innerHTML) libHome();
-    if(parts[1]==='t') libTopic(parts[2]); else if(parts[1]==='s') libSection(parts[2]); else { libShow('home'); libSearch(document.getElementById('libQ').value); }
+  libLoad(()=>{ bkInit();
+    const [_,k,v]=parts;
+    if(k==='c') bkChapter(v); else if(k==='t') bkTopic(v); else if(k==='s') bkSection(v);
+    else if(k==='act') bkAct(); else if(k==='finder') bkFinder(); else if(k==='glossary') bkGlossary(); else if(k==='charts') bkCharts(); else if(k==='saved') bkSaved();
+    else bkCover();
+    if(!BK.hlPending) window.scrollTo(0,0); BK.hlPending=false; bkProgress();
   });
 }
+const bkRoute = libRoute;
+function bkProgress(){ const b=document.getElementById('bkProg'); if(!b) return; const h=document.documentElement; const max=h.scrollHeight-h.clientHeight; b.style.width=(max>0?Math.min(100,h.scrollTop/max*100):0)+'%'; }
+window.addEventListener('scroll',()=>{ if(location.hash.startsWith('#library')) bkProgress(); },{passive:true});
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-print-ch]'); if(t){ bkPrintChapter(t.dataset.printCh); return; }
+  if(e.target.closest('#bkTocBtn')){ document.body.classList.toggle('toc-open'); return; }
+  if(e.target.closest('.toc-scrim')){ document.body.classList.remove('toc-open'); return; }
+  if(e.target.closest('#bkPrint')){ document.body.classList.add('bk-print'); window.print(); setTimeout(()=>document.body.classList.remove('bk-print'),500); return; }
+  const bm=e.target.closest('#bkMark'); if(bm){ const m=bkGet('ab_book_marks',[]); const i=m.findIndex(x=>x.r===bm.dataset.r); if(i>=0) m.splice(i,1); else m.unshift({r:bm.dataset.r,t:bm.dataset.t}); bkSet('ab_book_marks',m); bm.classList.toggle('on',i<0); bm.title=i<0?'Bookmarked':'Bookmark this page'; }
+});
+
+/* ===== Global search overlay (press S or /) ===== */
+const SX = { idx:null, act:0, items:[] };
+function sxBuild(){
+  if(SX.idx) return; bkInit(); const I=[];
+  BOOK.chapters.forEach(c=>I.push({k:'Book',ic:c.ic,t:`Chapter ${c.n} · ${c.t}`,s:'Chapter overview',x:(c.t+' '+c.intro+' '+c.glance.join(' ')).toLowerCase(),body:c.intro+' '+c.glance.join(' '),r:'library/c/'+c.id,tb:c.t.toLowerCase()}));
+  LIB.T.forEach(t=>{ if(!BK.chOf[t.id]) return; const body=[t.one,...(t.f||[]).map(f=>f.join(': ')),t.ex||'',...(t.w||[])].join(' · ');
+    I.push({k:'Book',ic:'📘',t:`${bkNum(t.id)} ${t.t}`,s:`Ch ${BK.chOf[t.id].n} · ${BK.chOf[t.id].t}${t.o?' · old '+t.o:''}`,x:(t.t+' '+t.a+' '+t.o+' '+t.s+' '+body).toLowerCase(),body,r:'library/t/'+t.id,tb:(t.t+' '+t.a).toLowerCase(),old:(t.o||'').split(/[ ,]+/).map(libNorm),tid:t.id}); });
+  GLOSSARY.forEach(([t,d,l])=>I.push({k:'Glossary',ic:'🔤',t,s:d,x:(t+' '+d).toLowerCase(),body:d,r:l&&BK.chOf[l]?'library/t/'+l:'library/glossary',tb:t.toLowerCase()}));
+  Object.entries(CHARTS).forEach(([k,v])=>{ const c=BOOK.chapters.find(x=>x.chart.includes(k)); I.push({k:'Charts',ic:'📊',t:v.t,s:c?`Chapter ${c.n} · ${c.t}`:'Quick-reference charts',x:(v.t+' chart').toLowerCase(),body:'',r:c?'library/c/'+c.id:'library/charts',tb:v.t.toLowerCase()}); });
+  LIB.S.forEach(s=>I.push({k:'The Act',ic:'📜',t:`Section ${s.n} — ${s.h}`,s:s.old.length?'Old '+s.old.slice(0,5).join(', '):'Chapter '+s.ch,x:(s.h+' '+s.t).toLowerCase(),body:s.t,r:'library/s/'+s.n,tb:s.h.toLowerCase(),sn:s.n,old:s.old.map(libNorm)}));
+  [['Advance Calculator','Compare old vs new regime, download computation','calculator','🧮'],['ITR Guide','Which ITR form — ITR-1 to ITR-7','itr','📄'],['What’s New','Latest tax, PF and GST changes','news','🆕'],['Tax Quiz','Tax Crorepati — test yourself','quiz','🏆'],['Checklist','Documents for your return','documents','✅'],['Ask a question','Send your query','ask','✉️']].forEach(([t,s,r,ic])=>I.push({k:'Site',ic,t,s,x:(t+' '+s).toLowerCase(),body:s,r,tb:t.toLowerCase()}));
+  SX.idx=I;
+}
+function sxSearch(q){
+  const n=libNorm(q); const STOP=new Set(['vs','v','the','of','on','for','a','an','in','to','and','how','what','is','my','i','me','do','does','when','which','can','with','by','from','under']);
+  const words=q.toLowerCase().split(/[\s,?]+/).filter(w=>w&&!STOP.has(w)).map(w=>w.length>4&&w.endsWith('s')&&!w.endsWith('ss')?w.slice(0,-1):w); if(!words.length) return [];
+  const need=words.length>=3?words.length-1:words.length; const out=[];
+  SX.idx.forEach(e=>{ let sc=0;
+    if(e.old && /\d/.test(n)){ const oi=e.old.indexOf(n); if(oi>=0) sc+= (e.k==='Book'?300:240) - oi*60; }
+    if(e.sn && /^\d{1,3}$/.test(n) && e.sn===+n) sc+=260;
+    const hit=words.filter(w=>e.x.includes(w)||e.tb.includes(w));
+    if(hit.length<need) { if(sc>0) out.push([sc,e]); return; }
+    hit.forEach(w=>{ if(e.tb.includes(w)) sc+=30; if(e.tb.startsWith(w)) sc+=10; if(e.x.includes(w)) sc+=4; });
+    if(hit.length===words.length) sc+=25;
+    if(e.tb.includes(q.toLowerCase())) sc+=40;
+    sc += {Book:20,Glossary:12,Charts:8,Site:10,'The Act':0}[e.k];
+    if(e.k==='The Act' && !words.some(w=>e.tb.includes(w))) sc-=10;
+    out.push([sc,e]); });
+  out.sort((a,b)=>b[0]-a[0]);
+  const lim={Book:8,Glossary:4,Charts:3,Site:3,'The Act':8}, cnt={}, res=[];
+  out.forEach(([sc,e])=>{ cnt[e.k]=(cnt[e.k]||0)+1; if(cnt[e.k]<=lim[e.k]) res.push(e); });
+  const ord=['Book','Glossary','Charts','The Act','Site']; const top=res.length?res[0].k:null;
+  return res.sort((a,b)=>(a.k===top?-1:0)-(b.k===top?-1:0) || ord.indexOf(a.k)-ord.indexOf(b.k));
+}
+function sxSnippet(e,words){
+  const re=new RegExp('('+words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi');
+  let s=e.s; if(e.body){ const lb=e.body.toLowerCase(); const i=lb.indexOf(words[0]); if(i>=0 && e.k!=='Glossary'){ s=(i>60?'…':'')+e.body.slice(Math.max(0,i-60),i+120).replace(/\s+/g,' ')+'…'; } }
+  return esc3(s).replace(re,'<mark>$1</mark>');
+}
+function sxRender(){
+  const q=document.getElementById('sxQ').value.trim(), box=document.getElementById('sxRes');
+  if(!q){ box.innerHTML=`<div class="sx-hint"><b>Try:</b> ${['HRA','80C','194J','capital gains on property','advance tax dates','gift from friend','old vs new regime','set off loss'].map(x=>`<button data-sxq="${x}">${x}</button>`).join('')}</div>`; SX.items=[]; return; }
+  if(!SX.idx){ box.innerHTML='<div class="sx-empty">Loading the book…</div>'; return; }
+  const words=q.toLowerCase().split(/[\s,]+/).filter(Boolean);
+  SX.items=sxSearch(q); SX.act=0;
+  if(!SX.items.length){ box.innerHTML=`<div class="sx-empty">No match for “${esc3(q)}”. Try a simpler word or a section number like 80C or 393.</div>`; return; }
+  let last=''; box.innerHTML=SX.items.map((e,i)=>{ const h=e.k!==last?`<div class="sx-g">${e.k==='Book'?'In the book':e.k}</div>`:''; last=e.k; return `${h}<a class="sx-i ${i===0?'on':''}" data-i="${i}" href="#${e.r}"><span class="sx-ic">${e.ic}</span><span class="sx-tx"><b>${esc3(e.t).replace(new RegExp('('+words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi'),'<mark>$1</mark>')}</b><small>${sxSnippet(e,words)}</small></span><span class="sx-go">↵</span></a>`; }).join('');
+}
+function sxOpen(){
+  const o=document.getElementById('sx'); if(!o.hidden) return; o.hidden=false; document.body.classList.add('sx-on');
+  const q=document.getElementById('sxQ'); q.value=''; sxRender(); setTimeout(()=>q.focus(),10);
+  libLoad(()=>{ sxBuild(); sxRender(); });
+}
+function sxClose(){ document.getElementById('sx').hidden=true; document.body.classList.remove('sx-on'); }
+function sxGo(i){ const e=SX.items[i]; if(!e) return; const words=document.getElementById('sxQ').value.trim().toLowerCase().split(/[\s,]+/).filter(w=>w.length>1);
+  if(e.r.startsWith('library/') && words.length && e.k!=='Site'){ BK.hl=words; BK.hlPending=true; }
+  sxClose(); if(location.hash==='#'+e.r) window.dispatchEvent(new HashChangeEvent('hashchange')); else location.hash=e.r; }
 (function(){
-  const q=document.getElementById('libQ'); if(!q) return; let tm;
-  q.addEventListener('input',()=>{ clearTimeout(tm); tm=setTimeout(()=>{ if(!location.hash.startsWith('#library')||location.hash!=='#library') history.replaceState(null,'','#library'); libLoad(()=>{ libShow('home'); libSearch(q.value); }); },150); });
-  document.querySelectorAll('#libChips [data-q]').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.q; q.dispatchEvent(new Event('input')); }));
+  const o=document.createElement('div'); o.id='sx'; o.className='sx'; o.hidden=true;
+  o.innerHTML=`<div class="sx-box" role="dialog" aria-modal="true" aria-label="Search the book"><div class="sx-in"><span aria-hidden="true">🔍</span><input id="sxQ" type="search" placeholder="Search everything — HRA, 80C, 194J, gift…" autocomplete="off" aria-label="Search"><button class="sx-x" aria-label="Close search">Esc</button></div><div class="sx-res" id="sxRes" role="listbox"></div><div class="sx-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>S</kbd> or <kbd>/</kbd> search anytime</span></div></div>`;
+  document.body.appendChild(o);
+  o.addEventListener('click',e=>{ if(e.target===o||e.target.closest('.sx-x')) return sxClose(); const b=e.target.closest('[data-sxq]'); if(b){ const q=document.getElementById('sxQ'); q.value=b.dataset.sxq; sxRender(); q.focus(); return; } const a=e.target.closest('.sx-i'); if(a){ e.preventDefault(); sxGo(+a.dataset.i); } });
+  o.addEventListener('mousemove',e=>{ const a=e.target.closest('.sx-i'); if(a&&+a.dataset.i!==SX.act){ SX.act=+a.dataset.i; o.querySelectorAll('.sx-i').forEach(x=>x.classList.toggle('on',+x.dataset.i===SX.act)); } });
+  let tm; document.getElementById('sxQ').addEventListener('input',()=>{ clearTimeout(tm); tm=setTimeout(sxRender,90); });
+  document.addEventListener('keydown',e=>{
+    const open=!o.hidden;
+    if(open){ if(e.key==='Escape'){ e.preventDefault(); sxClose(); }
+      else if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); if(!SX.items.length) return; SX.act=(SX.act+(e.key==='ArrowDown'?1:-1)+SX.items.length)%SX.items.length; const els=o.querySelectorAll('.sx-i'); els.forEach(x=>x.classList.toggle('on',+x.dataset.i===SX.act)); els[SX.act]&&els[SX.act].scrollIntoView({block:'nearest'}); }
+      else if(e.key==='Enter'){ e.preventDefault(); sxGo(SX.act); }
+      return; }
+    const tg=e.target; if(tg.closest&&tg.closest('input,textarea,select,[contenteditable="true"]')) return;
+    if(((e.key==='s'||e.key==='S'||e.key==='/') && !e.ctrlKey && !e.metaKey && !e.altKey) || ((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){ e.preventDefault(); sxOpen(); }
+  });
+  document.addEventListener('click',e=>{ if(e.target.closest('[data-open-search]')){ e.preventDefault(); sxOpen(); } });
 })();
+
 
 
 /* ============ Display settings ============ */
@@ -2586,7 +3271,7 @@ document.getElementById('qzBest') && (()=>{ try{ const b=+localStorage.getItem('
   const pages=[...document.querySelectorAll('.page')];
   const titles={home:'CA Atul Bagla | Income Tax Calculator, ITR Guide & Tax Updates',calculator:'Advance Income Tax Calculator FY 2026-27 | CA Atul Bagla',
     itr:'ITR Guide — ITR-1 to ITR-7 | CA Atul Bagla',documents:'ITR Checklist | CA Atul Bagla','new-act':'Income-tax Act 2025 & FY 2026-27 Changes | CA Atul Bagla',
-    faq:'Income Tax FAQs | CA Atul Bagla',about:'About | CA Atul Bagla',ask:'Ask a Tax Question | CA Atul Bagla',quiz:'Tax Crorepati — income tax quiz | CA Atul Bagla',news:'What\'s New — PF, income tax & labour code changes | CA Atul Bagla',library:'Tax Library — Income-tax Act 2025 in plain English | CA Atul Bagla'};
+    faq:'Income Tax FAQs | CA Atul Bagla',about:'About | CA Atul Bagla',ask:'Ask a Tax Question | CA Atul Bagla',quiz:'Tax Crorepati — income tax quiz | CA Atul Bagla',news:'What\'s New — PF, income tax & labour code changes | CA Atul Bagla',library:'Tax Book — Income Tax, Made Simple (digital book) | CA Atul Bagla'};
   function show(){
     const parts=(location.hash||'#home').slice(1).split('/'); let r=parts[0]||'home'; if(!pages.some(p=>p.dataset.page===r)) r='home';
     pages.forEach(p=>p.hidden = p.dataset.page!==r);
