@@ -1,7 +1,7 @@
 {
   "name": "CA Atul Bagla — Income tax, made simple",
   "short_name": "Tax Simple",
-  "description": "Income tax calculator, ITR guide, Tax Library and Tax Crorepati quiz — FY 2026-27.",
+  "description": "Income tax calculator, ITR guide, Knowledge Library (Income Tax, Accounting Standards, Journals, Finance, GST) and Tax Crorepati quiz — FY 2026-27.",
   "start_url": "./index.html#home",
   "scope": "./",
   "display": "standalone",
@@ -18,7 +18,7 @@
   ],
   "shortcuts": [
     {"name": "Advance Calculator", "url": "./index.html#calculator"},
-    {"name": "Tax Library", "url": "./index.html#library"},
+    {"name": "Knowledge Library", "url": "./index.html#library"},
     {"name": "Tax Quiz", "url": "./index.html#quiz"}
   ]
 }
