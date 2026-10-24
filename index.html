@@ -394,7 +394,7 @@ table.stx{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-nume
 .stx .x-tot td{font-weight:800;background:var(--paper2)}.stx .x-tot td:last-child{box-shadow:inset 0 1.5px 0 var(--heading)}
 .stx .x-grand td{font-weight:800;background:var(--good-bg);color:var(--heading)}.stx .x-grand td:last-child{box-shadow:inset 0 1.5px 0 var(--heading),inset 0 -4px 0 -1px var(--heading)}
 .stx-t td,.stx-t th{border:1px solid var(--line)}.stx-t tfoot td{font-weight:800;background:var(--paper2)}
-.hp-adv{margin-top:6px;border:1px dashed var(--line);border-radius:10px;padding:8px 12px}.hp-adv summary{cursor:pointer;font-weight:700;font-size:.85rem;color:var(--heading)}.hp-adv summary::after{content:none}.hp-adv[open] summary{margin-bottom:8px}
+.hp-adv{margin-top:6px;border:1px dashed var(--line);border-radius:10px;padding:8px 12px}.hp-adv summary{display:block;cursor:pointer;font-weight:700;font-size:.85rem;color:var(--heading)}.hp-adv summary::after{content:none}.hp-adv[open] summary{margin-bottom:8px}
 @media(max-width:600px){.stx{font-size:.8rem}.stx td,.stx th{padding:5px 6px}.stx .x-r td:first-child{padding-left:12px}.stx col.c2{width:88px}.dx-dl .btn{flex:1 1 calc(50% - 8px);justify-content:center;text-align:center}.stx-prof div{font-size:.8rem}}
 .dh td{font-weight:700;color:var(--heading);background:var(--paper2);padding-top:12px;text-align:left!important}
 .ds td:first-child{padding-left:22px}
@@ -775,6 +775,113 @@ dialog{background:var(--card);color:var(--text)}
 .nw:hover .nw-date{box-shadow:0 0 0 5px var(--card)}
 .nw-what{background:transparent;border-left-width:3px;border-radius:0;padding:4px 12px;color:var(--text)}
 @media(max-width:620px){.news-list::before{left:47px}.nw-top{padding:14px 10px;gap:12px}.nw-date{width:58px}.nw-more{padding:0 12px 16px 12px}}
+/* ===== head-wise calculator flow ===== */
+.dx-shell{grid-template-columns:1fr!important}
+.dx-shell[data-mode="hub"] #dx,.dx-shell[data-mode="hub"] #x_out,.dx-shell[data-mode="hub"] .dx-mini{display:none}
+.dx-shell[data-mode="head"] #dxHub,.dx-shell[data-mode="head"] #x_out{display:none}
+.dx-shell[data-mode="result"] #dxHub,.dx-shell[data-mode="result"] #dx,.dx-shell[data-mode="result"] .dx-mini{display:none}
+.dx-shell[data-mode="result"] #x_out{position:static}
+.dx-shell[data-mode="head"]{grid-template-columns:minmax(0,1fr) 290px!important;align-items:start}
+#dx details[data-head]{display:none}#dx details[data-head].on{display:block;border:0;margin:0}
+#dx details[data-head].on>summary{display:none}#dx details[data-head].on>.fs-body{padding:4px 0 0}
+.dx-shell[data-mode="head"] #dx{padding:0}.dx-headbar{border-radius:18px 18px 0 0}.dx-headnav{border-radius:0 0 18px 18px}
+.dx-headbar{display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(135deg,var(--ink),var(--ink-2));color:#fff}
+.dxh-back{background:rgba(255,255,255,.14);border:0;color:#fff;font:700 .82rem var(--sans);padding:8px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.dxh-back:hover{background:rgba(255,255,255,.24)}
+.dxh-t{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}.dxh-t span{font-size:1.3rem}.dxh-t b{font:700 1.05rem var(--serif)}.dxh-t small{font-size:.74rem;opacity:.75;width:100%;margin-top:-4px;padding-left:32px}
+.dx-shell[data-mode="head"] #dx details.on>.fs-body{padding:16px 18px 6px}
+.dx-headnav{display:none;gap:10px;justify-content:space-between;flex-wrap:wrap;padding:14px 18px 18px;border-top:1px solid var(--line);background:var(--paper2)}
+.dx-shell[data-mode="head"] .dx-headnav{display:flex}
+.dx-headnav .btn{flex:1 1 auto;justify-content:center;text-align:center}
+.dx-mini{position:sticky;top:84px;background:var(--card);border-radius:18px;box-shadow:0 0 0 1px var(--line),0 14px 34px -22px rgba(15,42,68,.4);padding:16px;display:grid;gap:8px}
+.mn-h{font:800 .72rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mn-r{display:flex;justify-content:space-between;gap:8px;font-size:.86rem;padding:6px 8px;border-radius:9px}.mn-r b{color:var(--heading)}.mn-r.win{background:var(--good-bg)}.mn-r.win b{color:var(--good)}
+.dx-mini p{font-size:.82rem;color:var(--muted);margin:0}.dx-mini .btn{justify-content:center}
+.hub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hub-t{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;text-align:left;background:var(--card);border:0;border-radius:16px;padding:14px;cursor:pointer;color:var(--text);box-shadow:0 0 0 1px var(--line);transition:transform .15s,box-shadow .15s;font:inherit}
+.hub-t:hover{transform:translateY(-2px);box-shadow:0 0 0 1px var(--accent),0 14px 30px -18px rgba(15,42,68,.45)}
+.hub-ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:1.3rem;background:var(--paper2)}
+.hub-tx{min-width:0}.hub-tx b{display:block;color:var(--heading);font-size:.95rem}.hub-tx small{display:block;color:var(--muted);font-size:.78rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis}
+.hub-st{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.85rem;background:var(--paper2);color:var(--muted)}
+.hub-t.done{box-shadow:0 0 0 1.5px color-mix(in srgb,var(--good) 55%,var(--line))}.hub-t.done .hub-st{background:var(--good);color:#fff}.hub-t.done .hub-ic{background:var(--good-bg)}.hub-t.done small{color:var(--good);font-weight:600}
+.hub-t.part .hub-st{background:var(--gold);color:#3a2a05}
+.hub-cta{margin-top:16px;display:grid;grid-template-columns:1fr auto;gap:14px 20px;align-items:center;background:linear-gradient(135deg,var(--ink),var(--ink-2));color:#fff;border-radius:20px;padding:18px 20px;position:relative;overflow:hidden}
+.hub-cta::after{content:"";position:absolute;right:-50px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(242,181,68,.3),transparent 70%);pointer-events:none}
+.hub-prog{grid-column:1/-1;display:flex;align-items:center;gap:12px;font-size:.8rem;opacity:.9}.hub-prog i{flex:1;height:6px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden}.hub-prog em{display:block;height:100%;background:var(--gold);border-radius:9px;transition:width .4s}
+.hub-live{display:flex;gap:22px;flex-wrap:wrap}.hub-live small{display:block;font-size:.72rem;opacity:.75;text-transform:uppercase;letter-spacing:.06em}.hub-live b{font:700 1.15rem var(--serif)}.hl-best b{color:var(--gold)}
+.hub-hint{margin:0;font-size:.9rem;opacity:.85}
+.hub-go{position:relative;z-index:1;padding:14px 26px;font-size:1rem}.hub-go[disabled]{opacity:.5;cursor:not-allowed}
+.res-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.reg-seg{max-width:360px;margin-bottom:6px}
+.sum-h{font:700 1.05rem var(--serif);color:var(--heading);margin:10px 0 0;display:flex;gap:8px;align-items:baseline}.sum-h small{font:600 .74rem var(--sans);color:var(--muted)}
+.faceoff{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fo{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 0 0 1px var(--line)}.fo.win{box-shadow:0 0 0 2px var(--good);background:linear-gradient(180deg,var(--good-bg),var(--card) 60%)}
+.fo-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.fo-h b{color:var(--heading)}.fo-b{font:800 .68rem var(--sans);background:var(--good);color:#fff;border-radius:999px;padding:3px 9px}
+.fo-n{font:700 1.7rem var(--serif);color:var(--heading);margin:6px 0}
+.fo-bar{height:8px;border-radius:9px;background:var(--paper2);overflow:hidden}.fo-bar i{display:block;height:100%;background:var(--muted);border-radius:9px}.fo.win .fo-bar i{background:var(--good)}
+.fo dl{display:grid;gap:4px;margin-top:10px}.fo dl div{display:flex;justify-content:space-between;font-size:.84rem}.fo dt{color:var(--muted)}.fo dd{font-weight:700;color:var(--heading)}
+.ibars{display:grid;gap:8px;background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 0 0 1px var(--line)}
+.ibar{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:.88rem}.ibar b{color:var(--heading)}.ibar i{grid-column:1/-1;height:7px;border-radius:9px;background:var(--paper2);overflow:hidden}.ibar em{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:9px}
+.tpos{background:var(--card);border-radius:16px;padding:6px 16px;box-shadow:0 0 0 1px var(--line)}.tpos div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dotted var(--line);font-size:.9rem}.tpos div:last-child{border:0}.tpos b{color:var(--heading)}
+.tpos .tp-g{font-weight:800;font-size:1rem}.tpos .tp-g b{color:var(--good)}
+.sum-more{justify-self:start;margin-top:4px}
+@media(max-width:1000px){.hub-grid{grid-template-columns:1fr 1fr}.dx-shell[data-mode="head"]{grid-template-columns:1fr!important}.dx-mini{position:static;order:-1;grid-template-columns:1fr 1fr;align-items:center}.dx-mini .mn-h,.dx-mini p,.dx-mini .btn{grid-column:1/-1}}
+@media(max-width:620px){.hub-grid{grid-template-columns:1fr;gap:8px}.hub-cta{grid-template-columns:1fr}.hub-go{width:100%;justify-content:center}.faceoff{grid-template-columns:1fr}.dx-mini{display:none!important}
+  .dx-shell[data-mode="head"] .dx-headnav{position:sticky;bottom:0;z-index:5;box-shadow:0 -8px 20px -12px rgba(0,0,0,.3)}.res-bar .dx-dl{width:100%}.res-back{width:100%;justify-content:center}}
+/* ===== Home hero v2 ===== */
+.hero2{padding:76px 0 84px;background:#0b2036;isolation:isolate}
+.hero2::after{display:none}
+.h2-mesh{position:absolute;inset:0;z-index:-1;overflow:hidden;background:linear-gradient(160deg,var(--ink) 0%,#0a1a2c 100%)}
+.h2-mesh i{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;animation:h2float 18s ease-in-out infinite alternate}
+.h2-mesh i:nth-child(1){width:520px;height:520px;right:-120px;top:-160px;background:radial-gradient(circle,var(--gold),transparent 65%)}
+.h2-mesh i:nth-child(2){width:460px;height:460px;left:-160px;bottom:-200px;background:radial-gradient(circle,var(--accent),transparent 65%);animation-duration:22s;opacity:.4}
+.h2-mesh i:nth-child(3){width:380px;height:380px;left:40%;top:30%;background:radial-gradient(circle,#3b82f6,transparent 65%);animation-duration:26s;opacity:.25}
+.h2-mesh::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%)}
+@keyframes h2float{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-40px,40px) scale(1.12)}}
+html[data-motion="reduce"] .h2-mesh i{animation:none}
+html[data-theme="dark"] .hero2,html[data-tone="black"] .hero2{background:#06121f!important}
+.hero2 h1{font-size:clamp(2.3rem,5.2vw,3.9rem);line-height:1.05;margin:16px 0 18px}
+.h2-rot{display:inline-grid;vertical-align:bottom;height:1.1em;overflow:hidden}
+.h2-rot b{grid-area:1/1;font-weight:inherit;color:#fff;transform:translateY(110%);opacity:0;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .4s;white-space:nowrap}
+.h2-rot b.on{transform:none;opacity:1}.h2-rot b.out{transform:translateY(-110%);opacity:0}
+.hero2 h1 em{display:block;background:linear-gradient(90deg,var(--gold),#ffd98a,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% auto;animation:h2shine 6s linear infinite}
+@keyframes h2shine{to{background-position:200% center}}
+html[data-motion="reduce"] .hero2 h1 em{animation:none}
+.h2-stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.h2-stats div{display:flex;flex-direction:column}.h2-stats b{font:700 1.7rem var(--serif);color:#fff;line-height:1.1}.h2-stats b[data-count]::after{content:"+";color:var(--gold)}.h2-stats span{font-size:.8rem;color:#9fb3c8;letter-spacing:.02em}
+.h2-card{background:rgba(255,255,255,.96);color:var(--text);border-radius:22px;padding:22px;box-shadow:0 30px 70px -20px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.2);position:relative;display:grid;gap:8px}
+html[data-theme="dark"] .h2-card{background:rgba(19,29,39,.96);color:var(--text)}
+.h2c-top{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;margin-bottom:6px}.h2c-top b{font:700 1.12rem var(--serif);color:var(--heading)}.h2c-top small{grid-column:2;color:var(--muted);font-size:.76rem}
+.h2c-dot{width:10px;height:10px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px var(--good-bg);grid-row:1/3;animation:h2pulse 2s infinite}
+@keyframes h2pulse{50%{box-shadow:0 0 0 8px transparent}}
+.h2c-l{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.86rem;font-weight:700;color:var(--heading);margin-top:4px}.h2c-l small{display:block;font-weight:500;color:var(--muted);font-size:.72rem}.h2c-l output{font:700 1rem var(--serif);color:var(--accent);white-space:nowrap}
+.h2-card input[type=range]{width:100%;accent-color:var(--accent);height:28px;cursor:pointer}
+.h2c-res{display:grid;gap:8px;margin-top:6px}
+.h2c-r{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 12px;border-radius:12px;background:var(--paper2);transition:background .3s}
+.h2c-r span{font-size:.84rem;font-weight:700;color:var(--muted)}.h2c-r b{font:700 1.15rem var(--serif);color:var(--heading)}
+.h2c-r i{grid-column:1/-1;height:6px;border-radius:9px;background:rgba(0,0,0,.06);overflow:hidden}.h2c-r em{display:block;height:100%;width:0;border-radius:9px;background:var(--muted);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.h2c-r.win{background:var(--good-bg)}.h2c-r.win em{background:var(--good)}.h2c-r.win span{color:var(--good)}
+.h2c-v{font-size:.9rem;color:var(--text);min-height:1.4em}.h2c-v b{color:var(--good)}
+.h2c-go{justify-content:center;margin-top:4px}
+.h2-strip{background:var(--card);border-bottom:1px solid var(--line);padding:0!important;min-height:0!important}
+.h2-strip-in{padding-top:14px;padding-bottom:12px}
+.h2-lbl{font:800 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.h2-due{display:flex;align-items:center;gap:14px;overflow:hidden}
+.h2-dues{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:2px}.h2-dues::-webkit-scrollbar{display:none}
+.h2-dd{flex:none;display:flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border-radius:999px;background:var(--paper2);font-size:.84rem;color:var(--text)}
+.h2-dd i{font-style:normal;font:800 .78rem var(--sans);background:var(--card);color:var(--heading);border-radius:999px;padding:5px 10px;box-shadow:0 0 0 1px var(--line);white-space:nowrap}
+.h2-dd.soon i{background:var(--accent);color:#fff;box-shadow:none}
+.h2-dd b{color:var(--heading);font-weight:700}
+.h2-tick{display:flex;align-items:center;gap:14px;border-top:1px dashed var(--line);padding:9px 0 10px;max-width:1140px;margin:0 auto;padding-left:20px;padding-right:20px}
+.h2-tick-v{flex:1;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.h2-tick-t{display:flex;gap:40px;width:max-content;animation:h2tick 60s linear infinite}
+.h2-tick-t:hover{animation-play-state:paused}
+.h2-tick-t a{font-size:.86rem;color:var(--text);text-decoration:none;white-space:nowrap}.h2-tick-t a:hover{color:var(--accent)}.h2-tick-t a b{color:var(--muted);font-weight:700;margin-right:6px}
+@keyframes h2tick{to{transform:translateX(-50%)}}
+html[data-motion="reduce"] .h2-tick-t{animation:none}
+@media(max-width:1000px){.hero2 .hero-grid{grid-template-columns:1fr}.h2-card{max-width:520px}}
+@media(max-width:620px){.hero2{padding:40px 0 48px}.hero2 h1{font-size:2.35rem}.h2-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.h2-stats b{font-size:1.2rem}.h2-stats span{font-size:.68rem;line-height:1.25}.hero2 .hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hero2 .hero-ctas .btn{justify-content:center;text-align:center;padding-left:10px;padding-right:10px;font-size:.88rem}.hero2 .hero-ctas .btn-gold{grid-column:1/-1}.hero2 .pill{font-size:.74rem}.h2-due{flex-direction:column;align-items:flex-start;gap:8px}.h2-dues{max-width:100%}.h2-tick .h2-lbl{display:none}}
+@media(max-width:620px){.detail-hd>div:first-child>p:not(.privacy-note){font-size:.88rem}.detail-actions{display:flex!important;gap:8px;flex-wrap:wrap}.detail-actions .btn{padding:8px 14px;font-size:.82rem}.privacy-note{font-size:.8rem}}
 /* ===== Digital book ===== */
 :root{--c-new:#2a6cb0;--c-old:#c4631a;--c-good:#1f7a4d;--c-bad:#b42318}
 html[data-theme="dark"]{--c-new:#4a8bd4;--c-old:#d27a2c;--c-good:#4cb782;--c-bad:#f07167}
@@ -1225,30 +1332,45 @@ html[data-motion="reduce"] .sh-in{animation:none}
 <main id="top">
 
 <!-- HERO -->
-<section class="hero page" data-page="home" id="home">
+<section class="hero hero2 page" data-page="home" id="home">
+  <div class="h2-mesh" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap hero-grid">
-    <div>
-      <span class="pill">Updated for FY 2026-27 (Tax Year 2026-27)</span>
-      <h1>Income tax,<br><em>made simple.</em></h1>
-      <p>Free calculators, ITR guides and plain-English updates on Indian income tax — put together by a Chartered Accountant who enjoys making tax less confusing.</p>
+    <div class="h2-copy">
+      <span class="pill">✨ Updated for FY 2026-27 · Income-tax Act, 2025</span>
+      <h1><span class="h2-rot" aria-live="polite"><b>Income tax</b><b>GST</b><b>Accounting</b><b>Startup finance</b></span><em>made simple.</em></h1>
+      <p>Free calculators, digital books and plain-English updates — by a Chartered Accountant who enjoys making tax less confusing. No sign-up, no fees, nothing leaves your device.</p>
       <div class="hero-ctas">
-        <a href="#calculator" class="btn btn-gold" onclick="openCalc('c-it')">Open Advance Calculator →</a>
-        <a href="#ask" class="btn btn-ghost">Ask a question</a>
+        <a href="#calculator" class="btn btn-gold" onclick="openCalc('c-detail')">Compute my tax →</a>
+        <a href="#library" class="btn btn-ghost">📚 Knowledge Library</a>
         <a href="#" class="btn btn-ghost" data-install>📲 Install app</a>
       </div>
+      <div class="h2-stats">
+        <div><b data-count="5">5</b><span>digital books</span></div>
+        <div><b data-count="300">300</b><span>topics &amp; entries</span></div>
+        <div><b data-count="130">130</b><span>quick Shorts</span></div>
+        <div><b>₹0</b><span>always free</span></div>
+      </div>
     </div>
-    <div class="hero-card">
-      <h3>On this site</h3>
-      <ul class="check">
-        <li>Quick old vs new regime calculator</li><li>Detailed head-wise tax computation, printable</li>
-        <li>HRA exemption and GST calculators</li>
-        <li>Which ITR form applies to you</li>
-        <li>Document checklists before you file</li>
-        <li>What the new Income-tax Act, 2025 changes</li>
-      </ul>
-      <div class="due">Have a question on ITR, bookkeeping or GST? <a href="#ask" style="color:inherit;font-weight:700">Ask here →</a></div>
+    <div class="h2-card" id="hrc">
+      <div class="h2c-top"><span class="h2c-dot"></span><b>Which regime saves you more?</b><small>FY 2026-27 · salaried</small></div>
+      <label class="h2c-l"><span>Annual salary</span><output id="hrcSalO">₹15,00,000</output></label>
+      <input type="range" id="hrcSal" min="300000" max="5000000" step="25000" value="1500000" aria-label="Annual salary">
+      <label class="h2c-l"><span>Old-regime deductions <small>80C, 80D, HRA, home loan…</small></span><output id="hrcDedO">₹2,00,000</output></label>
+      <input type="range" id="hrcDed" min="0" max="800000" step="10000" value="200000" aria-label="Deductions in old regime">
+      <div class="h2c-res">
+        <div class="h2c-r" id="hrcNew"><span>New regime</span><b>₹0</b><i><em></em></i></div>
+        <div class="h2c-r" id="hrcOld"><span>Old regime</span><b>₹0</b><i><em></em></i></div>
+      </div>
+      <div class="h2c-v" id="hrcV"></div>
+      <a href="#calculator" class="btn btn-primary h2c-go" onclick="openCalc('c-detail')">Get my full computation →</a>
     </div>
   </div>
+</section>
+<section class="h2-strip page" data-page="home">
+  <div class="wrap h2-strip-in">
+    <div class="h2-due"><b class="h2-lbl">📅 Coming up</b><div class="h2-dues" id="h2Dues"></div></div>
+  </div>
+  <div class="h2-tick" aria-label="Latest updates"><b class="h2-lbl">🆕 Latest</b><div class="h2-tick-v"><div class="h2-tick-t" id="h2Tick"></div></div></div>
 </section>
 <section class="page home-cards" data-page="home">
   <div class="wrap">
@@ -1259,7 +1381,7 @@ html[data-motion="reduce"] .sh-in{animation:none}
     <div class="hc-grid">
       <a class="hc hc-feat" href="#calculator"><span class="hc-ico">🧮</span><h3>Advance Calculator</h3><p>Old vs new regime in seconds, plus a full head-wise computation in CA format — salary, house property, capital gains, other sources and interest — downloadable as PDF or Excel.</p><span class="hc-tags"><span>Both regimes</span><span>Schedules</span><span>234A/B/C</span><span>PDF · Excel</span></span><span class="hc-go">Open calculator →</span></a>
       <a class="hc" href="#itr" style="--t:#3b82f6"><span class="hc-ico">📄</span><h3>ITR Guide</h3><p>All seven forms, ITR-1 to ITR-7 — who can file, who can’t, schedules and due dates, plus a quick form finder.</p><span class="hc-go">Read the guide →</span></a>
-      <a class="hc" href="#library" style="--t:#c2551b"><span class="hc-ico">📚</span><h3>Knowledge Library</h3><p>Five free digital books — Income Tax, Accounting Standards, Journal Entries, Startup &amp; Finance and GST — with examples, charts and quick Shorts.</p><span class="hc-go">Open library →</span></a>
+      <a class="hc" href="#library" style="--t:#c2551b"><span class="hc-ico">📚</span><h3>Knowledge Library</h3><p>Free digital books — Income Tax, Accounting Standards, Journal Entries and Startup &amp; Finance (GST coming soon) — with examples, charts and quick Shorts.</p><span class="hc-go">Open library →</span></a>
       <a class="hc" href="#news" style="--t:#0f7a4f"><span class="hc-ico">🆕</span><h3>What’s New</h3><p>Latest changes in PF rules, income tax and labour codes — with dates, examples and what they mean for you.</p><span class="hc-go">See updates →</span></a>
       <a class="hc hc-quiz" href="#quiz" style="--t:#f2b544"><span class="hc-ico">🏆</span><h3>Tax Crorepati quiz</h3><p>15 questions, 4 lifelines, a money ladder to ₹1 crore (virtual!). Test your tax knowledge game-show style.</p><span class="hc-go">Play now →</span></a>
       <a class="hc" href="#documents" style="--t:#8b5cf6"><span class="hc-ico">🗂️</span><h3>Checklist</h3><p>What to keep ready before filing — by type of income.</p><span class="hc-go">See checklist →</span></a>
@@ -1343,17 +1465,22 @@ html[data-motion="reduce"] .sh-in{animation:none}
     
     <div class="calc-pane" id="c-detail" hidden>
       <div class="detail-hd">
-        <div><h3>Detailed computation — FY 2026-27</h3><p>Fill in what applies to you, ITR-style: profile, salary, house property, business, capital gains (asset-wise), other income, deductions and taxes paid. Results show both regimes side by side, in plain language, and download as PDF.</p>
+        <div><h3>Detailed computation — FY 2026-27</h3><p>Pick a head, fill it in, save and come back for the next one. When you're done, tap <b>Compute my tax</b> for a summary, a detailed CA-format statement and an old vs new comparison — downloadable as PDF or Excel.</p>
           <p class="privacy-note">🔒 Everything you type stays in this browser on your device. Nothing is sent to any server.</p></div>
         <div class="detail-actions">
           <button type="button" class="btn btn-outline" onclick="openCalc('c-it')">← Quick calculator</button>
           <button type="button" class="btn btn-outline danger" onclick="dxClear()">Clear all data</button>
         </div>
       </div>
-      <div class="calc-shell wide">
+      <div class="calc-shell wide dx-shell" id="dxShell" data-mode="hub">
+      <div class="dx-hub" id="dxHub">
+        <div class="hub-grid" id="dxHubGrid"></div>
+        <div class="hub-cta" id="dxHubCta"></div>
+      </div>
       <form class="calc-form dx" id="dx" autocomplete="off" oninput="dxRun()" onsubmit="return false">
+        <div class="dx-headbar"><button type="button" class="dxh-back" onclick="dxMode('hub')">← All heads</button><div class="dxh-t"><span id="dxHbIc"></span><b id="dxHbT"></b><small id="dxHbN"></small></div></div>
 
-        <details open><summary class="fs-sum">👤 Profile</summary><div class="fs-body">
+        <details data-head="profile"><summary class="fs-sum">👤 Profile</summary><div class="fs-body">
           <div class="field"><label>Full name <small>(as per PAN)</small></label><input name="p.name"></div>
           <div class="two">
             <div class="field"><label>PAN</label><input name="p.pan" maxlength="10" placeholder="ABCDE1234F" style="text-transform:uppercase"></div>
@@ -1379,7 +1506,7 @@ html[data-motion="reduce"] .sh-in{animation:none}
           <button type="button" class="add-row" data-add="bank">+ Add bank account</button>
         </div></details>
 
-        <details><summary class="fs-sum">💼 Salary / pension</summary><div class="fs-body">
+        <details data-head="sal"><summary class="fs-sum">💼 Salary / pension</summary><div class="fs-body">
           <div class="rows" data-list="emp"></div>
           <button type="button" class="add-row" data-add="emp">+ Add employer</button>
           <div class="sub-hd">House rent (for HRA exemption — old regime)</div>
@@ -1411,13 +1538,13 @@ html[data-motion="reduce"] .sh-in{animation:none}
           </div>
         </div></details>
 
-        <details><summary class="fs-sum">🏠 House property</summary><div class="fs-body">
+        <details data-head="hp"><summary class="fs-sum">🏠 House property</summary><div class="fs-body">
           <div class="rows" data-list="hp"></div>
           <button type="button" class="add-row" data-add="hp">+ Add property</button>
           <p class="hint">Enter full property figures — your ownership share is applied automatically. Self-occupied: up to 2 houses, interest max ₹2 lakh in total (old regime only).</p>
         </div></details>
 
-        <details><summary class="fs-sum">🏪 Business / profession <small class="tag-basic">basic</small></summary><div class="fs-body">
+        <details data-head="biz"><summary class="fs-sum">🏪 Business / profession <small class="tag-basic">basic</small></summary><div class="fs-body">
           <div class="field"><label>Net profit as per P&amp;L</label><input name="b.np" type="number"></div>
           <div class="two">
             <div class="field"><label>Add: disallowances</label><input name="b.add" type="number" min="0"></div>
@@ -1433,13 +1560,13 @@ html[data-motion="reduce"] .sh-in{animation:none}
           </div>
         </div></details>
 
-        <details><summary class="fs-sum">📈 Capital gains</summary><div class="fs-body">
+        <details data-head="cg"><summary class="fs-sum">📈 Capital gains</summary><div class="fs-body">
           <p class="hint" style="margin-bottom:10px">Add each sale separately — shares/MF, property, gold etc. Short-term or long-term, indexation, grandfathering and exemptions are worked out for you.</p>
           <div class="rows" data-list="cg"></div>
           <button type="button" class="add-row" data-add="cg">+ Add asset sold</button>
         </div></details>
 
-        <details><summary class="fs-sum">🏦 Other income</summary><div class="fs-body">
+        <details data-head="os"><summary class="fs-sum">🏦 Other income</summary><div class="fs-body">
           <div class="two">
             <div class="field"><label>Savings bank interest</label><input name="o.sav" type="number" min="0"></div>
             <div class="field"><label>FD / RD / post office interest</label><input name="o.fd" type="number" min="0"></div>
@@ -1466,7 +1593,7 @@ html[data-motion="reduce"] .sh-in{animation:none}
           </div>
         </div></details>
 
-        <details><summary class="fs-sum">🧾 Deductions</summary><div class="fs-body">
+        <details data-head="ded"><summary class="fs-sum">🧾 Deductions</summary><div class="fs-body">
           <div class="sub-hd" style="margin-top:0;border:0;padding-top:0">Investments — s. 123 (old 80C), max ₹1.5 lakh</div>
           <div class="rows" data-list="c80"></div>
           <button type="button" class="add-row" data-add="c80">+ Add investment / payment</button>
@@ -1494,7 +1621,7 @@ html[data-motion="reduce"] .sh-in{animation:none}
           <p class="hint">Automatic: employer NPS (s. 124), savings/deposit interest (s. 153), rent without HRA (old 80GG). Only employer NPS is allowed in the new regime.</p>
         </div></details>
 
-        <details><summary class="fs-sum">💳 Taxes already paid</summary><div class="fs-body">
+        <details data-head="paid"><summary class="fs-sum">💳 Taxes already paid</summary><div class="fs-body">
           <p class="hint" style="margin-bottom:8px">TDS on salary is taken from the employer entries above.</p>
           <div class="sub-hd" style="margin-top:0;border:0;padding-top:0">TDS on other income (Form 16A / 26AS)</div>
           <div class="rows" data-list="tds"></div>
@@ -1513,7 +1640,9 @@ html[data-motion="reduce"] .sh-in{animation:none}
           </div>
           <p class="hint">Interest is worked out on the regime you choose, using the advance-tax challan dates above. Leave the date blank to assume filing on the due date.</p>
         </div></details>
+        <div class="dx-headnav"><button type="button" class="btn btn-outline" onclick="dxMode('hub')">✓ Save &amp; back to heads</button><button type="button" class="btn btn-primary" id="dxNextBtn" onclick="dxNext()">Next head →</button></div>
       </form>
+      <aside class="dx-mini" id="dxMini"></aside>
       <div id="x_out" class="it-result"><div class="empty">Start entering your details — your computation builds here as you type.</div></div>
       </div>
     </div>
@@ -2638,8 +2767,10 @@ function dxInterest(st,R,hasBiz){
 /* ---------- output ---------- */
 const m = v => v<0 ? '−'+inr(-v) : inr(v);
 const esc2 = t => String(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let DX_LAST=null, DX_VIEW='cmp';
+let DX_LAST=null, DX_VIEW='sum', DX_REG=null;
 function dxView(v){ DX_VIEW=v; if(DX_LAST) dxRender(DX_LAST.st); const t=document.getElementById('dxViewTop'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }
+function dxReg(r){ DX_REG=r; if(DX_LAST) dxRender(DX_LAST.st); }
+function dxSel(){ const {nw,od,best}=DX_LAST; const r = DX_VIEW==='stmt' ? (DX_REG||best) : best; return r==='new'?nw:od; }
 
 function dxRender(st){
   const out=document.getElementById('x_out');
@@ -2732,33 +2863,108 @@ function dxRender(st){
 
   const word = best==='new'?'new':'old';
   const story = `Your gross total income is <b>${inr(B.GTI)}</b>. ${B.dTot?`After deductions of <b>${inr(B.dTot)}</b>, `:''}tax is calculated on <b>${inr(B.TI)}</b>. Under the <b>${word} regime</b> your total tax for the year is <b>${inr(B.liability)}</b>${B.paid.tot?`; you have already paid <b>${inr(B.paid.tot)}</b>, so ${B.net>=0?`you still need to pay <b>${inr(B.net)}</b>`:`you should get a refund of <b>${inr(-B.net)}</b>`}`:''}.${save>=1?` The ${word} regime saves you <b>${inr(save)}</b> compared with the ${best==='new'?'old':'new'} one.`:' Both regimes give the same tax.'}`;
-  out.innerHTML = `<div class="dx-out" id="stmt">
-    <div class="glance">
+  const reg = DX_REG||best, pct=(a,b)=>b>0?Math.max(2,Math.round(a/b*100)):0, maxT=Math.max(nw.liability,od.liability,1);
+  const eff = x => x.GTI>0 ? (x.liability/x.GTI*100).toFixed(1)+'%' : '—';
+  const heads=[['💼','Salary',B.sal.net],['🏠','House property',B.hpSum.net],['🏪','Business / profession',B.biz.net],['📈','Capital gains',B.cgTotal],['🏦','Other sources',B.os.net+B.os.W]].filter(h=>h[2]);
+  const hTot=heads.reduce((a,h)=>a+Math.max(0,h[2]),0)||1;
+  const face = (x,k) => `<div class="fo ${best===k?'win':''}"><div class="fo-h"><b>${k==='new'?'New regime':'Old regime'}</b>${best===k?'<span class="fo-b">✓ Lower tax</span>':''}</div>
+      <div class="fo-n">${inr(x.liability)}</div><div class="fo-bar"><i style="width:${pct(x.liability,maxT)}%"></i></div>
+      <dl><div><dt>Taxable income</dt><dd>${inr(x.TI)}</dd></div><div><dt>Deductions used</dt><dd>${inr(x.dTot)}</dd></div><div><dt>Effective rate</dt><dd>${eff(x)}</dd></div><div><dt>${x.net>=0?'Balance to pay':'Refund'}</dt><dd>${inr(Math.abs(x.net))}</dd></div></dl></div>`;
+  const summary = `<div class="glance">
       <div class="g-card"><span>Gross total income</span><b>${inr(B.GTI)}</b></div>
       <div class="g-card"><span>Deductions</span><b>${inr(B.dTot)}</b></div>
       <div class="g-card"><span>Taxable income</span><b>${inr(B.TI)}</b></div>
-      <div class="g-card"><span>Total tax</span><b>${inr(B.liability)}</b></div>
+      <div class="g-card"><span>Total tax${B.int.tot?' + interest':''}</span><b>${inr(B.liability+B.int.tot)}</b></div>
       <div class="g-card hl"><span>${B.net>=0?'Balance to pay':'Refund due'}</span><b>${inr(Math.abs(B.net))}</b></div>
     </div>
-    <div class="story"><span class="badge">${word.toUpperCase()} REGIME IS BETTER</span><p>${story}</p>
-      <div class="story-act dx-dl">
-        <button type="button" class="btn btn-gold" onclick="dxPDF(this)">⬇ PDF statement</button>
+    <div class="story"><span class="badge">${word.toUpperCase()} REGIME IS BETTER</span><p>${story}</p></div>
+    <h4 class="sum-h">Old vs new — face-off</h4>
+    <div class="faceoff">${face(nw,'new')}${face(od,'old')}</div>
+    ${heads.length?`<h4 class="sum-h">Income by head <small>${word} regime</small></h4><div class="ibars">${heads.map(h=>`<div class="ibar"><span>${h[0]} ${h[1]}</span><b>${m(h[2])}</b><i><em style="width:${pct(Math.max(0,h[2]),hTot)}%"></em></i></div>`).join('')}</div>`:''}
+    <h4 class="sum-h">Tax position <small>${word} regime</small></h4>
+    <div class="tpos">
+      <div><span>Tax on income</span><b>${inr(B.t.slab+B.t.tx.S+B.t.tx.L+B.t.tx.Lo+B.t.tx.Li+B.t.tx.W)}</b></div>
+      ${B.t.rebate+B.t.mr?`<div><span>Rebate / marginal relief</span><b>−${inr(B.t.rebate+B.t.mr)}</b></div>`:''}
+      ${B.t.sc?`<div><span>Surcharge (net)</span><b>${inr(B.t.sc-B.t.relief)}</b></div>`:''}
+      <div><span>Cess @ 4%</span><b>${inr(B.t.cess)}</b></div>
+      ${B.int.tot?`<div><span>Interest (234A/B/C)</span><b>${inr(B.int.tot)}</b></div>`:''}
+      <div><span>Taxes already paid</span><b>−${inr(B.paid.tot)}</b></div>
+      <div class="tp-g"><span>${B.net>=0?'Balance payable':'Refund due'}</span><b>${inr(Math.abs(B.net))}</b></div>
+    </div>
+    <button type="button" class="btn btn-primary sum-more" onclick="dxView('stmt')">See the full detailed statement →</button>`;
+  const cmpView = `<div class="tbl-wrap"><table class="cmp2"><thead><tr><th>Particulars</th><th class="${best==='new'?'bc':''}">New regime${best==='new'?' ✓':''}</th><th class="${best==='old'?'bc':''}">Old regime${best==='old'?' ✓':''}</th></tr></thead><tbody>${table}</tbody></table></div>${sch}`;
+  const stmtView = `<div class="seg reg-seg"><button type="button" class="${reg==='new'?'on':''}" onclick="dxReg('new')">New regime${best==='new'?' ✓':''}</button><button type="button" class="${reg==='old'?'on':''}" onclick="dxReg('old')">Old regime${best==='old'?' ✓':''}</button></div>${dxStmtHTML(reg==='new'?nw:od, st, nw, od, best)}`;
+  out.innerHTML = `<div class="dx-out" id="stmt">
+    <div class="res-bar"><button type="button" class="btn btn-outline res-back" onclick="dxMode('hub')">← Edit details</button>
+      <div class="dx-dl">
+        <button type="button" class="btn btn-gold" onclick="dxPDF(this)">⬇ PDF</button>
         <button type="button" class="btn btn-outline" onclick="dxXLSX(this)">⬇ Excel</button>
         <button type="button" class="btn btn-outline" onclick="dxPrint()">🖨 Print</button>
-        ${navigator.share&&navigator.canShare?'<button type="button" class="btn btn-outline" data-share="1" onclick="dxPDF(this)">📤 Share PDF</button>':''}
-      </div>
-      <p class="dx-dl-note">PDF &amp; Excel follow the view below — pick “Statement” for a specific regime (default: the better one).</p></div>
+        ${navigator.share&&navigator.canShare?'<button type="button" class="btn btn-outline" data-share="1" onclick="dxPDF(this)">📤 Share</button>':''}
+      </div></div>
     <div class="dxv" id="dxViewTop" role="tablist">
-      <button type="button" role="tab" aria-selected="${DX_VIEW==='cmp'}" onclick="dxView('cmp')">⚖️ Compare regimes</button>
-      <button type="button" role="tab" aria-selected="${DX_VIEW==='new'}" onclick="dxView('new')">📄 Statement · New${best==='new'?' ✓':''}</button>
-      <button type="button" role="tab" aria-selected="${DX_VIEW==='old'}" onclick="dxView('old')">📄 Statement · Old${best==='old'?' ✓':''}</button>
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='sum'}" onclick="dxView('sum')">📊 Summary</button>
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='stmt'}" onclick="dxView('stmt')">📄 Detailed statement</button>
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='cmp'}" onclick="dxView('cmp')">⚖️ Old vs New</button>
     </div>
-    ${DX_VIEW==='cmp' ? `<div class="tbl-wrap"><table class="cmp2"><thead><tr><th>Particulars</th><th class="${best==='new'?'bc':''}">New regime${best==='new'?' ✓':''}</th><th class="${best==='old'?'bc':''}">Old regime${best==='old'?' ✓':''}</th></tr></thead><tbody>${table}</tbody></table></div>
-    ${sch}` : dxStmtHTML(DX_VIEW==='new'?nw:od, st, nw, od, best)}
-    <p class="disclaimer">FY 2026-27 (Tax Year 2026-27), Income-tax Act, 2025, resident individual. Figures with − are deductions. Interest under ss. 423–425 (old 234A/B/C) is an estimate. Not covered: brought-forward losses, agricultural income, AMT, clubbing and some special-rate incomes. General information — verify before filing.</p>
+    ${DX_VIEW==='stmt' ? stmtView : DX_VIEW==='cmp' ? cmpView : summary}
+    <p class="dx-dl-note">PDF / Excel use the ${DX_VIEW==='stmt'?'regime selected above':'better regime'} (${(DX_VIEW==='stmt'?reg:best)==='new'?'new':'old'}) and include the old vs new comparison.</p>
+    <p class="disclaimer">FY 2026-27 (Tax Year 2026-27), Income-tax Act, 2025, resident individual. Interest under ss. 423–425 (old 234A/B/C) is an estimate. Not covered: brought-forward losses, agricultural income, AMT, clubbing, the 15% surcharge cap on dividends and some special-rate incomes. General information — verify before filing.</p>
   </div>`;
 }
-function dxRun(){ const st=dxRead(); dxSave(st); dxRender(st); }
+function dxRun(){ const st=dxRead(); dxSave(st); dxRender(st); dxHub(st); }
+/* ---------- head-wise flow: hub → head → result ---------- */
+const DX_HEADS=[
+ {id:'profile',ic:'👤',t:'Profile',d:'Name, PAN, date of birth, bank'},
+ {id:'sal',ic:'💼',t:'Salary / pension',d:'Form 16, HRA, allowances'},
+ {id:'hp',ic:'🏠',t:'House property',d:'Self-occupied, let out, home loan'},
+ {id:'biz',ic:'🏪',t:'Business / profession',d:'Books profit or presumptive'},
+ {id:'cg',ic:'📈',t:'Capital gains',d:'Shares, mutual funds, property, gold'},
+ {id:'os',ic:'🏦',t:'Other sources',d:'Interest, dividend, family pension'},
+ {id:'ded',ic:'🧾',t:'Deductions',d:'80C, 80D, NPS, donations, loans'},
+ {id:'paid',ic:'💳',t:'Taxes paid & interest',d:'TDS, TCS, advance tax, filing date'}];
+let DX_MODE='hub', DX_HEAD='profile';
+function dxMode(m,h){
+  DX_MODE=m; if(h) DX_HEAD=h;
+  const sh=document.getElementById('dxShell'); if(!sh) return; sh.dataset.mode=m;
+  document.querySelectorAll('#dx details[data-head]').forEach(d=>{ const on=m==='head'&&d.dataset.head===DX_HEAD; d.classList.toggle('on',on); if(on) d.open=true; });
+  if(m==='head'){ const i=DX_HEADS.findIndex(x=>x.id===DX_HEAD), H=DX_HEADS[i];
+    document.getElementById('dxHbIc').textContent=H.ic; document.getElementById('dxHbT').textContent=H.t; document.getElementById('dxHbN').textContent=`Head ${i+1} of ${DX_HEADS.length}`;
+    document.getElementById('dxNextBtn').textContent = i<DX_HEADS.length-1 ? `Next: ${DX_HEADS[i+1].t} →` : 'Save & compute my tax →'; }
+  if(m==='result'){ DX_VIEW='sum'; DX_REG=null; }
+  dxRun();
+  const top=document.getElementById('c-detail'); if(top && top.offsetParent){ const y=top.getBoundingClientRect().top+scrollY-80; if(Math.abs(scrollY-y)>40) window.scrollTo({top:y,behavior:'smooth'}); }
+  if(m==='head'){ const f=document.querySelector('#dx details.on input:not([type=checkbox]),#dx details.on select'); if(f && matchMedia('(hover:hover)').matches) setTimeout(()=>f.focus({preventScroll:true}),350); }
+}
+function dxNext(){ const i=DX_HEADS.findIndex(x=>x.id===DX_HEAD); if(i<DX_HEADS.length-1) dxMode('head',DX_HEADS[i+1].id); else dxMode('result'); }
+function dxStatus(id,st,nw,od){
+  const L=st.lists, cnt=k=>(L[k]||[]).filter(r=>Object.entries(r).some(([kk,v])=>v&&v!==true&&!['type','cat','kind','for','sec','sev','mode','share'].includes(kk)&&!(kk==='share'&&v==='100'))).length;
+  switch(id){
+    case 'profile': return st['p.name']||st['p.pan'] ? {ok:!!(st['p.name']&&st['p.pan']&&st['p.dob']), v:[st['p.name'],String(st['p.pan']||'').toUpperCase()].filter(Boolean).join(' · ')+(nw.age.age!==null?` · age ${nw.age.age}`:'')} : null;
+    case 'sal': return nw.sal.gross ? {ok:1,v:`Gross ${inr(nw.sal.gross)} · ${cnt('emp')} employer${cnt('emp')>1?'s':''}`} : null;
+    case 'hp': return nw.hp.length ? {ok:1,v:`${nw.hp.length} propert${nw.hp.length>1?'ies':'y'} · old ${m(od.hpSum.net)} / new ${m(nw.hpSum.net)}`} : null;
+    case 'biz': return nw.biz.net ? {ok:1,v:`Income ${inr(nw.biz.net)}`} : null;
+    case 'cg': return nw.cg.res.length ? {ok:1,v:`${nw.cg.res.length} asset${nw.cg.res.length>1?'s':''} · taxable ${m(nw.cgTotal)}`} : ((L.cg||[]).length&&cnt('cg')?{ok:0,v:'Add dates & values to finish'}:null);
+    case 'os': return nw.os.gross||nw.os.W ? {ok:1,v:`Income ${inr(nw.os.net+nw.os.W)}`} : null;
+    case 'ded': return od.dTot||nw.dTot ? {ok:1,v:`Old ${inr(od.dTot)} · new ${inr(nw.dTot)}`} : null;
+    case 'paid': return nw.paid.tot ? {ok:1,v:`Paid ${inr(nw.paid.tot)}`} : null;
+  } return null;
+}
+function dxHub(st){
+  const g=document.getElementById('dxHubGrid'); if(!g) return; st=st||dxRead();
+  const nw=dxCompute(st,'new'), od=dxCompute(st,'old');
+  let done=0;
+  g.innerHTML=DX_HEADS.map((H,i)=>{ const s=dxStatus(H.id,st,nw,od); if(s&&s.ok) done++;
+    return `<button type="button" class="hub-t ${s?(s.ok?'done':'part'):''}" onclick="dxMode('head','${H.id}')"><span class="hub-ic">${H.ic}</span><span class="hub-tx"><b>${H.t}</b><small>${s?esc2(s.v):H.d}</small></span><span class="hub-st">${s?(s.ok?'✓':'•'):'+'}</span></button>`; }).join('');
+  const any = nw.GTI>0 || nw.paid.tot>0, best = nw.liability<=od.liability?'new':'old';
+  const cta=document.getElementById('dxHubCta');
+  cta.innerHTML = `<div class="hub-prog"><span>${done} of ${DX_HEADS.length} heads filled</span><i><em style="width:${Math.round(done/DX_HEADS.length*100)}%"></em></i></div>
+    ${any?`<div class="hub-live"><div><small>New regime</small><b>${inr(nw.liability)}</b></div><div><small>Old regime</small><b>${inr(od.liability)}</b></div><div class="hl-best"><small>Better</small><b>${best==='new'?'New':'Old'} · saves ${inr(Math.abs(nw.liability-od.liability))}</b></div></div>`:'<p class="hub-hint">Start with any head that applies to you — only fill what you have. Everything is saved on this device as you type.</p>'}
+    <button type="button" class="btn btn-gold hub-go" ${any?'':'disabled'} onclick="dxMode('result')">Compute my tax →</button>`;
+  const mini=document.getElementById('dxMini');
+  if(mini) mini.innerHTML = `<b class="mn-h">Live estimate</b>${any?`<div class="mn-r"><span>Gross total income</span><b>${inr(best==='new'?nw.GTI:od.GTI)}</b></div><div class="mn-r ${best==='new'?'win':''}"><span>New regime tax</span><b>${inr(nw.liability)}</b></div><div class="mn-r ${best==='old'?'win':''}"><span>Old regime tax</span><b>${inr(od.liability)}</b></div><p>${best==='new'?'New':'Old'} regime is lower by <b>${inr(Math.abs(nw.liability-od.liability))}</b>.</p>`:'<p>Your tax will appear here as you type.</p>'}<button type="button" class="btn btn-gold" ${any?'':'disabled'} onclick="dxMode('result')">Compute →</button>`;
+}
+
 
 /* ===== Professional computation statement (CA format) — screen, PDF, Excel, print ===== */
 const fmtA = v => v===null||v===undefined||v==='' ? '' : (typeof v==='string' ? v : (Math.round(v)<0 ? '('+Math.round(-v).toLocaleString('en-IN')+')' : Math.round(v).toLocaleString('en-IN')));
@@ -2958,7 +3164,7 @@ async function dxPDF(btn){
   try{ if(!window.jspdf) await dxLoadLib('pdf'); if(!(window.jspdf && window.jspdf.jsPDF.API.autoTable)) await dxLoadLib('at'); }
   catch(_){ dxBusy(btn,false); dxPrint(); return; }
   try{
-    const {st,nw,od,best}=DX_LAST, R = DX_VIEW==='old'?od:DX_VIEW==='new'?nw:(best==='new'?nw:od);
+    const {st,nw,od,best}=DX_LAST, R = dxSel();
     const {jsPDF}=window.jspdf, doc=new jsPDF({unit:'pt',format:'a4'}), W=doc.internal.pageSize.getWidth(), M=40;
     const NAVY=[15,42,68], GOLD=[242,181,68], MUTED=[91,104,118];
     // header band
@@ -3050,7 +3256,7 @@ async function dxXLSX(btn){
 
 function dxPrint(){
   if(!DX_LAST){ alert('Enter your details first.'); return; }
-  const {st,nw,od,best}=DX_LAST, R = DX_VIEW==='old'?od:DX_VIEW==='new'?nw:(best==='new'?nw:od);
+  const {st,nw,od,best}=DX_LAST, R = dxSel();
   const w=window.open('','_blank'); if(!w){ alert('Please allow pop-ups to print.'); return; }
   w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc2(dxFileName('pdf').replace('.pdf',''))}</title><style>
   body{font-family:'Segoe UI',Manrope,Arial,sans-serif;color:#1f2933;margin:18px;font-size:11.5px}
@@ -3086,7 +3292,33 @@ function quickPDF(){
 }
 
 document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{ dxAddRow(b.dataset.add); dxRun(); }));
-dxLoad(); dxRun(); addInfo(document);
+dxLoad(); dxMode('hub'); addInfo(document);
+/* ===== Home hero v2 ===== */
+(function(){
+  const rot=document.querySelector('.h2-rot'); if(rot){ const w=[...rot.children]; let i=0; w[0].classList.add('on');
+    setInterval(()=>{ if(document.documentElement.dataset.motion==='reduce'||document.hidden) return; const a=w[i]; i=(i+1)%w.length; a.classList.remove('on'); a.classList.add('out'); setTimeout(()=>a.classList.remove('out'),600); w[i].classList.add('on'); },2600); }
+  const sal=document.getElementById('hrcSal'), ded=document.getElementById('hrcDed');
+  const calc=()=>{ if(!sal) return; const S=+sal.value, D=+ded.value;
+    const nN=Math.max(0,S-75000), oN=Math.max(0,S-50000-D);
+    const tn=taxOn('new',r10(nN),0,0,0,0,'below60').total, to=taxOn('old',r10(oN),0,0,0,0,'below60').total, mx=Math.max(tn,to,1);
+    document.getElementById('hrcSalO').textContent=inr(S); document.getElementById('hrcDedO').textContent=inr(D);
+    const set=(id,t,win)=>{ const e=document.getElementById(id); e.querySelector('b').textContent=inr(r10(t)); e.querySelector('em').style.width=Math.max(3,t/mx*100)+'%'; e.classList.toggle('win',win); };
+    set('hrcNew',tn,tn<=to); set('hrcOld',to,to<tn);
+    const d=Math.abs(tn-to); document.getElementById('hrcV').innerHTML = d<1 ? 'Both regimes give the same tax.' : `<b>${tn<=to?'New':'Old'} regime</b> saves you <b>${inr(r10(d))}</b> a year${tn===0&&to===0?'':''}.${tn===0?' Zero tax under the new regime 🎉':''}`; };
+  if(sal){ sal.addEventListener('input',calc); ded.addEventListener('input',calc); calc(); }
+  // due dates (auto-rolls forward)
+  const today=new Date(); today.setHours(0,0,0,0);
+  const fixed=[['2026-10-31','TDS returns for Jul–Sep quarter (24Q / 26Q)'],['2026-11-21','ITR due — audit cases (extended)'],['2026-12-15','Advance tax — 3rd instalment (75%)'],['2027-03-15','Advance tax — final instalment (100%)'],['2027-03-31','Last day of tax year 2026-27 — invest for old-regime deductions'],['2027-06-15','Advance tax — 1st instalment, tax year 2027-28'],['2027-07-31','ITR due — salaried / non-audit, tax year 2026-27'],['2027-08-31','ITR due — business, non-audit (tax year 2026-27)']];
+  const ev=fixed.map(([d,t])=>[new Date(d+'T00:00:00'),t]);
+  for(let k=0;k<3;k++){ const y=today.getFullYear(), mo=today.getMonth()+k; [[7,'TDS / TCS deposit for last month'],[11,'GSTR-1 (monthly filers)'],[20,'GSTR-3B — GST payment']].forEach(([day,t])=>ev.push([new Date(y,mo,day),t])); }
+  const up=ev.filter(e=>e[0]>=today).sort((a,b)=>a[0]-b[0]).slice(0,6);
+  const dd=document.getElementById('h2Dues');
+  if(dd) dd.innerHTML=up.map(([d,t])=>{ const n=Math.round((d-today)/864e5); return `<span class="h2-dd ${n<=7?'soon':''}"><i>${n===0?'Today':n===1?'Tomorrow':n+' days'}</i><span><b>${d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</b> · ${t}</span></span>`; }).join('');
+  // ticker from What's New
+  const tk=document.getElementById('h2Tick');
+  if(tk){ const items=[...document.querySelectorAll('.news-list .nw')].slice(0,8).map(n=>{ const h=n.querySelector('h3'), d=n.querySelector('.nw-date'); return h?`<a href="#news"><b>${d?d.innerText.replace(/\s+/g,' '):''}</b>${h.textContent}</a>`:''; }).join('');
+    tk.innerHTML = items + items; if(!items) tk.closest('.h2-tick').hidden=true; }
+})();
 function calcX(){ dxRun(); }
 
 function openCalc(id){
@@ -3499,11 +3731,11 @@ const SHELF=[
  {id:'as',t:'Accounting Standards',sub:'Every AS and Ind AS — what it says, when it applies, with examples',ic:'📐',col:'#7a3412',col2:'#b0561f',tag:'New'},
  {id:'je',t:'Accounting Journals',sub:'Journal entries from basics to CA exams — incl. GST & TDS entries',ic:'📒',col:'#1f4f8a',col2:'#3a76c0',tag:'New'},
  {id:'fin',t:'Startup, MSME & Finance',sub:'Money, business finance, startups, funding, MSME & Startup India',ic:'🚀',col:'#0d5e52',col2:'#16917e',tag:'New'},
- {id:'gst',t:'GST',sub:'Goods & Services Tax — starter edition',ic:'🛒',col:'#4b2a7a',col2:'#7547b3',tag:'Starter · full book by June 2027'}
+ {id:'gst',t:'GST',sub:'Goods & Services Tax — work in progress',ic:'🛒',col:'#4b2a7a',col2:'#7547b3',tag:'🚧 WIP · available soon'}
 ];
 const KLB = window.KLB = window.KLB || {};
 const KL = { cur:null, hl:null, hlPending:false, loading:{} };
-const BOOK_V='20261024';
+const BOOK_V='20261024b';
 function bkSafe(f,d){ try{ return f(); }catch(_){ return d; } }
 function bkGet(k,d){ return bkSafe(()=>JSON.parse(localStorage.getItem(k)||'null')??d, d); }
 function bkSet(k,v){ bkSafe(()=>localStorage.setItem(k,JSON.stringify(v))); }
@@ -3584,7 +3816,7 @@ function klShelf(){
    <p class="lede">Free digital books in plain English with examples, charts and quick “Shorts”. Pick a book below, or press <kbd>S</kbd> to search every book at once.</p>
    <div class="cv-act">${last&&last.r?`<a class="btn btn-primary" href="#library/${last.r}">↺ Continue: ${esc3((last.b?last.b+' · ':'')+(last.t||''))}</a>`:''}<button class="btn btn-ghost2" data-open-search>🔍 Search all books <kbd>S</kbd></button></div></div>
    <div class="shelf">${SHELF.map(s=>`<a class="bk3d" href="#library/${s.id}" style="--bk:${s.col};--bk2:${s.col2}">
-     <div class="bk3d-cover"><span class="bk3d-ic">${s.ic}</span><b>${s.t}</b><small>${s.id==='gst'?'Starter edition':'2026-27 edition'}</small></div>
+     <div class="bk3d-cover"><span class="bk3d-ic">${s.ic}</span><b>${s.t}</b><small>${s.id==='gst'?'Work in progress':'2026-27 edition'}</small></div>
      <div class="bk3d-info"><span class="bk3d-tag">${s.tag}</span><h3>${s.t}</h3><p>${s.sub}</p><span class="bk3d-go">Open book →</span></div></a>`).join('')}</div>
    <section class="cv-part"><h2><span>Quick revision</span> Shorts</h2><p>One idea per slide — swipe through a whole book in minutes.</p><div class="sh-row">${SHELF.map(s=>`<a class="sh-pill" href="#library/${s.id}/shorts" style="--bk:${s.col}">▶ ${s.t}</a>`).join('')}</div></section>`;
   bkShell(null,{r:'',title:'Library'},html,'<span>Knowledge Library</span>');

@@ -1,11 +1,11 @@
-/* Knowledge Library — GST (starter edition). Full book planned by June 2027. */
+/* Knowledge Library — GST (starter edition). Work in progress — full book available soon. */
 (function(){
 const T=(h,r)=>`<div class="mx-wrap"><table class="mx"><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-KLB.gst={id:'gst',title:'GST — starter edition',sub:'The core ideas of Goods & Services Tax in plain English. A complete GST book — registration, ITC, returns, refunds, e-invoicing, assessments and case studies — is in progress for June 2027.',
-notice:'🚧 <b>Work in progress.</b> This is a starter edition with the core concepts only. The full GST book (place of supply, valuation, ITC rules, returns, refunds, e-invoice & e-way bill, assessments, appeals and sector guides) will be published by <b>June 2027</b>. For GST journal entries, see the <a href="#library/je/c/gst">Accounting Journals</a> book.',
+KLB.gst={id:'gst',title:'GST — work in progress',sub:'The core ideas of Goods & Services Tax in plain English. A complete GST book — registration, ITC, returns, refunds, e-invoicing, assessments and case studies — is a work in progress and will be available soon.',
+notice:'🚧 <b>Work in progress.</b> This is a starter edition with the core concepts only. The full GST book (place of supply, valuation, ITC rules, returns, refunds, e-invoice & e-way bill, assessments, appeals and sector guides) is <b>work in progress — available soon</b>. For GST journal entries, see the <a href="#library/je/c/gst">Accounting Journals</a> book.',
 disc:'Starter summary for learning. Rates and thresholds change by notification — check the CBIC / GST portal before acting.',
 coverChart:'rates',
-parts:[{id:'A',t:'GST core concepts',d:'The essentials — more chapters coming by June 2027.'}],
+parts:[{id:'A',t:'GST core concepts',d:'The essentials — more chapters are work in progress and will be available soon.'}],
 chapters:[
  {id:'core',p:'A',t:'GST in a nutshell',ic:'🛒',intro:'GST is a single tax on supply of goods and services, collected at every stage, with credit for tax paid at the previous stage — so only the value added is taxed.',glance:['Dual GST: Centre (CGST) and State (SGST/UTGST) on intra-state supplies; IGST on inter-state.','GST 2.0 (from 22 September 2025): mainly 5% and 18%, with 40% for luxury/sin goods.','Registration above ₹40 lakh (goods) / ₹20 lakh (services).','Input tax credit removes tax-on-tax.'],charts:['rates'],topics:['g-what','g-dual','g-rates','g-registration','g-itc']},
  {id:'compliance',p:'A',t:'Compliance basics',ic:'🗓️',intro:'Monthly or quarterly returns, the composition option for small businesses, reverse charge, and e-invoicing.',glance:['GSTR-1 (sales) and GSTR-3B (summary & payment) are the main returns.','Composition scheme: turnover up to ₹1.5 crore, low flat rate, no ITC.','Reverse charge: buyer pays tax on notified supplies.','E-invoice above ₹5 crore turnover; e-way bill above ₹50,000 consignment value.'],topics:['g-returns','g-composition','g-rcm','g-einvoice']}
@@ -43,7 +43,7 @@ topics:[
 {id:'g-einvoice',t:'E-invoice and e-way bill',ref:'Rule 48(4) · Rule 138',a:'e invoice irn qr code 5 crore e way bill 50000',
  one:'Businesses with turnover above <b>₹5 crore</b> must generate e-invoices (IRN + QR code) for B2B sales; an <b>e-way bill</b> is needed to move goods worth more than ₹50,000.',rel:['g-returns']}
 ],
-charts:{rates:{t:'GST at a glance',r:()=>fig('rates','GST at a glance',T(['Item','Rule'],[['Main rates (GST 2.0)','5% and 18%; 40% for luxury/sin goods'],['Registration','₹40 lakh goods / ₹20 lakh services (lower in special states)'],['Composition limit','₹1.5 crore'],['E-invoice','Turnover above ₹5 crore'],['E-way bill','Consignment above ₹50,000'],['Returns','GSTR-1 (11th), GSTR-3B (20th), GSTR-9 (31 Dec)']]),'Starter summary — the full GST book is coming by June 2027.')}},
+charts:{rates:{t:'GST at a glance',r:()=>fig('rates','GST at a glance',T(['Item','Rule'],[['Main rates (GST 2.0)','5% and 18%; 40% for luxury/sin goods'],['Registration','₹40 lakh goods / ₹20 lakh services (lower in special states)'],['Composition limit','₹1.5 crore'],['E-invoice','Turnover above ₹5 crore'],['E-way bill','Consignment above ₹50,000'],['Returns','GSTR-1 (11th), GSTR-3B (20th), GSTR-9 (31 Dec)']]),'Starter summary — the full GST book is work in progress and will be available soon.')}},
 gloss:[['GSTIN','15-character GST registration number.','g-registration'],['ITC','Input tax credit — GST on purchases set off against GST on sales.','g-itc'],['RCM','Reverse charge — recipient pays GST.','g-rcm'],['HSN / SAC','Codes classifying goods / services for rates.','g-rates'],['IRN','Invoice reference number from the e-invoice portal.','g-einvoice'],['GSTR-2B','Auto-drafted statement of ITC available.','g-itc']],
 shorts:[
  {k:'GST',h:'One tax, every stage',b:'GST is charged at each stage, but credit of earlier tax means only the value added is taxed.',ex:'₹100 → ₹150: retailer pays GST only on the ₹50 added.',to:'g-what'},
@@ -53,6 +53,6 @@ shorts:[
  {k:'GST',h:'4 conditions for ITC',b:'Invoice, supplier has filed (GSTR-2B), goods received, tax paid and return filed.',to:'g-itc'},
  {k:'GST',h:'3B pays the tax',b:'GSTR-1 reports sales by the 11th; GSTR-3B pays the tax by the 20th.',to:'g-returns'},
  {k:'GST',h:'Composition = simple',b:'Up to ₹1.5 crore turnover: pay 1% (traders), 5% (restaurants) or 6% (services). No ITC.',to:'g-composition'},
- {k:'GST',h:'Coming by June 2027',b:'This is the starter edition. The full GST book with place of supply, valuation, refunds and case studies is on the way.',to:'g-what'}
+ {k:'GST',h:'WIP — available soon',b:'This is the starter edition. The full GST book with place of supply, valuation, refunds and case studies is on the way.',to:'g-what'}
 ]};
 })();
