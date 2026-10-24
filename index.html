@@ -544,7 +544,7 @@ html[data-motion="reduce"] *{animation:none!important;transition:none!important}
 .nw-main{flex:1}
 .nw-main h3{font-size:1.12rem;margin:4px 0 8px}
 .nw-tag{font:700 .7rem var(--sans);letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
-.nw-tag.pf{background:#e7f0ff;color:#1f4fa3}.nw-tag.it{background:var(--good-bg);color:var(--good)}.nw-tag.lab{background:#fdf0e6;color:#a8541c}
+.nw-tag.pf{background:#e7f0ff;color:#1f4fa3}.nw-tag.it{background:var(--good-bg);color:var(--good)}.nw-tag.lab{background:#fdf0e6;color:#a8541c}.nw-tag.gst{background:#f3e8ff;color:#6b2fa3}html[data-theme="dark"] .nw-tag.gst{background:#2e1d45;color:#d3b4ff}
 .nw-what{background:var(--warm);border-left:3px solid var(--gold);padding:10px 12px;border-radius:8px;font-size:.94rem}
 .nw-plus{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--accent);font:700 1.4rem/1 var(--sans);cursor:pointer;transition:transform .2s}
 .nw-plus[aria-expanded="true"]{transform:rotate(45deg);background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -1435,8 +1435,51 @@ html[data-motion="reduce"] mark.hl{animation:none}
       <h2>Latest changes &amp; what they mean for you</h2>
       <p class="lede">Each update shows the date and what changed. Tap <b>+</b> for the full explanation with an example.</p>
     </div>
-    <div class="news-filter" id="newsFilter"><button class="on" data-f="all">All</button><button data-f="PF">PF / EPFO</button><button data-f="Income tax">Income tax</button><button data-f="Labour">Labour codes</button></div>
+    <div class="news-filter" id="newsFilter"><button class="on" data-f="all">All</button><button data-f="PF">PF / EPFO</button><button data-f="Income tax">Income tax</button><button data-f="GST">GST</button><button data-f="Labour">Labour codes</button></div>
     <div class="news-list">
+
+      <article class="nw" data-cat="Income tax">
+        <div class="nw-top"><div class="nw-date"><b>Sep</b><span>2026</span></div>
+          <div class="nw-main"><span class="nw-tag it">Income tax</span><h3>Tax audit and audit-case ITR deadlines extended for 2025-26 income</h3>
+          <p class="nw-what"><b>What changed:</b> CBDT (press release, 28 Sep 2026) extended the tax audit report date from <b>30 Sep to 21 Oct 2026</b>, and the ITR due date for audit cases from <b>31 Oct to 21 Nov 2026</b> (AY 2026-27).</p></div>
+          <button class="nw-plus" aria-label="Show details" aria-expanded="false">+</button></div>
+        <div class="nw-more" hidden>
+          <table class="nw-t"><tr><th>What</th><th>Earlier</th><th>Now</th></tr>
+            <tr><td>Tax audit report (3CA/3CB-3CD) and other audit reports</td><td>30 Sep 2026</td><td><b>21 Oct 2026</b></td></tr>
+            <tr><td>ITR — businesses / professionals under audit, companies</td><td>31 Oct 2026</td><td><b>21 Nov 2026</b></td></tr></table>
+          <div class="nw-ex"><h4>💡 Example</h4><p>A trader with ₹2.5 crore cash-heavy turnover needs an audit. His CA can now upload the audit report by 21 October and file the ITR by 21 November 2026 without late fee.</p></div>
+          <div class="nw-imp"><h4>📌 Impact for you</h4><ul><li>Salaried / non-audit returns are <b>not</b> covered — their dates have already passed</li><li>Pay any balance tax as early as possible — interest at 1% a month runs on unpaid tax</li><li>Transfer-pricing cases: check the separate CBDT order</li></ul></div>
+          <p class="nw-src">Sources: <a href="https://studycafe.in/cbdt-extends-due-dates-for-audit-itr-and-tar-filing-for-ay-2026-27-427200.html" target="_blank" rel="noopener">StudyCafe — CBDT extends due dates</a> · <a href="https://www.freepressjournal.in/business/cbdt-extends-tax-deadlines-audit-reports-due-october-21-and-itrs-by-november-21" target="_blank" rel="noopener">Free Press Journal</a></p>
+        </div>
+      </article>
+
+      <article class="nw" data-cat="GST">
+        <div class="nw-top"><div class="nw-date"><b>Oct</b><span>2026</span></div>
+          <div class="nw-main"><span class="nw-tag gst">GST</span><h3>57th GST Council: no rate changes, faster refunds, no notices below ₹10,000</h3>
+          <p class="nw-what"><b>What changed:</b> The Council met on 8 Oct 2026. No GST rates changed; rate changes will now be made once a year from the next financial year. It recommended faster refunds, relief on small notices and decriminalisation. These take effect only when notified.</p></div>
+          <button class="nw-plus" aria-label="Show details" aria-expanded="false">+</button></div>
+        <div class="nw-more" hidden>
+          <h4>Key recommendations</h4>
+          <ul class="check"><li><b>Inverted duty refunds</b> to cover input services too — reported effective 1 Nov 2026</li><li>Refund applications acknowledged in <b>10 days</b> (was 15)</li><li><b>No notices</b> for tax below ₹10,000; pending ones to be withdrawn</li><li>ITC allowed for <b>restaurants, hotels (up to ₹7,500 a day) and gyms</b> when used in the same line of business</li><li>Prosecution threshold proposed to rise from ₹1 crore to <b>₹5 crore</b>; arrest powers to go</li><li>Faceless GST assessment planned, after public consultation</li></ul>
+          <div class="nw-ex"><h4>💡 Example</h4><p>A hotel books rooms at ₹6,000 a night from another hotel for overflow guests. Once notified, it could claim the GST paid on that booking as input tax credit, which today is blocked.</p></div>
+          <div class="nw-imp"><h4>📌 Impact for you</h4><ul><li>Rates stay as set by GST 2.0 (5% / 18% / 40%) — no mid-year surprises</li><li>Watch for CBIC notifications before applying any change</li></ul></div>
+          <p class="nw-src">Sources: <a href="https://a2ztaxcorp.net/?p=39726" target="_blank" rel="noopener">A2Z Taxcorp — 57th GST Council outcomes</a> · <a href="https://www.drishtiias.com/daily-updates/daily-news-analysis/57th-gst-council-meeting/print_manually" target="_blank" rel="noopener">Drishti IAS — 57th GST Council meeting</a></p>
+        </div>
+      </article>
+
+      <article class="nw" data-cat="PF">
+        <div class="nw-top"><div class="nw-date"><b>Oct</b><span>2026</span></div>
+          <div class="nw-main"><span class="nw-tag pf">PF / EPFO</span><h3>PF withdrawal through UPI in testing — launch expected by December 2026</h3>
+          <p class="nw-what"><b>What changed:</b> EPFO has started testing UPI-based PF withdrawals with banks. Your UAN will link to your UPI account. A launch is expected by end-December 2026; withdrawal limits do not change.</p></div>
+          <button class="nw-plus" aria-label="Show details" aria-expanded="false">+</button></div>
+        <div class="nw-more" hidden>
+          <ul class="check"><li>Withdraw up to <b>75%</b> of the eligible balance for education, marriage, housing and other needs</li><li><b>25%</b> must stay in the account, earning interest</li><li>The money reaches your UPI-linked bank account directly</li></ul>
+          <div class="nw-ex"><h4>💡 Example</h4><p>PF balance ₹4,00,000. For a child’s school fees you could withdraw up to ₹3,00,000 through UPI, instead of filing an online claim and waiting days.</p></div>
+          <div class="nw-imp"><h4>📌 Tax angle</h4><ul><li>Withdrawal after 5 years of continuous service is tax-free</li><li>Before 5 years, the employer share and interest can be taxable and TDS may apply</li></ul></div>
+          <p class="nw-src">Source: <a href="https://www.angelone.in/news/economy/epfo-begins-testing-upi-based-epf-withdrawals-facility-likely-to-launch-by-december-2026" target="_blank" rel="noopener">Angel One — EPFO begins testing UPI withdrawals</a></p>
+        </div>
+      </article>
+
 
       <article class="nw" data-cat="PF">
         <div class="nw-top"><div class="nw-date"><b>Oct</b><span>2025</span></div>
@@ -2786,7 +2829,7 @@ const CHARTS = {
  tdsTable2:{t:'TDS for businesses & property — rates & thresholds', r:()=>fig('tdsTable2','TDS you deduct — business, rent & property',tdsTbl([['Contractors','194C','₹30,000 / ₹1 L a year','1% indiv./HUF · 2% others'],['Professional fees, royalty, director','194J','₹50,000 (director: nil)','10%'],['Technical fees, call centres','194J','₹50,000','2%'],['Commission & brokerage','194H','₹20,000','2%'],['Rent — land, building, furniture','194-I','₹50,000 a month','10%'],['Rent — plant & machinery','194-I','₹50,000 a month','2%'],['Rent paid by individuals','194-IB','₹50,000 a month','2%'],['Buying property','194-IA','₹50 lakh','1%'],['Purchase of goods','194Q','Above ₹50 L per seller','0.1%'],['E-commerce sales','194-O','—','0.1%'],['Business perquisites','194R','₹20,000','10%'],['Crypto / VDA','194S','—','1%'],['Partner remuneration & interest','194T','₹20,000','10%'],['Contract / fees by individuals','194M','₹50 lakh','2%']]),'Deposit by the 7th of the next month (30 April for March). Quarterly returns: 31 Jul, 31 Oct, 31 Jan, 31 May.')},
  calendar:{t:'Tax calendar — tax year 2026-27', r:()=>{ const M=[['Apr','2026',[['30','TDS for March deposited','tds']]],['May','2026',[['31','Q4 TDS return','tds']]],['Jun','2026',[['15','Advance tax — 15%','adv'],['15','Form 16 from employer','tds']]],['Jul','2026',[['31','ITR — salaried, investors (no audit, no business)','itr'],['31','Q1 TDS return','tds']]],['Aug','2026',[['31','ITR — business / profession without audit','itr']]],['Sep','2026',[['15','Advance tax — 45%','adv'],['30','Tax audit report','itr']]],['Oct','2026',[['31','ITR — audit cases & companies','itr'],['31','Q2 TDS return','tds']]],['Nov','2026',[['30','ITR — transfer pricing cases','itr']]],['Dec','2026',[['15','Advance tax — 75%','adv'],['31','Belated return for 2025-26','itr']]],['Jan','2027',[['31','Q3 TDS return','tds']]],['Feb','2027',[]],['Mar','2027',[['15','Advance tax — 100% (presumptive: whole)','adv'],['31','Revised / belated return for 2025-26 (12-month window)','itr'],['31','Last date for 80C / tax-saving investments','adv']]]];
   const ic={adv:'💰',itr:'📄',tds:'🏦'};
-  return fig('calendar','Tax calendar — dates that matter in 2026-27',`<div class="cal-leg"><span class="ce ev-adv">💰 Advance tax &amp; payments</span><span class="ce ev-itr">📄 Returns</span><span class="ce ev-tds">🏦 TDS</span></div><div class="cal">${M.map(([m,y,ev])=>`<div class="cal-m"><h6>${m} <small>${y}</small></h6>${ev.length?ev.map(([d,t,k])=>`<div class="ce ev-${k}"><b>${d}</b> ${ic[k]} ${t}</div>`).join(''):'<div class="ce ev-none">No major dates</div>'}</div>`).join('')}<div class="cal-m every"><h6>Every month</h6><div class="ce ev-tds"><b>7th</b> 🏦 Deposit TDS / TCS of previous month</div></div></div>`,'Return dates are for income of tax year 2025-26 filed in 2026, as amended by Finance Act 2026. Dates move to the next working day if extended by CBDT — always check the portal.'); }},
+  return fig('calendar','Tax calendar — dates that matter in 2026-27',`<div class="cal-leg"><span class="ce ev-adv">💰 Advance tax &amp; payments</span><span class="ce ev-itr">📄 Returns</span><span class="ce ev-tds">🏦 TDS</span></div><div class="cal">${M.map(([m,y,ev])=>`<div class="cal-m"><h6>${m} <small>${y}</small></h6>${ev.length?ev.map(([d,t,k])=>`<div class="ce ev-${k}"><b>${d}</b> ${ic[k]} ${t}</div>`).join(''):'<div class="ce ev-none">No major dates</div>'}</div>`).join('')}<div class="cal-m every"><h6>Every month</h6><div class="ce ev-tds"><b>7th</b> 🏦 Deposit TDS / TCS of previous month</div></div></div>`,'Return dates are for income of tax year 2025-26 filed in 2026, as amended by Finance Act 2026. One-off 2026 extension: audit report 21 Oct, audit-case ITR 21 Nov 2026. Dates move to the next working day if extended by CBDT — always check the portal.'); }},
  assessFlow:{t:'After you file — processing, scrutiny & appeals', r:()=>fig('assessFlow','After you file — what can happen, and the time limits',`<ol class="bk-steps">
    ${[['📄','Return filed','Verify within 30 days (e-verify), or it is treated as not filed.'],['🖥️','Processing by CPC','Intimation within 9 months from end of the year of filing: refund, demand or no change.'],['🔎','Scrutiny notice (some cases)','Within 3 months from end of the year of filing. Faceless, online replies.'],['📝','Assessment order','Normally within 12 months from end of the year of filing.'],['🛠️','Rectification','Obvious mistakes: within 4 years from end of the year of the order.'],['⚖️','Appeal to CIT(A)','Within 30 days of the order (Form 35). Pay ~20% of disputed demand for stay.'],['🏛️','ITAT → High Court → Supreme Court','ITAT within 2 months; High Court within 120 days (law questions only).']].map(([i,t,d])=>`<li><span class="st-i">${i}</span><div><b>${t}</b><p>${d}</p></div></li>`).join('')}
   </ol><div class="side-note">↺ <b>Reopening (reassessment):</b> up to 3 years — or 5 years if escaped income is ₹50 lakh or more — always after a show-cause notice.</div>`)},
