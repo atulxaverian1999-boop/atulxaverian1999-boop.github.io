@@ -1,5 +1,5 @@
 /* Service worker — makes the site installable and usable offline */
-const CACHE = 'ab-tax-v9';
+const CACHE = 'ab-tax-v10';
 const CORE = ['./', './index.html', './library-data.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './desk.html', './kl-as.js', './kl-je.js', './kl-fin.js', './kl-gst.js'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
