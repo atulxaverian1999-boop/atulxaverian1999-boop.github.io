@@ -26,7 +26,7 @@ window.addEventListener('hashchange',pv);if(document.readyState!=='loading')pv()
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://atulbagla.com/og-image.png">
 <meta name="theme-color" content="#0f2a44">
-<script>try{var P=JSON.parse(localStorage.getItem('ab_prefs_v1')||'{}'),d=document.documentElement,t=P.theme||'system';d.dataset.theme=(t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light';d.dataset.accent=P.accent||'navy';d.dataset.text=P.text||'normal';}catch(e){}</script>
+<script>try{var P=JSON.parse(localStorage.getItem('ab_prefs_v1')||'{}'),d=document.documentElement,t=P.theme||'system';d.dataset.theme=(t==='dark'||t==='black'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light';d.dataset.tone=(t==='sepia'||t==='black')?t:'';d.dataset.contrast=P.contrast?'high':'';d.dataset.accent=P.accent||'navy';d.dataset.text=P.text||'normal';}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -369,6 +369,33 @@ table.cmp2,table.sch{width:100%;border-collapse:collapse;font-size:.86rem}
 .cmp2 td,.sch td{padding:7px 12px;border-bottom:1px dotted var(--line);text-align:right;white-space:nowrap;vertical-align:top}
 .cmp2 td:first-child,.sch td:first-child{text-align:left;white-space:normal}
 .cmp2 td small{color:var(--muted);font-size:.72rem}
+/* pro statement */
+.calc-shell>*,.dx-out>*,.stx-wrap>*,.stx-sec>*{min-width:0}
+.dx-dl{display:flex;flex-wrap:wrap;gap:8px}.dx-dl .btn{padding:10px 16px;font-size:.88rem}.dx-dl .btn[disabled]{opacity:.6;cursor:wait}
+.dx-dl-note{font-size:.76rem!important;color:var(--muted)!important;margin-top:8px!important}
+.dxv{display:flex;gap:6px;background:var(--paper2);padding:5px;border-radius:14px;overflow-x:auto;scrollbar-width:none;scroll-margin-top:84px}.dxv::-webkit-scrollbar{display:none}
+.dxv button{flex:1 0 auto;border:0;background:transparent;padding:9px 14px;border-radius:10px;font:700 .84rem var(--sans);color:var(--muted);cursor:pointer;white-space:nowrap}
+.dxv button[aria-selected="true"]{background:var(--card);color:var(--heading);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.stx-wrap{display:grid;gap:4px}
+.stx-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;background:var(--ink);color:#fff;padding:14px 16px;border-radius:12px 12px 0 0;border-bottom:3px solid var(--gold)}
+.stx-top b{display:block;font:700 1rem var(--serif)}.stx-top span{font-size:.76rem;opacity:.8}
+.stx-reg{background:rgba(255,255,255,.14);border-radius:999px;padding:3px 10px;font-weight:700;opacity:1!important}.stx-reg.best{background:var(--gold);color:#3a2a05}
+.stx-prof{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:0 0 6px;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;overflow:hidden;background:var(--card)}
+.stx-prof div{display:flex;gap:10px;padding:7px 12px;border-bottom:1px solid var(--line);font-size:.83rem}.stx-prof dt{color:var(--muted);min-width:86px;flex:none}.stx-prof dd{font-weight:700;color:var(--heading);word-break:break-word}
+.stx-sec{margin-top:12px}.stx-h{font:700 1rem var(--serif);color:var(--heading);display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:6px;margin-bottom:2px}
+.stx-h small{font:600 .72rem var(--sans);color:var(--muted)}
+table.stx{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-numeric:tabular-nums}.stx col.c2{width:118px}
+.stx th{text-align:right;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 10px;border-bottom:2px solid var(--ink)}.stx th:first-child{text-align:left}
+.stx td{padding:6px 10px;text-align:right;vertical-align:top;white-space:nowrap}.stx td:first-child{text-align:left;white-space:normal}
+.stx .x-r td:first-child{padding-left:22px;color:var(--text)}.stx .x-r td{border-bottom:1px dotted var(--line)}
+.stx .x-hd td{font-weight:800;color:var(--heading);padding-top:12px;font-size:.84rem}
+.stx .x-note td{font-style:italic;color:var(--muted);font-size:.78rem}
+.stx .x-sub td{font-weight:700}.stx .x-sub td:last-child{box-shadow:inset 0 1px 0 var(--heading)}
+.stx .x-tot td{font-weight:800;background:var(--paper2)}.stx .x-tot td:last-child{box-shadow:inset 0 1.5px 0 var(--heading)}
+.stx .x-grand td{font-weight:800;background:var(--good-bg);color:var(--heading)}.stx .x-grand td:last-child{box-shadow:inset 0 1.5px 0 var(--heading),inset 0 -4px 0 -1px var(--heading)}
+.stx-t td,.stx-t th{border:1px solid var(--line)}.stx-t tfoot td{font-weight:800;background:var(--paper2)}
+.hp-adv{margin-top:6px;border:1px dashed var(--line);border-radius:10px;padding:8px 12px}.hp-adv summary{cursor:pointer;font-weight:700;font-size:.85rem;color:var(--heading)}.hp-adv summary::after{content:none}.hp-adv[open] summary{margin-bottom:8px}
+@media(max-width:600px){.stx{font-size:.8rem}.stx td,.stx th{padding:5px 6px}.stx .x-r td:first-child{padding-left:12px}.stx col.c2{width:88px}.dx-dl .btn{flex:1 1 calc(50% - 8px);justify-content:center;text-align:center}.stx-prof div{font-size:.8rem}}
 .dh td{font-weight:700;color:var(--heading);background:var(--paper2);padding-top:12px;text-align:left!important}
 .ds td:first-child{padding-left:22px}
 .dt td{font-weight:700;border-bottom:1.5px solid var(--ink)}
@@ -499,6 +526,38 @@ html[data-theme="dark"] .dg td, html[data-theme="dark"] .st-g td{background:#1b2
 html[data-theme="dark"] footer{background:#081018}
 html[data-theme="dark"] .story p, html[data-theme="dark"] .due{color:#f3dfb0}
 html[data-theme="dark"] .bc{background:rgba(31,180,110,.08)}
+html[data-accent="sunset"]{--ink:#5a2a12;--ink-2:#7a3a19;--gold:#ffb347;--gold-ink:#7a4a05;--accent:#d2561e}
+html[data-accent="ocean"]{--ink:#0c3a6b;--ink-2:#155294;--gold:#7cc4ff;--gold-ink:#0b4a7a;--accent:#1769c2}
+html[data-accent="rose"]{--ink:#5c1f3c;--ink-2:#7d2a52;--gold:#f7a8c4;--gold-ink:#7a2348;--accent:#c2306f}
+html[data-accent="forest"]{--ink:#1f3a1a;--ink-2:#2d5226;--gold:#c5e17a;--gold-ink:#3f5a10;--accent:#3f7d2c}
+html[data-accent="slate"]{--ink:#22282f;--ink-2:#353d47;--gold:#f2b544;--gold-ink:#7a5208;--accent:#56616e}
+html[data-theme="dark"][data-accent="sunset"] .hero,html[data-theme="dark"][data-accent="sunset"] .lib-hero{background:#2a1408}
+html[data-theme="dark"][data-accent="ocean"] .hero,html[data-theme="dark"][data-accent="ocean"] .lib-hero{background:#071d36}
+html[data-theme="dark"][data-accent="rose"] .hero,html[data-theme="dark"][data-accent="rose"] .lib-hero{background:#2a0d1b}
+html[data-theme="dark"][data-accent="forest"] .hero,html[data-theme="dark"][data-accent="forest"] .lib-hero{background:#0f1d0c}
+html[data-theme="dark"][data-accent="slate"] .hero,html[data-theme="dark"][data-accent="slate"] .lib-hero{background:#14181d}
+html[data-theme="dark"][data-accent="ocean"],html[data-theme="dark"][data-accent="slate"]{--accent:#7fb3ea}
+html[data-theme="dark"][data-accent="rose"]{--accent:#f07aa8} html[data-theme="dark"][data-accent="forest"]{--accent:#8fcf6a} html[data-theme="dark"][data-accent="sunset"]{--accent:#f08a4b}
+/* sepia reading tone */
+html[data-tone="sepia"]{--paper:#f4ecd8;--paper2:#ebe0c5;--card:#fbf5e6;--text:#3b2f20;--muted:#6e5f4a;--line:#dccfb0;--warm:#f7e6bf;--headerbg:rgba(244,236,216,.94);--good-bg:#e6edd2;--shadow:0 1px 2px rgba(91,70,54,.08),0 8px 24px rgba(91,70,54,.08)}
+html[data-tone="sepia"] .field input,html[data-tone="sepia"] .field select,html[data-tone="sepia"] .field textarea{background:#fffaf0}
+/* pure black (OLED) */
+html[data-tone="black"]{--paper:#000;--paper2:#0c0c0c;--card:#0a0a0a;--line:#262626;--headerbg:rgba(0,0,0,.94);--warm:#1d170a;--good-bg:#0b1f15;--shadow:none}
+html[data-tone="black"] .hero,html[data-tone="black"] .lib-hero,html[data-tone="black"] .contact-bg,html[data-tone="black"] .itr-finder,html[data-tone="black"] footer{background:#000!important}
+html[data-tone="black"] .field input,html[data-tone="black"] .field select,html[data-tone="black"] .field textarea{background:#050505}
+/* high contrast */
+html[data-contrast="high"]{--muted:#3a4652;--line:#9aa3ad;--text:#0b0f14}
+html[data-contrast="high"][data-theme="dark"]{--muted:#d0dae4;--line:#6b7b8b;--text:#ffffff}
+html[data-contrast="high"] a{text-decoration-thickness:2px}
+html[data-contrast="high"] .btn,html[data-contrast="high"] .field input,html[data-contrast="high"] .field select{border-width:2px}
+html[data-contrast="high"] :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* theme picker */
+.themes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.themes button{border:1.5px solid transparent;background:var(--paper2);border-radius:12px;padding:7px 2px 6px;font:700 .7rem var(--sans);color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}
+.themes button i{width:30px;height:22px;border-radius:7px;border:1px solid;display:block;position:relative;overflow:hidden}
+.themes button i em{position:absolute;left:5px;top:6px;width:16px;height:3px;border-radius:2px;box-shadow:0 5px 0 currentColor}
+.themes button.on{border-color:var(--accent);background:var(--card);color:var(--heading)}
+.swatches .sw{width:38px;height:38px}
 html[data-text="small"]{font-size:14.5px} html[data-text="large"]{font-size:18px}
 html[data-text="small"] body{font-size:15px} html[data-text="large"] body{font-size:17.5px}
 /* settings panel */
@@ -669,6 +728,53 @@ dialog{background:var(--card);color:var(--text)}
 .ol b{display:block;color:var(--heading)}.ol small{display:block;color:var(--muted);font-size:.84rem}.ol em{font-style:normal;font-size:.78rem;color:var(--accent);font-weight:700}
 @media(max-width:1000px){.ol-grid{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr!important}}
 @media(max-width:620px){.ol-grid{grid-template-columns:1fr}}
+/* ===== UI refresh (cards, links, header) ===== */
+@media(min-width:1001px){.nav{gap:22px}.brand{flex:none;margin-right:6px}}
+.page.home-links{min-height:0;padding-bottom:70px}
+@media(max-width:1440px) and (min-width:1001px){.nav-links{gap:13px}.nav-links a{font-size:.86rem}}
+.hc-grid{gap:16px}
+.hc{border:1px solid transparent;box-shadow:0 1px 2px rgba(15,42,68,.05),0 0 0 1px var(--line);padding:22px 22px 20px;position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.hc:hover{transform:translateY(-3px);border-color:transparent;box-shadow:0 18px 38px -16px rgba(15,42,68,.3),0 0 0 1px var(--line)}
+.hc-ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--paper2);background:color-mix(in srgb,var(--t,#f2b544) 16%,var(--card));margin-bottom:8px;transition:transform .25s}
+.hc:hover .hc-ico{transform:rotate(-6deg) scale(1.06)}
+.hc h3{font-size:1.1rem}
+.hc-go{display:inline-flex;gap:4px;transition:gap .2s}.hc:hover .hc-go{gap:9px}
+.hc-feat{grid-column:span 2;background:linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 100%);color:#e8eef5;box-shadow:0 18px 40px -18px rgba(15,42,68,.55)}
+.hc-feat::before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(242,181,68,.35),transparent 70%);pointer-events:none}
+.hc-feat h3{color:#fff;font-size:1.45rem}.hc-feat p{color:rgba(255,255,255,.8);max-width:52ch}.hc-feat .hc-go{color:var(--gold)}.hc-feat .hc-ico{background:rgba(255,255,255,.13)}
+.hc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.hc-tags span{font:700 .7rem var(--sans);padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff}
+.ol-grid{display:flex;flex-wrap:wrap;gap:10px}
+.ol{border-radius:999px;padding:7px 16px 7px 7px;align-items:center;gap:10px;transition:border-color .15s,transform .15s;box-shadow:none}
+.ol:hover{border-color:var(--accent);transform:translateY(-1px)}
+.ol-i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--paper2);flex:none;font-size:1rem}
+.ol small{display:none}.ol b{display:inline;font-size:.9rem}.ol em{display:inline;margin-left:6px;font-weight:600;color:var(--muted)}
+.hc-wide{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"i t g" "i p g";column-gap:16px;align-items:center;background:var(--warm)}
+.hc-wide .hc-ico{grid-area:i;margin:0}.hc-wide h3{grid-area:t}.hc-wide p{grid-area:p}.hc-wide .hc-go{grid-area:g;margin:0;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px}
+@media(max-width:1000px){.hc-feat{grid-column:span 2}}
+@media(max-width:620px){
+  .hc-grid{grid-template-columns:1fr;gap:0;background:var(--card);border-radius:18px;box-shadow:0 0 0 1px var(--line),0 10px 30px -18px rgba(15,42,68,.35);overflow:hidden}
+  .hc{display:grid;grid-template-columns:44px 1fr 14px;grid-template-areas:"i t c" "i p c";column-gap:14px;row-gap:2px;align-items:center;padding:14px 16px;border-radius:0;box-shadow:none;border:0;border-bottom:1px solid var(--line)}
+  .hc:last-child{border-bottom:0}.hc:hover{transform:none;box-shadow:none}
+  .hc::after{content:"›";grid-area:c;font-size:1.5rem;color:var(--muted);line-height:1}
+  .hc-ico{grid-area:i;width:44px;height:44px;border-radius:12px;font-size:1.25rem;margin:0}
+  .hc h3{grid-area:t;font-size:1rem}.hc p{grid-area:p;font-size:.82rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .hc-go,.hc-tags{display:none}.hc-wide{grid-column:auto;background:var(--card)}
+  .hc-feat{grid-column:auto;padding:18px 16px}.hc-feat h3{font-size:1.1rem}.hc-feat::after{color:var(--gold)}
+  .ol-grid{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px 6px}.ol-grid::-webkit-scrollbar{display:none}.ol{flex:none}.ol em{display:none}
+}
+.empty{border:0;background:linear-gradient(180deg,var(--card),var(--paper2));box-shadow:0 0 0 1px var(--line);padding:46px 28px;border-radius:18px}
+.empty::before{content:"🧮";display:block;margin:0 auto 12px;width:62px;height:62px;line-height:62px;font-size:1.8rem;border-radius:18px;background:var(--warm);box-shadow:0 8px 20px -10px rgba(194,85,27,.5)}
+.calc-form{background:var(--card);border:0;box-shadow:0 0 0 1px var(--line),0 12px 32px -22px rgba(15,42,68,.35);border-radius:18px}
+.field label small{white-space:nowrap}
+/* What's New as a timeline */
+.news-list{position:relative;gap:10px;max-width:980px}
+.news-list::before{content:"";position:absolute;left:49px;top:20px;bottom:20px;width:2px;background:linear-gradient(var(--gold),var(--line) 30%,var(--line))}
+.nw{background:transparent;border:0;box-shadow:none;border-radius:16px;position:relative;transition:background .2s}
+.nw:hover,.nw:has(.nw-plus[aria-expanded="true"]){background:var(--card);box-shadow:0 0 0 1px var(--line),0 14px 34px -22px rgba(15,42,68,.4)}
+.nw-date{position:relative;z-index:1;box-shadow:0 0 0 5px var(--paper)}
+.nw:hover .nw-date{box-shadow:0 0 0 5px var(--card)}
+.nw-what{background:transparent;border-left-width:3px;border-radius:0;padding:4px 12px;color:var(--text)}
+@media(max-width:620px){.news-list::before{left:47px}.nw-top{padding:14px 10px;gap:12px}.nw-date{width:58px}.nw-more{padding:0 12px 16px 12px}}
 /* ===== Digital book ===== */
 :root{--c-new:#2a6cb0;--c-old:#c4631a;--c-good:#1f7a4d;--c-bad:#b42318}
 html[data-theme="dark"]{--c-new:#4a8bd4;--c-old:#d27a2c;--c-good:#4cb782;--c-bad:#f07167}
@@ -1048,6 +1154,11 @@ html[data-motion="reduce"] .sh-in{animation:none}
 }
 
 @media(max-width:760px){.shb{background:#0b1118}}
+/* softer, book-tinted shelf cards */
+.bk3d{border-color:transparent;box-shadow:0 0 0 1px var(--line);background:var(--card);background:linear-gradient(135deg,color-mix(in srgb,var(--bk) 10%,var(--card)) 0%,var(--card) 62%);box-shadow:0 0 0 1px color-mix(in srgb,var(--bk) 16%,var(--line))}
+.bk3d:hover{box-shadow:0 0 0 1px color-mix(in srgb,var(--bk) 40%,var(--line)),0 20px 40px -18px color-mix(in srgb,var(--bk) 55%,transparent)}
+.bk3d-tag{background:color-mix(in srgb,var(--bk) 12%,var(--card))}
+.bk3d-go{display:inline-flex;gap:4px;transition:gap .2s}.bk3d:hover .bk3d-go{gap:9px}
 </style>
 </head>
 <body>
@@ -1081,7 +1192,13 @@ html[data-motion="reduce"] .sh-in{animation:none}
 </header>
 <div class="set-panel" id="setPanel" hidden role="dialog" aria-label="Display settings">
   <h4>Theme</h4>
-  <div class="seg" data-set="theme"><button data-v="light">☀️ Light</button><button data-v="dark">🌙 Dark</button><button data-v="system">💻 Auto</button></div>
+  <div class="themes" data-set="theme">
+    <button data-v="light" title="Light"><i style="background:#faf8f4;border-color:#e3e0d8"><em style="background:#0f2a44"></em></i>Light</button>
+    <button data-v="sepia" title="Sepia — easy on the eyes for long reading"><i style="background:#f4ecd8;border-color:#dccfb0"><em style="background:#5b4636"></em></i>Sepia</button>
+    <button data-v="dark" title="Dark"><i style="background:#0e151d;border-color:#253545"><em style="background:#e3eaf1"></em></i>Dark</button>
+    <button data-v="black" title="Pure black — saves battery on OLED phones"><i style="background:#000;border-color:#333"><em style="background:#fff"></em></i>Black</button>
+    <button data-v="system" title="Follow my device"><i style="background:linear-gradient(135deg,#faf8f4 50%,#0e151d 50%);border-color:#999"></i>Auto</button>
+  </div>
   <h4>Colour</h4>
   <div class="swatches" data-set="accent">
     <button class="sw" data-v="navy" title="Navy &amp; gold" style="background:#0f2a44;--g:#f2b544"></button>
@@ -1089,10 +1206,16 @@ html[data-motion="reduce"] .sh-in{animation:none}
     <button class="sw" data-v="royal" title="Royal purple" style="background:#2a1b4d;--g:#f4b942"></button>
     <button class="sw" data-v="teal" title="Ocean teal" style="background:#0b3c49;--g:#ffd166"></button>
     <button class="sw" data-v="maroon" title="Maroon" style="background:#4a1020;--g:#f2c14e"></button>
+    <button class="sw" data-v="sunset" title="Sunset orange" style="background:#5a2a12;--g:#ffb347"></button>
+    <button class="sw" data-v="ocean" title="Ocean blue" style="background:#0c3a6b;--g:#7cc4ff"></button>
+    <button class="sw" data-v="rose" title="Rose" style="background:#5c1f3c;--g:#f7a8c4"></button>
+    <button class="sw" data-v="forest" title="Forest &amp; lime" style="background:#1f3a1a;--g:#c5e17a"></button>
+    <button class="sw" data-v="slate" title="Charcoal slate" style="background:#22282f;--g:#f2b544"></button>
   </div>
   <h4>Text size</h4>
   <div class="seg" data-set="text"><button data-v="small">A−</button><button data-v="normal">A</button><button data-v="large">A+</button></div>
   <h4>More</h4>
+  <div class="set-row"><span>High contrast</span><button class="switch" data-toggle="contrast" aria-label="High contrast"></button></div>
   <div class="set-row"><span>Animations &amp; effects</span><button class="switch" data-toggle="motion" aria-label="Animations"></button></div>
   <div class="set-row"><span>Sound in quiz</span><button class="switch" data-toggle="sound" aria-label="Sound"></button></div>
   <div class="set-foot"><span class="muted">Saved on this device</span><button id="setReset">Reset to default</button></div>
@@ -1134,15 +1257,15 @@ html[data-motion="reduce"] .sh-in{animation:none}
       <h2>Everything on this site</h2>
     </div>
     <div class="hc-grid">
-      <a class="hc" href="#calculator"><span class="hc-ico">🧮</span><h3>Advance Calculator</h3><p>Old vs new regime in seconds, plus a full head-wise computation you can download as PDF. HRA and GST calculators too.</p><span class="hc-go">Open calculator →</span></a>
-      <a class="hc" href="#itr"><span class="hc-ico">📄</span><h3>ITR Guide</h3><p>All seven forms, ITR-1 to ITR-7 — who can file, who can’t, schedules and due dates, plus a quick form finder.</p><span class="hc-go">Read the guide →</span></a>
-      <a class="hc" href="#library"><span class="hc-ico">📚</span><h3>Knowledge Library</h3><p>Five free digital books — Income Tax, Accounting Standards, Journal Entries, Startup &amp; Finance and GST — with examples, charts and quick Shorts.</p><span class="hc-go">Open library →</span></a>
-      <a class="hc" href="#news"><span class="hc-ico">🆕</span><h3>What’s New</h3><p>Latest changes in PF rules, income tax and labour codes — with dates, examples and what they mean for you.</p><span class="hc-go">See updates →</span></a>
-      <a class="hc hc-quiz" href="#quiz"><span class="hc-ico">🏆</span><h3>Tax Crorepati quiz</h3><p>15 questions, 4 lifelines, a money ladder to ₹1 crore (virtual!). Test your tax knowledge game-show style.</p><span class="hc-go">Play now →</span></a>
-      <a class="hc" href="#documents"><span class="hc-ico">🗂️</span><h3>Checklist</h3><p>What to keep ready before filing — by type of income.</p><span class="hc-go">See checklist →</span></a>
-      <a class="hc" href="#new-act"><span class="hc-ico">⚖️</span><h3>New Tax Act</h3><p>What the Income-tax Act, 2025 and Budget 2026 change for FY 2026-27.</p><span class="hc-go">What's new →</span></a>
-      <a class="hc" href="#faq"><span class="hc-ico">❓</span><h3>FAQ</h3><p>Common questions on regimes, due dates, AIS and updated returns.</p><span class="hc-go">Read FAQs →</span></a>
-      <a class="hc" href="#ask"><span class="hc-ico">💬</span><h3>Ask a question</h3><p>Got a query on ITR, bookkeeping, GST or TDS? Send it in — I reply by email.</p><span class="hc-go">Ask now →</span></a>
+      <a class="hc hc-feat" href="#calculator"><span class="hc-ico">🧮</span><h3>Advance Calculator</h3><p>Old vs new regime in seconds, plus a full head-wise computation in CA format — salary, house property, capital gains, other sources and interest — downloadable as PDF or Excel.</p><span class="hc-tags"><span>Both regimes</span><span>Schedules</span><span>234A/B/C</span><span>PDF · Excel</span></span><span class="hc-go">Open calculator →</span></a>
+      <a class="hc" href="#itr" style="--t:#3b82f6"><span class="hc-ico">📄</span><h3>ITR Guide</h3><p>All seven forms, ITR-1 to ITR-7 — who can file, who can’t, schedules and due dates, plus a quick form finder.</p><span class="hc-go">Read the guide →</span></a>
+      <a class="hc" href="#library" style="--t:#c2551b"><span class="hc-ico">📚</span><h3>Knowledge Library</h3><p>Five free digital books — Income Tax, Accounting Standards, Journal Entries, Startup &amp; Finance and GST — with examples, charts and quick Shorts.</p><span class="hc-go">Open library →</span></a>
+      <a class="hc" href="#news" style="--t:#0f7a4f"><span class="hc-ico">🆕</span><h3>What’s New</h3><p>Latest changes in PF rules, income tax and labour codes — with dates, examples and what they mean for you.</p><span class="hc-go">See updates →</span></a>
+      <a class="hc hc-quiz" href="#quiz" style="--t:#f2b544"><span class="hc-ico">🏆</span><h3>Tax Crorepati quiz</h3><p>15 questions, 4 lifelines, a money ladder to ₹1 crore (virtual!). Test your tax knowledge game-show style.</p><span class="hc-go">Play now →</span></a>
+      <a class="hc" href="#documents" style="--t:#8b5cf6"><span class="hc-ico">🗂️</span><h3>Checklist</h3><p>What to keep ready before filing — by type of income.</p><span class="hc-go">See checklist →</span></a>
+      <a class="hc" href="#new-act" style="--t:#0e8f9b"><span class="hc-ico">⚖️</span><h3>New Tax Act</h3><p>What the Income-tax Act, 2025 and Budget 2026 change for FY 2026-27.</p><span class="hc-go">What's new →</span></a>
+      <a class="hc" href="#faq" style="--t:#e11d48"><span class="hc-ico">❓</span><h3>FAQ</h3><p>Common questions on regimes, due dates, AIS and updated returns.</p><span class="hc-go">Read FAQs →</span></a>
+      <a class="hc hc-wide" href="#ask" style="--t:#2563eb"><span class="hc-ico">💬</span><h3>Ask a question</h3><p>Got a query on ITR, bookkeeping, GST or TDS? Send it in — I reply by email.</p><span class="hc-go">Ask now →</span></a>
     </div>
   </div>
 </section>
@@ -1337,6 +1460,10 @@ html[data-motion="reduce"] .sh-in{animation:none}
             <div class="field"><label>Any other income</label><input name="o.oth" type="number" min="0"></div>
             <div class="field"><label>Lottery / game winnings <small>30% flat</small></label><input name="o.win" type="number" min="0"></div>
           </div>
+          <div class="two">
+            <div class="field"><label>Interest paid on loan for dividend / MF units <small>max 20% of dividend</small></label><input name="o.divInt" type="number" min="0"></div>
+            <div class="field"><label>Other expenses against interest / other income <small>s. 93</small></label><input name="o.exp" type="number" min="0"></div>
+          </div>
         </div></details>
 
         <details><summary class="fs-sum">🧾 Deductions</summary><div class="fs-body">
@@ -1379,6 +1506,12 @@ html[data-motion="reduce"] .sh-in{animation:none}
           <div class="rows" data-list="chl"></div>
           <button type="button" class="add-row" data-add="chl">+ Add challan</button>
           <div class="field" style="margin-top:10px"><label>Relief for salary arrears <small>(from Form 10E, old s. 89)</small></label><input name="t.r89" type="number" min="0"></div>
+          <div class="sub-hd">Interest for late filing / short advance tax <small>(ss. 423–425, old 234A/B/C)</small></div>
+          <div class="two">
+            <div class="field"><label>Return filing due date</label><select name="t.due"><option value="auto">Auto (31 Jul / 31 Aug if business)</option><option value="2027-07-31">31 July 2027 — salary, no business</option><option value="2027-08-31">31 August 2027 — business, no audit</option><option value="2027-10-31">31 October 2027 — audit case</option></select></div>
+            <div class="field"><label>Date you will file / pay balance tax</label><input name="t.file" type="date" min="2027-04-01"></div>
+          </div>
+          <p class="hint">Interest is worked out on the regime you choose, using the advance-tax challan dates above. Leave the date blank to assume filing on the due date.</p>
         </div></details>
       </form>
       <div id="x_out" class="it-result"><div class="empty">Start entering your details — your computation builds here as you type.</div></div>
@@ -2211,9 +2344,14 @@ const TPL = {
     ${NUM('tds','TDS deducted by this employer')}`,
   hp: () => `<div class="two">${SEL('type','Type',[['S','Self-occupied'],['L','Let out'],['D','Deemed let out (3rd house +)']])}${NUM('share','Your share %','value="100" max="100"')}</div>
     ${TXT('addr','Address <small>(optional)</small>')}
-    <div class="two">${NUM('rent','Annual rent received / expected')}${NUM('muni','Municipal tax paid')}</div>
-    <div class="two">${NUM('int','Home loan interest <small>(incl. 1/5 pre-constr.)</small>')}${NUM('arr','Arrears / unrealised rent recd.')}</div>
-    ${TXT('lender','Lender name <small>(optional)</small>')}`,
+    <div class="two">${NUM('rent','Annual rent received / expected')}${NUM('muni','Municipal tax paid <small>(by you)</small>')}</div>
+    <div class="two">${NUM('int','Home loan interest for this year')}${NUM('pre','Pre-construction interest <small>(total — 1/5th claimed)</small>')}</div>
+    <div class="two">${NUM('arr','Arrears / unrealised rent recd.')}${TXT('lender','Lender name <small>(optional)</small>')}</div>
+    <details class="hp-adv"><summary>Annual value working <small>(municipal value, fair rent, vacancy — optional)</small></summary>
+      <div class="three">${NUM('mv','Municipal value')}${NUM('fr','Fair rent')}${NUM('sr','Standard rent <small>(Rent Act)</small>')}</div>
+      ${NUM('vac','Months vacant during the year','max="12"')}
+      <p class="hint">Leave blank if not known — actual rent is then taken as gross annual value. Used to find expected rent under s. 21 (old s. 23).</p>
+    </details>`,
   cg: () => `${TXT('desc','Asset description','placeholder="e.g. Infosys shares, Flat at Thane"')}
     ${SEL('type','Asset type',[['eq','Listed shares / equity MF / REIT units (STT paid)'],['house','Residential house'],['land','Land / plot / commercial property'],['unl','Unlisted shares'],['etf','Gold ETF / listed bonds / other listed securities'],['gold','Gold, jewellery, other assets'],['debt','Debt MF (bought on/after 1-Apr-2023) / unlisted bonds']])}
     <div class="two"><div class="field"><label>Date bought</label><input name="buy" type="date"></div><div class="field"><label>Date sold</label><input name="sell" type="date" min="2026-04-01" max="2027-03-31"></div></div>
@@ -2394,8 +2532,18 @@ function dxCompute(st, regime){
   // House property
   let hpRaw=0, soInt=0; R.hp=[];
   (L.hp||[]).forEach((h,i)=>{ const sh=Math.min(100,n0(h.share)||100)/100;
-    if(h.type==='S'){ const iv=n0(h.int)*sh; R.hp.push({i,h,sh,gav:0,muni:0,nav:0,sd:0,int:iv,arr:n0(h.arr)*sh*0.7,inc:null}); soInt+=iv; hpRaw+=n0(h.arr)*sh*0.7; }
-    else { const gav=n0(h.rent)*sh, muni=Math.min(n0(h.muni)*sh,gav), nav=gav-muni, sd=nav*.3, iv=n0(h.int)*sh, arr=n0(h.arr)*sh*0.7, inc=nav-sd-iv+arr; R.hp.push({i,h,sh,gav,muni,nav,sd,int:iv,arr,inc}); hpRaw+=inc; } });
+    const mv=n0(h.mv), fr=n0(h.fr), sr=n0(h.sr), ar=n0(h.rent), vac=Math.min(12,n0(h.vac));
+    const rr = fr ? (sr ? Math.min(fr,sr) : fr) : 0, er = Math.max(mv, rr);
+    const intC=n0(h.int), pre5=n0(h.pre)/5, arrF=n0(h.arr);
+    if(h.type==='S'){ const iv=(intC+pre5)*sh; R.hp.push({i,h,sh,mv,fr,sr,er,ar,vac,gav:0,muni:0,nav:0,sd:0,intC:intC*sh,pre5:pre5*sh,int:iv,arrF:arrF*sh,arr:arrF*sh*0.7,inc:null,why:'Annual value of self-occupied house is nil'}); soInt+=iv; hpRaw+=arrF*sh*0.7; }
+    else { let g, why;
+      if(!er){ g=ar; why = h.type==='D' ? 'Expected rent as entered' : 'Actual rent received / receivable'; }
+      else if(h.type==='D'){ g=er; why='Expected rent (property deemed to be let out)'; }
+      else if(ar>=er){ g=ar; why='Actual rent — higher than expected rent'; }
+      else if(vac>0){ g=ar; why='Actual rent — lower than expected rent owing to vacancy'; }
+      else { g=er; why='Expected rent — higher than actual rent'; }
+      const gav=g*sh, muni=Math.min(n0(h.muni)*sh,gav), nav=gav-muni, sd=nav*.3, iv=(intC+pre5)*sh, arr=arrF*sh*0.7, inc=nav-sd-iv+arr;
+      R.hp.push({i,h,sh,mv,fr,sr,er,ar,vac,gav,muni,nav,sd,intC:intC*sh,pre5:pre5*sh,int:iv,arrF:arrF*sh,arr,inc,why}); hpRaw+=inc; } });
   const soAllowed = old ? Math.min(soInt,200000) : 0; hpRaw-=soAllowed;
   const hp = Math.max(hpRaw, old ? -200000 : 0);
   R.hpSum={soInt,soAllowed,raw:hpRaw,net:hp,cf:hp-hpRaw};
@@ -2406,8 +2554,10 @@ function dxCompute(st, regime){
   const cg=cgAll(L.cg||[]); R.cg=cg;
   // Other sources
   const fp=V('o.fp'), fpD=fp?Math.min(fp/3, old?15000:25000):0;
-  const osN = V('o.sav')+V('o.fd')+V('o.bond')+V('o.ref')+V('o.div')+(fp-fpD)+V('o.epf')+V('o.gift')+V('o.oth');
-  const W=V('o.win'); R.os={fp,fpD,net:osN,W};
+  const divInt=Math.min(V('o.divInt'), .2*V('o.div')), osExp=Math.min(V('o.exp'), V('o.bond')+V('o.fd')+V('o.oth'));
+  const osG = V('o.sav')+V('o.fd')+V('o.bond')+V('o.ref')+V('o.div')+fp+V('o.epf')+V('o.gift')+V('o.oth');
+  const osN = Math.max(0, osG-fpD-divInt-osExp);
+  const W=V('o.win'); R.os={fp,fpD,divInt,osExp,gross:osG,net:osN,W};
   // GTI
   const B={S:cg.B.S,L:cg.B.L,Lo:cg.B.Lo,Li:cg.B.Li,W};
   const special=B.S+B.L+B.Lo+B.Li+B.W;
@@ -2451,14 +2601,45 @@ function dxCompute(st, regime){
   const tdsSal=emps.reduce((s,e)=>s+n0(e.tds),0), tdsO=(L.tds||[]).reduce((s,x)=>s+n0(x.amt),0), tcs=(L.tcs||[]).reduce((s,x)=>s+n0(x.amt),0);
   const adv=(L.chl||[]).filter(x=>x.kind==='ADV').reduce((s,x)=>s+n0(x.amt),0), sat=(L.chl||[]).filter(x=>x.kind==='SAT').reduce((s,x)=>s+n0(x.amt),0);
   R.paid={tdsSal,tdsO,tcs,adv,sat,tot:tdsSal+tdsO+tcs+adv+sat};
-  R.liability=t.total-r89; R.net=r10(R.liability-R.paid.tot);
-  R.age=ag; return R;
+  R.liability=t.total-r89;
+  R.age=ag; R.int=dxInterest(st,R,biz>0||spec>0);
+  R.net=r10(R.liability+R.int.tot-R.paid.tot); return R;
+}
+/* interest — ss. 423/424/425 (old 234A/234B/234C), simplified */
+function dxInterest(st,R,hasBiz){
+  const L=st.lists, dueSel=st['t.due']||'auto';
+  const due=new Date(dueSel==='auto' ? (hasBiz?'2027-08-31':'2027-07-31') : dueSel);
+  const fileD = st['t.file'] ? new Date(st['t.file']) : due;
+  const tdsTcs=R.paid.tdsSal+R.paid.tdsO+R.paid.tcs;
+  const AT=Math.max(0, R.liability-tdsTcs);               // assessed tax
+  const chl=(L.chl||[]).filter(x=>n0(x.amt));
+  const advBy=d=>chl.filter(x=>x.kind==='ADV' && (!x.date || new Date(x.date)<=d)).reduce((s,x)=>s+n0(x.amt),0);
+  const h100=x=>Math.floor(x/100)*100;
+  const mons=(from,to)=>{ if(to<=from) return 0; let m=(to.getFullYear()-from.getFullYear())*12+(to.getMonth()-from.getMonth()); if(to.getDate()>from.getDate()||m===0) m++; return Math.max(1,m); };
+  const O={due,fileD,AT,a:0,b:0,c:0,cRows:[],notes:[]};
+  const seniorNoBiz = R.age.g!=='below60' && !hasBiz;
+  // 234A
+  const satBefore=chl.filter(x=>x.kind==='SAT' && x.date && new Date(x.date)<=due).reduce((s,x)=>s+n0(x.amt),0);
+  const baseA=h100(Math.max(0, AT-R.paid.adv-satBefore));
+  if(fileD>due && baseA>0){ O.aM=mons(due,fileD); O.a=baseA*.01*O.aM; O.aBase=baseA; }
+  if(AT<10000 || seniorNoBiz){ O.notes.push(AT<10000?'Advance tax not applicable — tax after TDS/TCS is below ₹10,000, so no interest for short advance tax.':'Resident senior citizen with no business income — advance tax not required.'); O.tot=O.a; return O; }
+  // 234B
+  const adv=R.paid.adv;
+  if(adv < .9*AT){ const firstSat=chl.filter(x=>x.kind==='SAT'&&x.date).map(x=>new Date(x.date)).sort((a,b)=>a-b)[0];
+    const end = firstSat && firstSat<fileD ? firstSat : fileD; O.bM=mons(new Date('2027-03-31'),end); O.bBase=h100(AT-adv); O.b=O.bBase*.01*O.bM; }
+  // 234C
+  const inst=[['2026-06-15',.15,.12,3],['2026-09-15',.45,.36,3],['2026-12-15',.75,.75,3],['2027-03-15',1,1,1]];
+  inst.forEach(([d,req,safe,m])=>{ const paid=advBy(new Date(d)), need=req*AT, shortf= paid>=safe*AT && req<.75 ? 0 : Math.max(0,need-paid), base=h100(shortf), i=base*.01*m;
+    O.cRows.push({d,req,paid,need,base,m,i}); O.c+=i; });
+  if(R.cgTotal||R.os.W) O.notes.push('Capital gains / winnings: interest for deferment ignores the relief for income arising after an instalment date — actual interest may be lower.');
+  O.tot=O.a+O.b+O.c; return O;
 }
 
 /* ---------- output ---------- */
 const m = v => v<0 ? '−'+inr(-v) : inr(v);
 const esc2 = t => String(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let DX_LAST=null;
+let DX_LAST=null, DX_VIEW='cmp';
+function dxView(v){ DX_VIEW=v; if(DX_LAST) dxRender(DX_LAST.st); const t=document.getElementById('dxViewTop'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }
 
 function dxRender(st){
   const out=document.getElementById('x_out');
@@ -2508,6 +2689,8 @@ function dxRender(st){
     const s=st, V=k=>n0(s[k]);
     [['o.sav','Savings bank interest'],['o.fd','FD / RD / post office interest'],['o.bond','Bond / other interest'],['o.ref','Interest on income-tax refund'],['o.div','Dividend'],['o.epf','Taxable PF interest'],['o.gift','Taxable gifts'],['o.oth','Any other income']].forEach(([k,l])=>{ if(V(k)) Rw(l,V(k),V(k)); });
     if(nw.os.fp){ Rw('Family pension',nw.os.fp,od.os.fp); Rw('Less: Family pension deduction (1/3rd)',-nw.os.fpD,-od.os.fpD,'Max ₹25,000 new, ₹15,000 old'); }
+    if(nw.os.divInt) Rw('Less: Interest on loan for dividend income (max 20%)',-nw.os.divInt,-od.os.divInt,'s. 93 (old 57)');
+    if(nw.os.osExp) Rw('Less: Expenses for earning other income',-nw.os.osExp,-od.os.osExp,'s. 93 (old 57)');
     if(nw.os.W) Rw('Lottery / game winnings (taxed 30% flat)',nw.os.W,od.os.W);
     T('Income from other sources',nw.os.net+nw.os.W,od.os.net+od.os.W); }
   rows.push(['Gross total income',nw.GTI,od.GTI,'g','All your income added together']);
@@ -2530,7 +2713,9 @@ function dxRender(st){
   T('Total tax for the year',nw.liability,od.liability);
   if(nw.paid.tot){ H('Taxes already paid','');
     [['tdsSal','TDS by employer'],['tdsO','TDS on other income'],['tcs','TCS'],['adv','Advance tax'],['sat','Self-assessment tax']].forEach(([k,l])=>{ if(nw.paid[k]) Rw('Less: '+l,-nw.paid[k],-od.paid[k]); }); }
-  rows.push([nw.net>=0||od.net>=0?'Balance tax payable / (refund)':'Refund due',nw.net,od.net,'g','Rounded to nearest ₹10. Interest u/s 234A/B/C may apply if tax is paid late.']);
+  if(nw.int.tot||od.int.tot){ H('Add: Interest','For late filing and short / late advance tax — estimate');
+    [['a','Late filing (s. 423, old 234A)'],['b','Short advance tax (s. 424, old 234B)'],['c','Deferment of instalments (s. 425, old 234C)']].forEach(([k,l])=>{ if(nw.int[k]||od.int[k]) Rw(l,nw.int[k],od.int[k]); }); }
+  rows.push([nw.net>=0||od.net>=0?'Balance tax payable / (refund)':'Refund due',nw.net,od.net,'g','Rounded to nearest ₹10 (s. 516, old 288B).']);
 
   const cell=(v,col)=> v===null?'':(typeof v==='string'?`<span class="muted">${v}</span>`:m(v));
   const table = rows.map(([l,a,b,k,h])=> k==='h' ? `<tr class="dh"><td colspan="3">${l}${h?`<div class="hint2">${h}</div>`:''}</td></tr>`
@@ -2556,41 +2741,333 @@ function dxRender(st){
       <div class="g-card hl"><span>${B.net>=0?'Balance to pay':'Refund due'}</span><b>${inr(Math.abs(B.net))}</b></div>
     </div>
     <div class="story"><span class="badge">${word.toUpperCase()} REGIME IS BETTER</span><p>${story}</p>
-      <div class="story-act"><button type="button" class="btn btn-gold" onclick="dxPDF()">⬇ Download computation (PDF)</button></div></div>
-    <div class="tbl-wrap"><table class="cmp2"><thead><tr><th>Particulars</th><th class="${best==='new'?'bc':''}">New regime${best==='new'?' ✓':''}</th><th class="${best==='old'?'bc':''}">Old regime${best==='old'?' ✓':''}</th></tr></thead><tbody>${table}</tbody></table></div>
-    ${sch}
-    <p class="disclaimer">FY 2026-27 (Tax Year 2026-27), Income-tax Act, 2025, resident individual. Figures with − are deductions. Not covered: brought-forward losses, agricultural income, AMT, interest u/s 234A/B/C (now ss. 423–425), and some special-rate incomes. General information — verify before filing.</p>
+      <div class="story-act dx-dl">
+        <button type="button" class="btn btn-gold" onclick="dxPDF(this)">⬇ PDF statement</button>
+        <button type="button" class="btn btn-outline" onclick="dxXLSX(this)">⬇ Excel</button>
+        <button type="button" class="btn btn-outline" onclick="dxPrint()">🖨 Print</button>
+        ${navigator.share&&navigator.canShare?'<button type="button" class="btn btn-outline" data-share="1" onclick="dxPDF(this)">📤 Share PDF</button>':''}
+      </div>
+      <p class="dx-dl-note">PDF &amp; Excel follow the view below — pick “Statement” for a specific regime (default: the better one).</p></div>
+    <div class="dxv" id="dxViewTop" role="tablist">
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='cmp'}" onclick="dxView('cmp')">⚖️ Compare regimes</button>
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='new'}" onclick="dxView('new')">📄 Statement · New${best==='new'?' ✓':''}</button>
+      <button type="button" role="tab" aria-selected="${DX_VIEW==='old'}" onclick="dxView('old')">📄 Statement · Old${best==='old'?' ✓':''}</button>
+    </div>
+    ${DX_VIEW==='cmp' ? `<div class="tbl-wrap"><table class="cmp2"><thead><tr><th>Particulars</th><th class="${best==='new'?'bc':''}">New regime${best==='new'?' ✓':''}</th><th class="${best==='old'?'bc':''}">Old regime${best==='old'?' ✓':''}</th></tr></thead><tbody>${table}</tbody></table></div>
+    ${sch}` : dxStmtHTML(DX_VIEW==='new'?nw:od, st, nw, od, best)}
+    <p class="disclaimer">FY 2026-27 (Tax Year 2026-27), Income-tax Act, 2025, resident individual. Figures with − are deductions. Interest under ss. 423–425 (old 234A/B/C) is an estimate. Not covered: brought-forward losses, agricultural income, AMT, clubbing and some special-rate incomes. General information — verify before filing.</p>
   </div>`;
 }
 function dxRun(){ const st=dxRead(); dxSave(st); dxRender(st); }
 
-function dxPDF(){
+/* ===== Professional computation statement (CA format) — screen, PDF, Excel, print ===== */
+const fmtA = v => v===null||v===undefined||v==='' ? '' : (typeof v==='string' ? v : (Math.round(v)<0 ? '('+Math.round(-v).toLocaleString('en-IN')+')' : Math.round(v).toLocaleString('en-IN')));
+const DX_REG_NAME = r => r==='new' ? 'New tax regime — s. 202 (old 115BAC)' : 'Old tax regime (opted out of s. 202)';
+
+function dxStmt(R, st, O){
+  const V=k=>n0(st[k]), L=st.lists, old=R.regime==='old';
+  const S=[]; const sec=(id,h,ref)=>{ const x={id,h,ref,rows:[]}; S.push(x); return x; };
+  const r=(x,l,i,o,k,n)=>x.rows.push({l,i:i===undefined?null:i,o:o===undefined?null:o,k:k||'r',n:n||''});
+
+  /* ---- Part A: computation of total income ---- */
+  const A=sec('ti','Computation of total income','');
+  if(R.sal.gross) r(A,'Income from salaries — Schedule 1',null,R.sal.net);
+  if(R.hp.length) r(A,'Income from house property — Schedule 2',null,R.hpSum.net);
+  if(R.biz.net){ r(A,'Profits and gains of business or profession',null,R.biz.net);
+    if(R.biz.books) r(A,'Profit as per books, after additions / deductions',R.biz.books,null,'r');
+    if(R.biz.pr) r(A,'Presumptive income — s. 58 (old 44AD) @ 6% / 8%',R.biz.pr);
+    if(R.biz.pf) r(A,'Presumptive income — s. 58 (old 44ADA) @ 50%',R.biz.pf);
+    if(R.biz.spec) r(A,'Speculative business (intraday)',R.biz.spec); }
+  if(R.cg.res.length){ const c=R.cg.B; r(A,'Capital gains — Schedule 3',null,R.cgTotal);
+    if(c.S) r(A,'Short-term — s. 196 (old 111A) @ 20%',c.S); if(c.Sslab) r(A,'Short-term — at slab rates',c.Sslab);
+    if(c.L) r(A,'Long-term — s. 198 (old 112A) @ 12.5%',c.L); if(c.Lo) r(A,'Long-term — s. 197 (old 112) @ 12.5%',c.Lo); if(c.Li) r(A,'Long-term — s. 197 with indexation @ 20%',c.Li); }
+  if(R.os.net||R.os.W) r(A,'Income from other sources — Schedule 4',null,R.os.net+R.os.W);
+  r(A,'Gross total income',null,R.GTI,'tot');
+  r(A,'Less: Deductions under Chapter VIII (ss. 123–154)',null,null,'hd');
+  if(R.D.length) R.D.forEach(d=>r(A,`${d[0]} — ${d[1]}`,d[2],null,'r',d[3]||''));
+  else r(A, old?'No deductions claimed':'Not available in the new regime (except employer NPS)',null,null,'note');
+  if(R.dCut) r(A,'Restricted to income other than special-rate income',-R.dCut);
+  r(A,'Total deductions',null,-R.dTot,'sub');
+  r(A,'Total income',null,R.TIraw,'tot');
+  r(A,'Total income rounded off — s. 516 (old 288A)',null,R.TI,'grand');
+
+  /* ---- Part B: tax ---- */
+  const B=sec('tax','Computation of tax liability',DX_REG_NAME(R.regime)); const t=R.t;
+  r(B,`Tax on ${inr(R.N)} at slab rates`,t.slab);
+  if(t.tx.S) r(B,'Tax on short-term gains — s. 196 @ 20%',t.tx.S);
+  if(t.tx.L) r(B,'Tax on long-term gains above ₹1,25,000 — s. 198 @ 12.5%',t.tx.L);
+  if(t.tx.Lo) r(B,'Tax on long-term gains — s. 197 @ 12.5%',t.tx.Lo);
+  if(t.tx.Li) r(B,'Tax on long-term gains (indexed) — s. 197 @ 20%',t.tx.Li);
+  if(t.tx.W) r(B,'Tax on winnings — s. 194 (old 115BB) @ 30%',t.tx.W);
+  const gross=t.slab+t.tx.S+t.tx.L+t.tx.Lo+t.tx.Li+t.tx.W;
+  r(B,'Tax before rebate',null,gross,'sub', t.adj?`Unused basic exemption of ${inr(t.adj)} set against special-rate gains.`:'');
+  if(t.rebate) r(B,'Less: Rebate — s. 156 (old 87A)',null,-Math.min(t.rebate,gross));
+  if(t.mr) r(B,'Less: Marginal relief on rebate (income just above ₹12 lakh)',null,-t.mr);
+  if(t.sc){ r(B,`Add: Surcharge`,t.sc); if(t.relief) r(B,'Less: Marginal relief on surcharge',-t.relief); r(B,'Net surcharge',null,t.sc-t.relief,'sub'); }
+  r(B,'Add: Health & education cess @ 4%',null,t.cess);
+  r(B,'Total tax liability',null,t.total,'tot');
+  if(R.r89) r(B,'Less: Relief for arrears — s. 157 (old 89)',null,-R.r89);
+  if(R.int.tot){ r(B,'Add: Interest (Schedule 6)',null,null,'hd');
+    if(R.int.a) r(B,'Late filing — s. 423 (old 234A)',R.int.a); if(R.int.b) r(B,'Short advance tax — s. 424 (old 234B)',R.int.b); if(R.int.c) r(B,'Deferment of instalments — s. 425 (old 234C)',R.int.c);
+    r(B,'Total interest',null,R.int.tot,'sub'); }
+  r(B,'Tax and interest payable',null,R.liability+R.int.tot,'tot');
+  if(R.paid.tot){ r(B,'Less: Taxes paid (Schedule 5)',null,null,'hd');
+    [['tdsSal','TDS on salary'],['tdsO','TDS on other income'],['tcs','TCS'],['adv','Advance tax'],['sat','Self-assessment tax']].forEach(([k,l])=>{ if(R.paid[k]) r(B,l,R.paid[k]); });
+    r(B,'Total taxes paid',null,-R.paid.tot,'sub'); }
+  r(B, R.net>=0?'Balance tax payable (rounded — s. 516)':'Refund due (rounded — s. 516)',null,Math.abs(R.net),'grand');
+
+  /* ---- Schedule 1: salary ---- */
+  if(R.sal.gross){ const X=sec('s1','Schedule 1 — Income from salaries','ss. 15–19 (old 15–17)');
+    (L.emp||[]).forEach((e,i)=>{ const tot=n0(e.sal)+n0(e.perq)+n0(e.lieu); if(!tot) return;
+      r(X,`${esc2(e.name)||'Employer '+(i+1)}${e.tan?' · TAN '+esc2(String(e.tan).toUpperCase()):''}${e.cat?' · '+esc2(e.cat):''}`,null,null,'hd');
+      if(n0(e.sal)) r(X,'Salary — s. 16 (old 17(1))',n0(e.sal)); if(n0(e.perq)) r(X,'Value of perquisites — s. 17 (old 17(2))',n0(e.perq)); if(n0(e.lieu)) r(X,'Profits in lieu of salary — s. 18 (old 17(3))',n0(e.lieu));
+      if(n0(e.enps)) r(X,'(includes employer contribution to NPS — deduction under s. 124)',null,null,'note');
+      if((L.emp||[]).filter(e=>n0(e.sal)+n0(e.perq)+n0(e.lieu)).length>1) r(X,'Salary from this employer',null,tot,'sub'); });
+    r(X,'Gross salary',null,R.sal.gross,'tot');
+    const ex=[]; const w=R.sal.hraW;
+    if(old && R.sal.hraEx) ex.push(['House rent allowance — least of three',R.sal.hraEx,`(a) HRA received ${inr(w.a)}; (b) rent paid less 10% of salary ${inr(w.b)}; (c) ${w.pc*100}% of salary ${inr(w.c)}`]);
+    if(old && V('s.lta')) ex.push(['Leave travel concession',V('s.lta')]); if(old && V('s.othOld')) ex.push(['Other exempt allowances',V('s.othOld')]);
+    if(V('s.grat')) ex.push(['Gratuity',V('s.grat')]); if(V('s.leave')) ex.push(['Leave encashment',V('s.leave')]); if(V('s.comm')) ex.push(['Commuted pension',V('s.comm')]); if(V('s.othBoth')) ex.push(['Voluntary retirement / retrenchment compensation',V('s.othBoth')]);
+    if(ex.length){ r(X,'Less: Exempt allowances and retirement benefits (s. 11 / s. 19)',null,null,'hd'); ex.forEach(x=>r(X,x[0],x[1],null,'r',x[2]||'')); r(X,'Total exemptions',null,-R.sal.exempt,'sub'); }
+    r(X,'Net salary',null,R.sal.gross-R.sal.exempt,'sub');
+    r(X,'Less: Deductions — s. 19 (old 16)',null,null,'hd');
+    r(X,`Standard deduction (${old?'₹50,000':'₹75,000'} max)`,R.sal.std); if(R.sal.ent) r(X,'Entertainment allowance (government employees)',R.sal.ent); if(R.sal.pt) r(X,'Tax on employment (professional tax)',R.sal.pt);
+    r(X,'Total deductions',null,-(R.sal.std+R.sal.ent+R.sal.pt),'sub');
+    r(X,'Income chargeable under the head "Salaries"',null,R.sal.net,'grand'); }
+
+  /* ---- Schedule 2: house property ---- */
+  if(R.hp.length){ const X=sec('s2','Schedule 2 — Income from house property','ss. 20–25 (old 22–27)');
+    R.hp.forEach((p,i)=>{ const T={S:'Self-occupied',L:'Let out',D:'Deemed to be let out'}[p.h.type];
+      r(X,`Property ${i+1} — ${T}${p.h.addr?' · '+esc2(p.h.addr):''}${p.sh<1?` · your share ${Math.round(p.sh*100)}%`:''}`,null,null,'hd');
+      if(p.h.type==='S'){ r(X,'Annual value — s. 21(4)',null,'Nil');
+        if(p.int){ if(p.intC) r(X,'Interest on housing loan for the year',p.intC); if(p.pre5) r(X,'1/5th of pre-construction interest',p.pre5);
+          r(X, old?'Interest claimed (allowed up to ₹2,00,000 in total for self-occupied houses)':'Interest not deductible for a self-occupied house in the new regime',null,old?-p.int:0,'sub'); }
+      } else {
+        if(p.mv||p.fr||p.sr){ if(p.mv) r(X,'Municipal value',p.mv); if(p.fr) r(X,'Fair rent',p.fr); if(p.sr) r(X,'Standard rent under Rent Control Act',p.sr);
+          r(X,'Expected rent — higher of municipal value and fair rent, capped at standard rent',p.er); }
+        if(p.h.type!=='D' || !p.er) r(X,`Actual rent received / receivable${p.vac?` (vacant ${p.vac} month${p.vac>1?'s':''})`:''}`,p.ar);
+        r(X,`Gross annual value — ${p.why}${p.sh<1?` × ${Math.round(p.sh*100)}%`:''}`,null,p.gav,'sub');
+        if(p.muni) r(X,'Less: Municipal taxes paid by owner',null,-p.muni);
+        r(X,'Net annual value',null,p.nav,'sub');
+        r(X,'Less: Deductions — s. 22 (old 24)',null,null,'hd');
+        r(X,'Standard deduction @ 30% of net annual value',p.sd);
+        if(p.intC) r(X,'Interest on borrowed capital for the year',p.intC); if(p.pre5) r(X,'1/5th of pre-construction interest',p.pre5);
+        r(X,'Total deductions',null,-(p.sd+p.int),'sub');
+        if(p.arr) r(X,'Add: Arrears / unrealised rent received, less 30% — s. 23 (old 25A)',null,p.arr);
+        r(X,'Income / (loss) from this property',null,p.inc,'sub'); }
+    });
+    if(R.hpSum.soAllowed) r(X,'Less: Interest on self-occupied houses allowed',null,-R.hpSum.soAllowed);
+    if(R.hpSum.cf) r(X, old?'Add back: Loss above ₹2,00,000 — carried forward 8 years (s. 110, old 71B)':'Add back: Loss not adjustable in the new regime',null,R.hpSum.cf);
+    r(X,'Income chargeable under the head "House property"',null,R.hpSum.net,'grand'); }
+
+  /* ---- Schedule 3: capital gains ---- */
+  if(R.cg.res.length){ const X=sec('s3','Schedule 3 — Capital gains','ss. 67–91 (old 45–55)');
+    R.cg.res.forEach((q,i)=>{ const a=q.a, ex=q.useIdx?q.exIdx:q.ex, gain=q.useIdx?q.gainIdx:q.gain;
+      r(X,`${i+1}. ${esc2(a.desc)||TYPE_NAME[a.type]} — ${q.lt?'long-term':'short-term'} (held ${q.months} months; ${a.buy} to ${a.sell})`,null,null,'hd');
+      r(X, q.sdvUsed?'Full value of consideration — stamp duty value (s. 78, old 50C)':'Full value of consideration (sale value)',q.fvc);
+      if(n0(a.exp)) r(X,'Less: Expenditure on transfer',-n0(a.exp));
+      const cost = q.useIdx ? q.idxCost : q.base, imp = q.useIdx ? q.idxImp : (q.fvc-n0(a.exp)-q.base-q.gain);
+      r(X, q.useIdx?`Less: Indexed cost of acquisition (CII ${SALE_CII})`: q.gfUsed?'Less: Cost — higher of actual cost and 31-Jan-2018 value (grandfathering)': q.fmv01Used?'Less: Cost — fair market value on 1-Apr-2001':'Less: Cost of acquisition',-cost);
+      if(imp>0.5) r(X, q.useIdx?'Less: Indexed cost of improvement':'Less: Cost of improvement',-imp);
+      r(X,'Capital gain / (loss)',null,gain,'sub');
+      if(ex.e54) r(X,'Less: Exemption — new residential house, s. 82 (old 54)',null,-ex.e54);
+      if(ex.e54f) r(X,'Less: Exemption — new residential house, s. 86 (old 54F), proportionate',null,-ex.e54f);
+      if(ex.ec) r(X,'Less: Exemption — specified bonds, s. 85 (old 54EC)',null,-ex.ec);
+      r(X,`Taxable — ${q.bucket==='S'?'s. 196 @ 20%':q.bucket==='L'?'s. 198 @ 12.5%':q.bucket==='Li'?'s. 197 @ 20% (indexed)':q.bucket==='Lo'?'s. 197 @ 12.5%':'slab rates'}`,null,q.taxable,'sub', q.useIdx?`Indexation chosen — tax ${inr(q.t20)} against ${inr(q.t12)} at 12.5% without indexation.`:(q.idxAvail?`12.5% without indexation chosen — lower than ${inr(q.t20)} with indexation.`:''));
+    });
+    if(R.cg.sets.length){ r(X,'Set-off of capital losses (s. 108, old 70)',null,null,'hd'); R.cg.sets.forEach(s=>r(X,`${s[0]} set off against ${{S:'s. 196 gains',Sslab:'slab-rate STCG',L:'s. 198 gains',Lo:'s. 197 gains',Li:'indexed gains'}[s[1]]}`,-s[2])); }
+    if(R.cg.cfST||R.cg.cfLT) r(X,'Capital loss carried forward (8 years)',null,null,'note', `Short-term ${inr(R.cg.cfST)} · Long-term ${inr(R.cg.cfLT)}`);
+    r(X,'Income chargeable under the head "Capital gains"',null,R.cgTotal,'grand'); }
+
+  /* ---- Schedule 4: other sources ---- */
+  if(R.os.net||R.os.W){ const X=sec('s4','Schedule 4 — Income from other sources','ss. 92–95 (old 56–59)');
+    [['o.sav','Interest on savings bank accounts'],['o.fd','Interest on fixed / recurring / post office deposits'],['o.bond','Interest on bonds and other securities'],['o.ref','Interest on income-tax refund'],['o.div','Dividend'],['o.epf','Taxable interest on provident fund'],['o.gift','Gifts / sums received without consideration'],['o.oth','Other income']].forEach(([k,l])=>{ if(V(k)) r(X,l,V(k)); });
+    if(R.os.fp) r(X,'Family pension',R.os.fp);
+    r(X,'Gross income from other sources',null,R.os.gross,'sub');
+    if(R.os.fpD||R.os.divInt||R.os.osExp){ r(X,'Less: Deductions — s. 93 (old 57)',null,null,'hd');
+      if(R.os.fpD) r(X,`Family pension — 1/3rd, max ${old?'₹15,000':'₹25,000'}`,R.os.fpD);
+      if(R.os.divInt) r(X,'Interest on money borrowed for dividend / units (max 20% of dividend)',R.os.divInt);
+      if(R.os.osExp) r(X,'Other expenses incurred to earn the income',R.os.osExp);
+      r(X,'Total deductions',null,-(R.os.fpD+R.os.divInt+R.os.osExp),'sub'); }
+    r(X,'Income at normal rates',null,R.os.net,'sub');
+    if(R.os.W) r(X,'Winnings from lottery, games, crossword etc. — taxed @ 30% (no deduction)',null,R.os.W);
+    r(X,'Income chargeable under the head "Other sources"',null,R.os.net+R.os.W,'grand'); }
+
+  /* ---- Schedule 5: taxes paid ---- */
+  const tp=[...(L.emp||[]).filter(e=>n0(e.tds)).map(e=>[esc2(e.name)||'Employer',esc2(String(e.tan||'').toUpperCase()),'TDS — salary','',n0(e.tds)]),
+    ...(L.tds||[]).filter(x=>n0(x.amt)).map(x=>[esc2(x.name)||'Deductor',esc2(String(x.tan||'').toUpperCase()),'TDS',n0(x.inc)?fmtA(n0(x.inc)):'',n0(x.amt)]),
+    ...(L.tcs||[]).filter(x=>n0(x.amt)).map(x=>[esc2(x.name)||'Collector',esc2(String(x.tan||'').toUpperCase()),'TCS','',n0(x.amt)]),
+    ...(L.chl||[]).filter(x=>n0(x.amt)).map(x=>[x.kind==='ADV'?'Advance tax':'Self-assessment tax',`BSR ${esc2(x.bsr)||'—'} · #${esc2(x.no)||'—'}`,'Challan',esc2(x.date)||'',n0(x.amt)])];
+  if(tp.length){ const X=sec('s5','Schedule 5 — Taxes paid','TDS, TCS and challans'); X.table={head:['Deductor / payment','TAN / challan','Type','Income / date','Amount'],body:tp.map(x=>[x[0],x[1],x[2],x[3],fmtA(x[4])]),foot:['Total','','','',fmtA(R.paid.tot)]}; }
+
+  /* ---- Schedule 6: interest ---- */
+  const I=R.int; if(I.tot || I.notes.length){ const X=sec('s6','Schedule 6 — Interest','ss. 423–425 (old 234A/B/C) · estimate');
+    r(X,`Assessed tax (tax liability less TDS / TCS)`,null,I.AT);
+    if(I.a) r(X,`Late filing — 1% × ${I.aM} month(s) on ${inr(I.aBase)} (due ${I.due.toLocaleDateString('en-IN')}, filed ${I.fileD.toLocaleDateString('en-IN')})`,null,I.a);
+    if(I.b) r(X,`Short advance tax — 1% × ${I.bM} month(s) on ${inr(I.bBase)} (advance tax paid below 90%)`,null,I.b);
+    if(I.cRows.length){ X.tableFirst=true; X.table={head:['Instalment due','Cumulative due','Advance tax paid','Shortfall','Months','Interest'],body:I.cRows.map(c=>[new Date(c.d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),`${Math.round(c.req*100)}% = ${fmtA(c.need)}`,fmtA(c.paid),fmtA(c.base),String(c.m),fmtA(c.i)]),foot:['Total — s. 425 (old 234C)','','','','',fmtA(I.c)]}; }
+    I.notes.forEach(n=>r(X,n,null,null,'note'));
+    r(X,'Total interest',null,I.tot,'grand'); }
+  return S;
+}
+
+/* comparison block (both regimes) */
+function dxCmpRows(nw,od){
+  return [['Gross total income',nw.GTI,od.GTI],['Deductions',nw.dTot,od.dTot],['Total income (rounded)',nw.TI,od.TI],['Tax before rebate',nw.t.slab+nw.t.tx.S+nw.t.tx.L+nw.t.tx.Lo+nw.t.tx.Li+nw.t.tx.W,od.t.slab+od.t.tx.S+od.t.tx.L+od.t.tx.Lo+od.t.tx.Li+od.t.tx.W],['Rebate & marginal relief',nw.t.rebate+nw.t.mr,od.t.rebate+od.t.mr],['Surcharge (net)',nw.t.sc-nw.t.relief,od.t.sc-od.t.relief],['Cess @ 4%',nw.t.cess,od.t.cess],['Total tax liability',nw.liability,od.liability],['Interest',nw.int.tot,od.int.tot],['Taxes paid',nw.paid.tot,od.paid.tot],['Balance payable / (refund)',nw.net,od.net]];
+}
+
+function dxProfile(st){
+  const s=k=>esc2(st[k]||''); const aad=(st['p.aadhaar']||'').replace(/\D/g,'');
+  const bank=(st.lists.bank||[]).find(b=>b.refund) || (st.lists.bank||[]).find(b=>b.bank||b.ac);
+  const ag=dxAgeGroup(st['p.dob']);
+  return [['Name',s('p.name')||'—'],['PAN',(s('p.pan')||'—').toUpperCase()],['Status','Resident individual'+(ag.g==='super'?' — very senior citizen':ag.g==='senior'?' — senior citizen':'')],['Date of birth',(st['p.dob']?new Date(st['p.dob']).toLocaleDateString('en-IN'):'—')+(ag.age!==null?` (age ${ag.age})`:'')],['Tax year','2026-27 (1 Apr 2026 – 31 Mar 2027)'],['Aadhaar',aad?'XXXX XXXX '+aad.slice(-4):'—'],['Address',[s('p.addr'),s('p.city'),s('p.state'),s('p.pin')].filter(Boolean).join(', ')||'—'],['Contact',[s('p.mobile'),s('p.email')].filter(Boolean).join(' · ')||'—'],['Refund bank',bank?`${esc2(bank.bank)} · ${esc2(String(bank.ifsc||'').toUpperCase())} · A/c ${esc2(bank.ac)}`:'—']];
+}
+
+/* ---------- screen / print HTML ---------- */
+function dxStmtHTML(R, st, nw, od, best){
+  const S=dxStmt(R,st);
+  const tbl = x => {
+    let h=`<div class="stx-sec" id="stx-${x.id}"><h4 class="stx-h">${x.h}${x.ref?` <small>${x.ref}</small>`:''}</h4>`;
+    const tb = x.table ? `<div class="tbl-wrap"><table class="stx stx-t"><thead><tr>${x.table.head.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${x.table.body.map(rw=>`<tr>${rw.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>${x.table.foot?`<tfoot><tr>${x.table.foot.map(c=>`<td>${c}</td>`).join('')}</tr></tfoot>`:''}</table></div>` : '';
+    if(x.tableFirst) h+=tb;
+    if(x.rows.length) h+=`<div class="tbl-wrap"><table class="stx"><colgroup><col><col class="c2"><col class="c2"></colgroup><thead><tr><th>Particulars</th><th>₹</th><th>₹</th></tr></thead><tbody>`+x.rows.map(q=> q.k==='hd' ? `<tr class="x-hd"><td colspan="3">${q.l}</td></tr>` : q.k==='note' ? `<tr class="x-note"><td colspan="3">${q.l}${q.n?' — '+q.n:''}</td></tr>` :
+      `<tr class="x-${q.k}"><td>${q.l}${q.n?`<div class="hint2">${q.n}</div>`:''}</td><td>${fmtA(q.i)}</td><td>${fmtA(q.o)}</td></tr>`).join('')+`</tbody></table></div>`;
+    if(!x.tableFirst) h+=tb;
+    return h+'</div>'; };
+  const prof = dxProfile(st);
+  const cmp = dxCmpRows(nw,od);
+  return `<div class="stx-wrap">
+    <div class="stx-top"><div><b>Computation of total income and tax</b><span>Tax year 2026-27 · Income-tax Act, 2025 (as amended by Finance Act, 2026)</span></div><span class="stx-reg ${R.regime===best?'best':''}">${R.regime==='new'?'New regime':'Old regime'}${R.regime===best?' · lower tax':''}</span></div>
+    <dl class="stx-prof">${prof.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+    ${S.map(tbl).join('')}
+    <div class="stx-sec"><h4 class="stx-h">Regime comparison <small>for information</small></h4><div class="tbl-wrap"><table class="stx stx-t"><thead><tr><th>Particulars</th><th>New regime</th><th>Old regime</th></tr></thead><tbody>${cmp.map(c=>`<tr><td>${c[0]}</td><td class="${best==='new'?'bc':''}">${fmtA(c[1])}</td><td class="${best==='old'?'bc':''}">${fmtA(c[2])}</td></tr>`).join('')}</tbody></table></div>
+    <p class="hint2">The ${best} regime saves ${inr(Math.abs(nw.liability-od.liability))}. ${R.biz.net?'With business income, the old regime once chosen can be switched back only once.':'Salaried individuals can choose the regime every year while filing the return.'}</p></div>
+  </div>`;
+}
+
+/* ---------- downloads ---------- */
+const DX_LIBS={pdf:['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'],at:['https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js','https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js'],xlsx:['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js']};
+function dxLoadLib(k){ return new Promise((ok,no)=>{ const urls=DX_LIBS[k]; let i=0; const go=()=>{ if(i>=urls.length) return no(new Error('load')); const sc=document.createElement('script'); sc.src=urls[i++]; sc.onload=()=>ok(); sc.onerror=()=>{ sc.remove(); go(); }; document.head.appendChild(sc); }; go(); }); }
+function dxFileName(ext){ const n=(DX_LAST&&DX_LAST.st['p.name']||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,''); return `Tax_Computation_TY2026-27${n?'_'+n:''}.${ext}`; }
+function dxBusy(btn,on,txt){ if(!btn) return; if(on){ btn.dataset.t=btn.innerHTML; btn.innerHTML=txt||'Preparing…'; btn.disabled=true; } else { btn.innerHTML=btn.dataset.t||btn.innerHTML; btn.disabled=false; } }
+const pdfTxt = t => String(t??'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/₹\s?/g,'Rs. ').replace(/[−–—]/g,'-').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/≤/g,'<=').replace(/≥/g,'>=').replace(/×/g,'x').replace(/…/g,'...').replace(/·/g,'|').replace(/[^\x00-\xFF]/g,'');
+
+async function dxPDF(btn){
   if(!DX_LAST){ alert('Enter your details first.'); return; }
-  const {st}=DX_LAST, s=k=>esc2(st[k]);
-  const aad=(st['p.aadhaar']||'').replace(/\D/g,''), aadM=aad?'XXXX XXXX '+aad.slice(-4):'';
-  const banks=(st.lists.bank||[]).filter(b=>b.bank||b.ac);
-  const prof=`<table class="pf"><tr><td>Name</td><td><b>${s('p.name')||'—'}</b></td><td>PAN</td><td><b>${(s('p.pan')||'—').toUpperCase()}</b></td></tr>
-    <tr><td>Aadhaar</td><td>${aadM||'—'}</td><td>Date of birth</td><td>${s('p.dob')||'—'}${DX_LAST.nw.age.age!==null?` (age ${DX_LAST.nw.age.age})`:''}</td></tr>
-    <tr><td>Mobile / Email</td><td>${s('p.mobile')||'—'} ${s('p.email')?' · '+s('p.email'):''}</td><td>Status</td><td>Resident individual</td></tr>
-    <tr><td>Address</td><td colspan="3">${[s('p.addr'),s('p.city'),s('p.state'),s('p.pin')].filter(Boolean).join(', ')||'—'}</td></tr></table>
-    ${banks.length?`<table class="pf"><tr><th>Bank</th><th>IFSC</th><th>Account no.</th><th>Type</th><th>Refund</th></tr>${banks.map(b=>`<tr><td>${esc2(b.bank)}</td><td>${esc2((b.ifsc||'').toUpperCase())}</td><td>${esc2(b.ac)}</td><td>${esc2(b.type)}</td><td>${b.refund?'✓':''}</td></tr>`).join('')}</table>`:''}`;
-  const body=document.getElementById('stmt').cloneNode(true); body.querySelectorAll('.story-act').forEach(e=>e.remove());
-  const w=window.open('','_blank'); if(!w){ alert('Please allow pop-ups to download the PDF.'); return; }
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Tax computation FY 2026-27${st['p.name']?' — '+esc2(st['p.name']):''}</title><style>
-  body{font-family:'Segoe UI',Manrope,Arial,sans-serif;color:#1f2933;margin:22px;font-size:11.5px}
-  h1{font:700 18px Georgia,serif;color:#0f2a44;margin:0}.sub{color:#5b6876;margin:2px 0 12px}
-  table{width:100%;border-collapse:collapse}.pf{margin-bottom:10px}.pf td,.pf th{border:1px solid #ddd;padding:5px 7px;text-align:left}.pf td:nth-child(odd){color:#5b6876;width:15%}.pf th{background:#f3f1ea;font-size:10px;text-transform:uppercase}
-  .glance{display:flex;gap:6px;margin:10px 0}.g-card{flex:1;border:1px solid #ddd;border-radius:6px;padding:6px 8px}.g-card span{display:block;font-size:9.5px;color:#5b6876}.g-card b{font-size:13px;color:#0f2a44}.g-card.hl{background:#e6f4ec;border-color:#0f7a4f}
-  .story{border-left:3px solid #f2b544;background:#fff7e6;padding:8px 10px;margin-bottom:10px}.story p{margin:4px 0 0}.badge{font-size:9px;font-weight:700;background:#0f7a4f;color:#fff;padding:2px 7px;border-radius:9px}
-  .cmp2 th,.sch th{text-align:right;font-size:9.5px;text-transform:uppercase;color:#5b6876;border-bottom:2px solid #0f2a44;padding:4px}.cmp2 th:first-child,.sch th:first-child{text-align:left}
-  .cmp2 td,.sch td{padding:4px;border-bottom:1px dotted #ddd;text-align:right;vertical-align:top}.cmp2 td:first-child,.sch td:first-child{text-align:left}
-  .dh td{font-weight:700;color:#0f2a44;padding-top:9px;border:0;text-align:left!important}.dt td{font-weight:700;border-bottom:1px solid #0f2a44}.dg td{font-weight:800;background:#f1efe8;color:#0f2a44}
-  .ds td:first-child{padding-left:12px}.hint2{font-size:9px;color:#6b7785;font-weight:400}.muted{color:#8a94a0}.bc{background:#eef8f2}
-  .sch-h{font:700 12px Georgia,serif;color:#0f2a44;margin:14px 0 4px}.disclaimer{font-size:9px;color:#6b7785;margin-top:12px}small{color:#6b7785;font-size:9px}
-  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{margin:10mm}</style></head><body>
-  <h1>Computation of Income &amp; Tax — FY 2026-27</h1><div class="sub">Tax Year 2026-27 · Income-tax Act, 2025 · Prepared on ${new Date().toLocaleDateString('en-IN')} using atulbagla.com</div>
-  ${prof}${body.innerHTML}</body></html>`);
-  w.document.close(); w.focus(); setTimeout(()=>w.print(),350);
+  dxBusy(btn,true);
+  try{ if(!window.jspdf) await dxLoadLib('pdf'); if(!(window.jspdf && window.jspdf.jsPDF.API.autoTable)) await dxLoadLib('at'); }
+  catch(_){ dxBusy(btn,false); dxPrint(); return; }
+  try{
+    const {st,nw,od,best}=DX_LAST, R = DX_VIEW==='old'?od:DX_VIEW==='new'?nw:(best==='new'?nw:od);
+    const {jsPDF}=window.jspdf, doc=new jsPDF({unit:'pt',format:'a4'}), W=doc.internal.pageSize.getWidth(), M=40;
+    const NAVY=[15,42,68], GOLD=[242,181,68], MUTED=[91,104,118];
+    // header band
+    doc.setFillColor(...NAVY); doc.rect(0,0,W,70,'F'); doc.setFillColor(...GOLD); doc.rect(0,70,W,3,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.text('COMPUTATION OF TOTAL INCOME AND TAX LIABILITY',M,32);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.text(pdfTxt('Tax year 2026-27 (1 April 2026 - 31 March 2027)  |  Income-tax Act, 2025 as amended by Finance Act, 2026'),M,49); doc.setFont('helvetica','bold'); doc.setTextColor(...GOLD); doc.text(pdfTxt(DX_REG_NAME(R.regime)+(R.regime===best?'  -  lower tax of the two regimes':'')),M,62);
+    let y=90;
+    const prof=dxProfile(st); const pb=[]; for(let i=0;i<prof.length;i+=2) pb.push([prof[i][0],pdfTxt(prof[i][1]),prof[i+1]?prof[i+1][0]:'',prof[i+1]?pdfTxt(prof[i+1][1]):'']);
+    doc.autoTable({startY:y,body:pb,theme:'grid',margin:{left:M,right:M},styles:{fontSize:8.5,cellPadding:4,lineColor:[221,221,221],textColor:[31,41,51]},columnStyles:{0:{textColor:MUTED,cellWidth:70},1:{fontStyle:'bold'},2:{textColor:MUTED,cellWidth:70},3:{fontStyle:'bold'}}});
+    y=doc.lastAutoTable.finalY+12;
+    // summary strip
+    const sum=[['Gross total income',R.GTI],['Deductions',R.dTot],['Total income',R.TI],[R.int.tot?'Tax + interest':'Tax liability',R.liability+R.int.tot],[R.net>=0?'Balance payable':'Refund due',Math.abs(R.net)]];
+    const bw=(W-2*M-16)/5; sum.forEach((s,i)=>{ const x=M+i*(bw+4); const hl=i===4; doc.setFillColor(...(hl?[230,244,236]:[247,245,240])); doc.setDrawColor(...(hl?[15,122,79]:[227,224,216])); doc.roundedRect(x,y,bw,40,4,4,'FD'); doc.setTextColor(...MUTED); doc.setFontSize(7.5); doc.text(s[0].toUpperCase(),x+7,y+14); doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.text('Rs. '+fmtA(s[1]),x+7,y+31); doc.setFont('helvetica','normal'); });
+    y+=52;
+    const S=dxStmt(R,st);
+    S.forEach(x=>{
+      if(y>doc.internal.pageSize.getHeight()-90){ doc.addPage(); y=50; }
+      doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text(pdfTxt(x.h),M,y); if(x.ref){ doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...MUTED); doc.text(pdfTxt(x.ref),W-M,y,{align:'right'}); }
+      y+=6;
+      const drawT=()=>{ if(!x.table) return; doc.autoTable({startY:y+2,head:[x.table.head.map(pdfTxt)],body:x.table.body.map(r=>r.map(pdfTxt)),foot:x.table.foot?[x.table.foot.map(pdfTxt)]:undefined,theme:'grid',margin:{left:M,right:M},
+          styles:{fontSize:8,cellPadding:3.5,lineColor:[221,221,221],textColor:[31,41,51]},headStyles:{fillColor:[243,241,234],textColor:NAVY,fontStyle:'bold'},footStyles:{fillColor:[234,239,245],textColor:NAVY,fontStyle:'bold'},
+          didParseCell:d=>{ if(d.column.index===x.table.head.length-1) d.cell.styles.halign='right'; }}); y=doc.lastAutoTable.finalY+6; };
+      if(x.tableFirst) drawT();
+      if(x.rows.length){
+        const body=[]; x.rows.forEach(q=>{ if(q.k==='hd'||q.k==='note') body.push([{content:pdfTxt(q.l+(q.n?' - '+q.n:'')),colSpan:3,_k:q.k}]); else { body.push([{content:pdfTxt(q.l),_k:q.k},{content:fmtA(q.i),_k:q.k},{content:fmtA(q.o),_k:q.k}]); if(q.n) body.push([{content:pdfTxt(q.n),colSpan:3,_k:'note'}]); } });
+        doc.autoTable({startY:y,head:[['Particulars','Rs.','Rs.']],body,theme:'plain',margin:{left:M,right:M},showHead:'firstPage',
+          headStyles:{fillColor:false,textColor:MUTED,fontSize:7.5,fontStyle:'bold',halign:'right',lineWidth:{bottom:1.2},lineColor:NAVY},
+          styles:{fontSize:8.6,cellPadding:{top:3,bottom:3,left:4,right:4},textColor:[31,41,51],lineColor:[225,225,225]},
+          columnStyles:{0:{cellWidth:'auto'},1:{halign:'right',cellWidth:82},2:{halign:'right',cellWidth:88}},
+          didParseCell:d=>{ if(d.section==='head'&&d.column.index===0) d.cell.styles.halign='left'; if(d.section!=='body') return; const k=d.cell.raw&&d.cell.raw._k;
+            if(k==='hd'){ d.cell.styles.fontStyle='bold'; d.cell.styles.textColor=NAVY; d.cell.styles.cellPadding={top:6,bottom:2,left:4,right:4}; }
+            else if(k==='note'){ d.cell.styles.fontStyle='italic'; d.cell.styles.textColor=MUTED; d.cell.styles.fontSize=7.8; }
+            else if(k==='sub'){ d.cell.styles.fontStyle='bold'; }
+            else if(k==='tot'){ d.cell.styles.fontStyle='bold'; d.cell.styles.fillColor=[247,245,240]; }
+            else if(k==='grand'){ d.cell.styles.fontStyle='bold'; d.cell.styles.fillColor=[234,239,245]; d.cell.styles.textColor=NAVY; }
+            else if(d.column.index===0) d.cell.styles.cellPadding={top:3,bottom:3,left:12,right:4}; },
+          didDrawCell:d=>{ if(d.section!=='body') return; const k=d.cell.raw&&d.cell.raw._k; if((k==='sub'||k==='grand'||k==='tot')&&d.column.index===2&&d.cell.text.join('')){ doc.setDrawColor(...NAVY); doc.setLineWidth(.6); doc.line(d.cell.x+8,d.cell.y,d.cell.x+d.cell.width,d.cell.y); if(k==='grand'){ doc.line(d.cell.x+8,d.cell.y+d.cell.height-1.5,d.cell.x+d.cell.width,d.cell.y+d.cell.height-1.5); doc.line(d.cell.x+8,d.cell.y+d.cell.height,d.cell.x+d.cell.width,d.cell.y+d.cell.height); } } }});
+        y=doc.lastAutoTable.finalY+4; }
+      if(!x.tableFirst) drawT();
+      y+=14;
+    });
+    // comparison
+    if(y>doc.internal.pageSize.getHeight()-220){ doc.addPage(); y=50; }
+    doc.setTextColor(...NAVY); doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Regime comparison (for information)',M,y); y+=6;
+    doc.autoTable({startY:y,head:[['Particulars','New regime','Old regime']],body:dxCmpRows(nw,od).map(c=>[c[0],fmtA(c[1]),fmtA(c[2])]),theme:'grid',margin:{left:M,right:M},styles:{fontSize:8.5,cellPadding:3.5,lineColor:[221,221,221]},headStyles:{fillColor:NAVY,textColor:255},columnStyles:{1:{halign:'right',cellWidth:110},2:{halign:'right',cellWidth:110}},
+      didParseCell:d=>{ if(d.section==='body' && ((best==='new'&&d.column.index===1)||(best==='old'&&d.column.index===2))) d.cell.styles.fillColor=[238,248,242]; if(d.section==='body'&&d.row.index===10) d.cell.styles.fontStyle='bold'; }});
+    y=doc.lastAutoTable.finalY+10; doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(31,41,51);
+    doc.text(pdfTxt(`The ${best} regime results in lower tax by Rs. ${fmtA(Math.abs(nw.liability-od.liability))}.`),M,y); y+=16;
+    const notes=['Figures in brackets are deductions / refunds. Amounts rounded to the nearest rupee; total income and net tax rounded to the nearest Rs. 10.','Section references are to the Income-tax Act, 2025, with the corresponding Income-tax Act, 1961 section in brackets.','Interest under ss. 423-425 is an estimate based on the challan dates entered. Brought-forward losses, agricultural income, AMT, clubbing and foreign income are not covered.','Prepared for information using the free calculator at atulbagla.com. Please verify with Form 16 / 26AS / AIS and consult a Chartered Accountant before filing.'];
+    doc.setFontSize(7.5); doc.setTextColor(...MUTED); notes.forEach(n=>{ const l=doc.splitTextToSize(pdfTxt('* '+n),W-2*M); if(y+l.length*10>doc.internal.pageSize.getHeight()-40){ doc.addPage(); y=50; } doc.text(l,M,y); y+=l.length*10+2; });
+    // footer on every page
+    const pages=doc.getNumberOfPages(), H=doc.internal.pageSize.getHeight(), today=new Date().toLocaleDateString('en-IN');
+    for(let i=1;i<=pages;i++){ doc.setPage(i); doc.setDrawColor(227,224,216); doc.setLineWidth(.5); doc.line(M,H-30,W-M,H-30); doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+      doc.text(pdfTxt(`${st['p.name']||'Taxpayer'}${st['p.pan']?' | PAN '+String(st['p.pan']).toUpperCase():''} | Prepared on ${today}`),M,H-18); doc.text(`atulbagla.com  |  Page ${i} of ${pages}`,W-M,H-18,{align:'right'}); }
+    const name=dxFileName('pdf');
+    if(btn && btn.dataset.share && navigator.canShare){ const f=new File([doc.output('blob')],name,{type:'application/pdf'}); if(navigator.canShare({files:[f]})){ try{ await navigator.share({files:[f],title:'Tax computation'}); }catch(_){} dxBusy(btn,false); return; } }
+    doc.save(name);
+  }catch(e){ console.error(e); alert('Could not create the PDF — opening the print view instead.'); dxPrint(); }
+  dxBusy(btn,false);
+}
+
+async function dxXLSX(btn){
+  if(!DX_LAST){ alert('Enter your details first.'); return; }
+  dxBusy(btn,true);
+  try{ if(!window.XLSX) await dxLoadLib('xlsx'); }catch(_){ dxBusy(btn,false); alert('Could not load the Excel library — check your internet connection.'); return; }
+  try{
+    const {st,nw,od,best}=DX_LAST, wb=XLSX.utils.book_new(), clean=t=>String(t??'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&');
+    const num=v=> typeof v==='number' ? Math.round(v) : (v===null||v===undefined?'':clean(v));
+    [['new',nw],['old',od]].forEach(([k,R])=>{
+      const A=[['COMPUTATION OF TOTAL INCOME AND TAX LIABILITY'],['Tax year 2026-27 · Income-tax Act, 2025 · '+DX_REG_NAME(k)+(k===best?' (lower tax)':'')],[]];
+      dxProfile(st).forEach(p=>A.push([p[0],clean(p[1])])); A.push([]);
+      dxStmt(R,st).forEach(x=>{ A.push([clean(x.h).toUpperCase(),'',x.ref?clean(x.ref):'']); A.push(['Particulars','₹','₹']);
+        const xt=()=>{ if(x.table){ A.push(x.table.head); x.table.body.forEach(r=>A.push(r.map(c=>{ const n=String(c).replace(/[(),]/g,''); return /^\d+$/.test(n)?(String(c).startsWith('(')?-n:+n):clean(c); }))); if(x.table.foot) A.push(x.table.foot); } };
+        if(x.tableFirst) xt();
+        x.rows.forEach(q=>{ if(q.k==='hd'||q.k==='note') A.push([clean(q.l+(q.n?' — '+q.n:''))]); else { A.push([(q.k==='r'?'    ':'')+clean(q.l),num(q.i),num(q.o)]); if(q.n) A.push(['      ('+clean(q.n)+')']); } });
+        if(!x.tableFirst) xt();
+        A.push([]); });
+      const ws=XLSX.utils.aoa_to_sheet(A); ws['!cols']=[{wch:78},{wch:16},{wch:16},{wch:16},{wch:16},{wch:14}];
+      XLSX.utils.book_append_sheet(wb,ws,k==='new'?'New regime':'Old regime'); });
+    const C=[['Regime comparison — Tax year 2026-27'],[],['Particulars','New regime','Old regime'],...dxCmpRows(nw,od).map(c=>[c[0],Math.round(c[1]),Math.round(c[2])]),[],['Lower tax under',best==='new'?'New regime':'Old regime',''],['Saving',Math.round(Math.abs(nw.liability-od.liability)),'']];
+    const wc=XLSX.utils.aoa_to_sheet(C); wc['!cols']=[{wch:34},{wch:16},{wch:16}]; XLSX.utils.book_append_sheet(wb,wc,'Comparison');
+    if(st.lists.cg && nw.cg.res.length){ const G=[['Asset','Type','Bought','Sold','Months','Term','Sale value','Expenses','Cost used','Gain','Exemption','Taxable','Rate']];
+      nw.cg.res.forEach(q=>{ const ex=q.useIdx?q.exIdx:q.ex; G.push([clean(q.a.desc)||TYPE_NAME[q.a.type],TYPE_NAME[q.a.type],q.a.buy,q.a.sell,q.months,q.lt?'Long':'Short',Math.round(q.fvc),Math.round(n0(q.a.exp)),Math.round(q.useIdx?q.idxCost+q.idxImp:q.fvc-n0(q.a.exp)-q.gain),Math.round(q.useIdx?q.gainIdx:q.gain),Math.round(ex.e54+ex.e54f+ex.ec),Math.round(q.taxable),{S:'20%',L:'12.5% (above 1.25L)',Li:'20% indexed',Lo:'12.5%',Sslab:'Slab'}[q.bucket]]); });
+      const wg=XLSX.utils.aoa_to_sheet(G); wg['!cols']=G[0].map((_,i)=>({wch:i===0?28:13})); XLSX.utils.book_append_sheet(wb,wg,'Capital gains'); }
+    XLSX.writeFile(wb,dxFileName('xlsx'));
+  }catch(e){ console.error(e); alert('Could not create the Excel file.'); }
+  dxBusy(btn,false);
+}
+
+function dxPrint(){
+  if(!DX_LAST){ alert('Enter your details first.'); return; }
+  const {st,nw,od,best}=DX_LAST, R = DX_VIEW==='old'?od:DX_VIEW==='new'?nw:(best==='new'?nw:od);
+  const w=window.open('','_blank'); if(!w){ alert('Please allow pop-ups to print.'); return; }
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc2(dxFileName('pdf').replace('.pdf',''))}</title><style>
+  body{font-family:'Segoe UI',Manrope,Arial,sans-serif;color:#1f2933;margin:18px;font-size:11.5px}
+  .stx-top{display:flex;justify-content:space-between;align-items:flex-start;background:#0f2a44;color:#fff;padding:12px 14px;border-bottom:3px solid #f2b544}.stx-top b{display:block;font:700 15px Georgia,serif;text-transform:uppercase;letter-spacing:.03em}.stx-top span{font-size:10px;opacity:.85}.stx-reg{background:#fff;color:#0f2a44;border-radius:10px;padding:2px 8px;font-weight:700;opacity:1!important}
+  .stx-prof{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:10px 0;border:1px solid #ddd}.stx-prof div{display:flex;gap:8px;padding:4px 7px;border-bottom:1px solid #eee}.stx-prof dt{color:#5b6876;min-width:80px}.stx-prof dd{margin:0;font-weight:700}
+  .stx-h{font:700 12.5px Georgia,serif;color:#0f2a44;margin:14px 0 4px;display:flex;justify-content:space-between}.stx-h small{font:400 9px sans-serif;color:#5b6876}
+  table{width:100%;border-collapse:collapse}.stx th{text-align:right;font-size:9px;text-transform:uppercase;color:#5b6876;border-bottom:1.5px solid #0f2a44;padding:3px 5px}.stx th:first-child{text-align:left}
+  .stx td{padding:3px 5px;text-align:right;vertical-align:top;white-space:nowrap}.stx td:first-child{text-align:left;white-space:normal}.stx col.c2{width:95px}
+  .x-r td:first-child{padding-left:14px}.x-hd td{font-weight:700;color:#0f2a44;padding-top:7px}.x-note td{font-style:italic;color:#6b7785;font-size:9.5px}
+  .x-sub td{font-weight:700}.x-sub td:last-child{border-top:1px solid #0f2a44}.x-tot td{font-weight:700;background:#f7f5f0}.x-tot td:last-child{border-top:1px solid #0f2a44}.x-grand td{font-weight:800;background:#eaeff5;color:#0f2a44}.x-grand td:last-child{border-top:1px solid #0f2a44;border-bottom:3px double #0f2a44}
+  .stx-t td,.stx-t th{border:1px solid #ddd;text-align:right}.stx-t td:first-child,.stx-t th:first-child{text-align:left}.stx-t tfoot td{font-weight:700;background:#eaeff5}.bc{background:#eef8f2}
+  .hint2{font-size:9px;color:#6b7785;font-weight:400}.stx-sec{break-inside:auto}.x-hd,.stx-h{break-after:avoid}
+  .foot{font-size:9px;color:#6b7785;margin-top:14px;border-top:1px solid #ddd;padding-top:6px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{margin:11mm}</style></head><body>
+  ${dxStmtHTML(R,st,nw,od,best)}
+  <div class="foot">Figures in brackets are deductions / refunds. Section references: Income-tax Act, 2025 (old 1961 Act section in brackets). Interest is an estimate. Prepared on ${new Date().toLocaleDateString('en-IN')} using atulbagla.com — general information; verify with Form 16 / 26AS / AIS before filing.</div></body></html>`);
+  w.document.close(); w.focus(); setTimeout(()=>w.print(),400);
 }
 
 /* quick calculator download */
@@ -3419,7 +3896,7 @@ const PREF_KEY='ab_prefs_v1';
 const PREFS=Object.assign({theme:'system',accent:'navy',text:'normal',motion:true,sound:true},(()=>{try{return JSON.parse(localStorage.getItem(PREF_KEY)||'{}')}catch(_){return{}}})());
 function applyPrefs(){
   const h=document.documentElement, dark = PREFS.theme==='dark' || (PREFS.theme==='system' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-  h.dataset.theme = dark?'dark':'light'; h.dataset.accent=PREFS.accent; h.dataset.text=PREFS.text; h.dataset.motion = PREFS.motion?'full':'reduce';
+  const dark2 = dark || PREFS.theme==='black'; h.dataset.theme = dark2?'dark':'light'; h.dataset.tone = (PREFS.theme==='sepia'||PREFS.theme==='black')?PREFS.theme:''; h.dataset.contrast = PREFS.contrast?'high':''; h.dataset.accent=PREFS.accent; h.dataset.text=PREFS.text; h.dataset.motion = PREFS.motion?'full':'reduce';
   document.querySelectorAll('[data-set]').forEach(g=>g.querySelectorAll('[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===PREFS[g.dataset.set])));
   document.querySelectorAll('[data-toggle]').forEach(b=>b.classList.toggle('on',!!PREFS[b.dataset.toggle]));
   const m=document.querySelector('meta[name="theme-color"]'); if(m) m.content = getComputedStyle(h).getPropertyValue('--ink').trim()||'#0f2a44';
@@ -3427,7 +3904,7 @@ function applyPrefs(){
 }
 document.querySelectorAll('[data-set] [data-v]').forEach(b=>b.addEventListener('click',()=>{ PREFS[b.parentElement.dataset.set]=b.dataset.v; applyPrefs(); }));
 document.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click',()=>{ PREFS[b.dataset.toggle]=!PREFS[b.dataset.toggle]; applyPrefs(); }));
-document.getElementById('setReset').addEventListener('click',()=>{ Object.assign(PREFS,{theme:'system',accent:'navy',text:'normal',motion:true,sound:true}); applyPrefs(); });
+document.getElementById('setReset').addEventListener('click',()=>{ Object.assign(PREFS,{theme:'system',accent:'navy',text:'normal',motion:true,sound:true,contrast:false}); applyPrefs(); });
 document.getElementById('setBtn').addEventListener('click',e=>{ e.stopPropagation(); const p=document.getElementById('setPanel'); p.hidden=!p.hidden; });
 document.addEventListener('click',e=>{ const p=document.getElementById('setPanel'); if(!p.hidden && !p.contains(e.target)) p.hidden=true; });
 if(window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{ if(PREFS.theme==='system') applyPrefs(); });
